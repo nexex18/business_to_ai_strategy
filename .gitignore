@@ -1,7 +1,6 @@
 # Temporary and development files
 slides/backup/
 slides_review/
-slides_complete/
 *.pyc
 __pycache__/
 .DS_Store

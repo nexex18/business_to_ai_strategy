@@ -6,25 +6,32 @@ Each slide is a separate HTML page with navigation
 
 import os
 import shutil
+import sqlite3
 from pathlib import Path
 from bs4 import BeautifulSoup
+from datetime import datetime
 
-# Slide configuration
-SLIDES = [
-    {"num": "01", "name": "vmg_overview", "title": "Velocity MG: Making Good on AI's Promise", "source": "slide_01_velocity_mg_making_good_on_ais_promise_standalone.html"},
-    {"num": "02", "name": "smb_dilemma", "title": "The SMB AI Dilemma", "source": "slide_02_the_smb_ai_dilemma_standalone.html"},
-    {"num": "03", "name": "framework", "title": "The VMG Framework", "source": "slide_03_the_vmg_framework_standalone.html"},
-    {"num": "04", "name": "ai_approach", "title": "Our AI-Powered Approach", "source": "slide_04_our_aipowered_approach_standalone.html"},
-    {"num": "05", "name": "prioritization", "title": "Strategic Initiative Prioritization", "source": "slide_05_strategic_initiative_prioritization_standalone.html"},
-    {"num": "06", "name": "content_platform", "title": "Initiative: Intelligent Content Generation Platform", "source": "slide_06_initiative_intelligent_content_generatio_standalone.html"},
-    {"num": "07", "name": "revenue_model", "title": "Transforming the Consulting Revenue Model", "source": "slide_07_transforming_the_consulting_revenue_mode_standalone.html"},
-    {"num": "08", "name": "cost_benefit", "title": "Cost-Benefit Analysis", "source": "slide_08_costbenefit_analysis_standalone.html"},
-    {"num": "09", "name": "customer_growth", "title": "Customer Growth Assumptions", "source": "slide_09_fixed.html"},
-    {"num": "10", "name": "roi_analysis", "title": "Return on Investment Analysis", "source": "slide_10_fixed.html"},
-    {"num": "11", "name": "timeline", "title": "Development Timeline", "source": "slide_11_development_timeline_standalone.html"},
-    {"num": "12", "name": "key_metrics", "title": "Key Investment Metrics", "source": "slide_12_fixed.html"},
-    {"num": "13", "name": "risk_assessment", "title": "Risk Assessment & Mitigation Strategy", "source": "slide_13_risk_assessment_mitigation_strategy_standalone.html"}
-]
+def load_slides_from_db():
+    """Load slides configuration from SQLite database"""
+    conn = sqlite3.connect('slides.db')
+    cursor = conn.cursor()
+    
+    cursor.execute('SELECT num, name, title, source FROM slides ORDER BY num')
+    
+    slides = []
+    for row in cursor.fetchall():
+        slides.append({
+            'num': row[0],
+            'name': row[1],
+            'title': row[2],
+            'source': row[3]
+        })
+    
+    conn.close()
+    return slides
+
+# Load slides from database
+SLIDES = load_slides_from_db()
 
 def create_navigation(slide_index, total_slides):
     """Create navigation HTML for a slide"""
@@ -163,7 +170,7 @@ def add_keyboard_navigation():
     </script>
     '''
 
-def process_slide(slide_info, slide_index, total_slides):
+def process_slide(slide_info, slide_index, total_slides, output_dir):
     """Process a single slide file"""
     source_path = Path("slides_complete") / slide_info["source"]
     
@@ -189,7 +196,7 @@ def process_slide(slide_info, slide_index, total_slides):
     
     # Write to new location
     output_filename = f"{slide_info['num']}_{slide_info['name']}.html"
-    output_path = Path("vmg_presentation/slides") / output_filename
+    output_path = output_dir / "slides" / output_filename
     
     with open(output_path, 'w', encoding='utf-8') as f:
         f.write(str(soup))
@@ -198,7 +205,7 @@ def process_slide(slide_info, slide_index, total_slides):
     
     return output_filename
 
-def create_index_page():
+def create_index_page(output_dir):
     """Create the index/contents page"""
     index_html = '''<!DOCTYPE html>
 <html lang="en">
@@ -347,11 +354,15 @@ def create_index_page():
             </li>
 '''
     
-    index_html += '''
+    # Add start button pointing to first slide
+    first_slide = SLIDES[0] if SLIDES else None
+    start_link = f'slides/{first_slide["num"]}_{first_slide["name"]}.html' if first_slide else '#'
+    
+    index_html += f'''
         </ol>
         
         <div class="button-container">
-            <a href="slides/01_vmg_overview.html" class="start-button">Start Presentation →</a>
+            <a href="{start_link}" class="start-button">Start Presentation →</a>
         </div>
         
         <div class="keyboard-hint">
@@ -364,7 +375,7 @@ def create_index_page():
 '''
     
     # Write index file
-    index_path = Path("vmg_presentation/index.html")
+    index_path = output_dir / "index.html"
     with open(index_path, 'w', encoding='utf-8') as f:
         f.write(index_html)
     
@@ -375,20 +386,42 @@ def main():
     print("\n🚀 Building VMG Linked Presentation")
     print("="*50)
     
+    # Check if database exists
+    if not Path('slides.db').exists():
+        print("❌ Error: slides.db not found!")
+        print("   Run setup_slides_db.py first to create the database")
+        return
+    
+    # Create timestamped output directory
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    output_dir = Path(f"vmg_presentation_{timestamp}")
+    slides_dir = output_dir / "slides"
+    slides_dir.mkdir(parents=True, exist_ok=True)
+    
+    # Also create/update a symlink to the latest version
+    latest_link = Path("vmg_presentation_latest")
+    if latest_link.exists() or latest_link.is_symlink():
+        latest_link.unlink()
+    latest_link.symlink_to(output_dir)
+    
     # Process each slide
     print("\n📄 Processing slides:")
     total_slides = len(SLIDES)
     
     for i, slide in enumerate(SLIDES):
-        process_slide(slide, i, total_slides)
+        process_slide(slide, i, total_slides, output_dir)
     
     # Create index page
     print("\n📋 Creating index page:")
-    create_index_page()
+    create_index_page(output_dir)
     
     print("\n✨ Presentation built successfully!")
-    print(f"   Location: vmg_presentation/")
-    print(f"   To view: open vmg_presentation/index.html")
+    print(f"   Version: {timestamp}")
+    print(f"   Location: {output_dir}/")
+    print(f"   Latest link: vmg_presentation_latest/")
+    print(f"   To view: open {output_dir}/index.html")
+    print(f"   Total slides: {total_slides}")
+    print("\n📝 To modify slides, edit slides.db and re-run this script")
     print("\n" + "="*50)
 
 if __name__ == "__main__":
