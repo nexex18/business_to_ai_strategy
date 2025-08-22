@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The VMG Framework: Where Strategy Meets Velocity</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #f5f5f5;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .slide {
+            display: none;
+            width: 100vw;
+            height: 100vh;
+            padding: 3vh 4vw;
+            background: white;
+            position: relative;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        h1 {
+            font-size: 2.8vw;
+            margin-bottom: 2vh;
+            color: #1a1a1a;
+            text-align: center;
+            font-weight: 300;
+            letter-spacing: -0.5px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .framework-container {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2vw;
+            padding: 2vh 0;
+        }
+
+        .framework-step {
+            background: white;
+            border-radius: 15px;
+            padding: 2vh 2vw;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.8s ease-out backwards;
+        }
+
+        .framework-step:nth-child(1) { animation-delay: 0.3s; }
+        .framework-step:nth-child(2) { animation-delay: 0.5s; }
+        .framework-step:nth-child(3) { animation-delay: 0.7s; }
+        .framework-step:nth-child(4) { animation-delay: 0.9s; }
+
+        .framework-step::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #0076a8, #00a74f);
+        }
+
+        .framework-step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .step-number {
+            position: absolute;
+            top: 1.5vh;
+            right: 1.5vw;
+            width: 2.5vw;
+            height: 2.5vw;
+            background: linear-gradient(135deg, #0076a8, #00a74f);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3vw;
+            font-weight: 700;
+            box-shadow: 0 3px 10px rgba(0,118,168,0.3);
+        }
+
+        .step-icon {
+            font-size: 2.5vw;
+            margin-bottom: 1vh;
+            display: inline-block;
+            animation: rotate 20s linear infinite;
+        }
+
+        .step-1 .step-icon { animation-delay: 0s; }
+        .step-2 .step-icon { animation-delay: 5s; }
+        .step-3 .step-icon { animation-delay: 10s; }
+        .step-4 .step-icon { animation-delay: 15s; }
+
+        .step-title {
+            font-size: 1.3vw;
+            font-weight: 700;
+            color: #0076a8;
+            margin-bottom: 0.5vh;
+        }
+
+        .step-subtitle {
+            font-size: 1vw;
+            color: #666;
+            font-style: italic;
+            margin-bottom: 1vh;
+        }
+
+        .step-content {
+            font-size: 0.9vw;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .step-features {
+            list-style: none;
+            padding: 0;
+            margin-top: 1vh;
+        }
+
+        .feature-item {
+            padding: 0.5vh 0;
+            padding-left: 1.5vw;
+            position: relative;
+            font-size: 0.85vw;
+            color: #444;
+            animation: slideInLeft 0.6s ease-out backwards;
+        }
+
+        .step-1 .feature-item:nth-child(1) { animation-delay: 0.4s; }
+        .step-1 .feature-item:nth-child(2) { animation-delay: 0.5s; }
+        .step-1 .feature-item:nth-child(3) { animation-delay: 0.6s; }
+
+        .step-2 .feature-item:nth-child(1) { animation-delay: 0.6s; }
+        .step-2 .feature-item:nth-child(2) { animation-delay: 0.7s; }
+
+        .step-3 .feature-item:nth-child(1) { animation-delay: 0.8s; }
+        .step-3 .feature-item:nth-child(2) { animation-delay: 0.9s; }
+        .step-3 .feature-item:nth-child(3) { animation-delay: 1.0s; }
+
+        .step-4 .feature-item:nth-child(1) { animation-delay: 1.0s; }
+        .step-4 .feature-item:nth-child(2) { animation-delay: 1.1s; }
+
+        .feature-item::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #00a74f;
+            font-weight: 700;
+        }
+
+        .highlight-text {
+            color: #00a74f;
+            font-weight: 600;
+        }
+
+        .tech-badge {
+            display: inline-block;
+            background: rgba(0, 167, 79, 0.1);
+            color: #00a74f;
+            padding: 0.2vh 0.5vw;
+            border-radius: 12px;
+            font-size: 0.8vw;
+            font-weight: 600;
+            margin: 0 0.2vw;
+        }
+
+        .connecting-arrows {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .arrow-path {
+            stroke: rgba(0, 118, 168, 0.2);
+            stroke-width: 2;
+            fill: none;
+            stroke-dasharray: 5, 5;
+            animation: dash 20s linear infinite;
+        }
+
+        @keyframes dash {
+            to {
+                stroke-dashoffset: -100;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="slide active" id="slide23">
+            <h1>The VMG Framework: Where Strategy Meets Velocity</h1>
+            
+            <svg class="connecting-arrows" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <path class="arrow-path" d="M 25 25 Q 50 15, 75 25" />
+                <path class="arrow-path" d="M 75 25 Q 85 50, 75 75" />
+                <path class="arrow-path" d="M 75 75 Q 50 85, 25 75" />
+                <path class="arrow-path" d="M 25 75 Q 15 50, 25 25" />
+            </svg>
+            
+            <div class="framework-container">
+                <div class="framework-step step-1">
+                    <div class="step-number">1</div>
+                    <span class="step-icon">🧭</span>
+                    <div class="step-title">Chart the Course</div>
+                    <div class="step-subtitle">Strategic Alignment</div>
+                    <div class="step-content">
+                        <strong>Ensure AI investments drive measurable progress towards Core Strategy by leveraging:</strong>
+                        <ul class="step-features">
+                            <li class="feature-item">AI-powered research to deliver <span class="highlight-text">industry benchmarks</span></li>
+                            <li class="feature-item">AI-powered <span class="highlight-text">strategic goal mapping</span></li>
+                            <li class="feature-item">Research-validated <span class="highlight-text">strategic alignment</span></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="framework-step step-2">
+                    <div class="step-number">2</div>
+                    <span class="step-icon">⛵</span>
+                    <div class="step-title">Set the Sails</div>
+                    <div class="step-subtitle">Tool Selection & Deployment</div>
+                    <div class="step-content">
+                        <strong>Curate a best-in-class ecosystem of AI tools:</strong>
+                        <ul class="step-features">
+                            <li class="feature-item">Enable <span class="tech-badge">multi-agent orchestration</span> layers for process efficiency</li>
+                            <li class="feature-item">Accelerate business goals with <span class="highlight-text">industry specific</span> and niche AI based solutions</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="framework-step step-3">
+                    <div class="step-number">3</div>
+                    <span class="step-icon">📊</span>
+                    <div class="step-title">Navigate</div>
+                    <div class="step-subtitle">Continuous Measurement</div>
+                    <div class="step-content">
+                        <strong>Leverage real-time VMG dashboards powered by ML and predictive analytics:</strong>
+                        <ul class="step-features">
+                            <li class="feature-item">Continuously track <span class="highlight-text">performance</span></li>
+                            <li class="feature-item">Constant <span class="highlight-text">micro-adjustments</span> based on data insights</li>
+                            <li class="feature-item">Leverage the power of a <span class="tech-badge">Superagency</span> with AI-human collaboration</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="framework-step step-4">
+                    <div class="step-number">4</div>
+                    <span class="step-icon">🎯</span>
+                    <div class="step-title">Course Correct</div>
+                    <div class="step-subtitle">Optimization</div>
+                    <div class="step-content">
+                        <strong>Utilize machine learning algorithms to identify drift from strategic goals:</strong>
+                        <ul class="step-features">
+                            <li class="feature-item">Provide <span class="tech-badge">automated recommendations</span> for realignment</li>
+                            <li class="feature-item">Apply <span class="highlight-text">human expertise</span> for nuanced strategic decisions to ensure AI investments remain firmly on course</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

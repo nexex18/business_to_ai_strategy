@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How VMG Wins: Competitive Strategy & Differentiation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #f5f5f5;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .slide {
+            display: none;
+            width: 100vw;
+            height: 100vh;
+            padding: 3vh 4vw;
+            background: white;
+            position: relative;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        h1 {
+            font-size: 2.8vw;
+            margin-bottom: 1vh;
+            color: #1a1a1a;
+            text-align: center;
+            font-weight: 300;
+            letter-spacing: -0.5px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .content-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2vw;
+            flex: 1;
+            animation: fadeInUp 0.8s ease-out 0.3s both;
+        }
+
+        .section {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5vh;
+        }
+
+        .section-title {
+            color: #0076a8;
+            font-size: 1.4vw;
+            font-weight: 600;
+            margin-bottom: 1vh;
+            padding-bottom: 0.8vh;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .strategy-card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 1.2vh 1.2vw;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+
+        .strategy-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+        }
+
+        .move-counter {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1vw;
+            margin-bottom: 0.8vh;
+        }
+
+        .their-move, .our-counter {
+            padding: 0.8vh 0.8vw;
+            border-radius: 6px;
+            font-size: 0.9vw;
+            line-height: 1.5;
+        }
+
+        .their-move {
+            background: rgba(220, 53, 69, 0.08);
+            border-left: 3px solid #dc3545;
+        }
+
+        .our-counter {
+            background: rgba(40, 167, 69, 0.08);
+            border-left: 3px solid #28a745;
+        }
+
+        .move-label, .counter-label {
+            font-weight: 600;
+            font-size: 0.75vw;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.3vh;
+        }
+
+        .move-label {
+            color: #dc3545;
+        }
+
+        .counter-label {
+            color: #28a745;
+        }
+
+        .advantage-card {
+            background: linear-gradient(135deg, rgba(0, 118, 168, 0.05) 0%, rgba(0, 167, 79, 0.05) 100%);
+            border: 2px solid #0076a8;
+            border-radius: 10px;
+            padding: 1.5vh 1.5vw;
+            margin-bottom: 1.2vh;
+        }
+
+        .competitor-type {
+            color: #0076a8;
+            font-weight: 600;
+            font-size: 1.1vw;
+            margin-bottom: 0.5vh;
+        }
+
+        .advantage-text {
+            font-size: 0.95vw;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .advantage-text strong {
+            color: #00a74f;
+            font-weight: 600;
+        }
+
+        .timeline-section {
+            grid-column: 1 / -1;
+            margin-top: 2vh;
+            animation: fadeInUp 0.8s ease-out 0.5s both;
+        }
+
+        .timeline-header {
+            color: #00a74f;
+            font-size: 1.3vw;
+            font-weight: 600;
+            margin-bottom: 1.5vh;
+            text-align: center;
+        }
+
+        .timeline-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1vw;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 1.5vh 1.5vw;
+        }
+
+        .timeline-phase {
+            padding: 1vh 0.8vw;
+            border-right: 1px solid #e0e0e0;
+            text-align: center;
+        }
+
+        .timeline-phase:last-child {
+            border-right: none;
+        }
+
+        .phase-period {
+            background: linear-gradient(135deg, #0076a8, #00a74f);
+            color: white;
+            padding: 0.5vh 0.8vw;
+            border-radius: 6px;
+            font-size: 0.9vw;
+            font-weight: 600;
+            margin-bottom: 0.8vh;
+        }
+
+        .phase-content {
+            font-size: 0.85vw;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        .footer-note {
+            position: absolute;
+            bottom: 2vh;
+            right: 4vw;
+            font-size: 0.8vw;
+            color: #999;
+            font-style: italic;
+        }
+
+        .strategy-title {
+            font-size: 1vw;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 0.8vh;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="slide active" id="slide15">
+            <h1>How VMG Wins: Competitive Strategy & Differentiation</h1>
+            
+            <div class="content-wrapper">
+                <div class="section">
+                    <div class="section-title">Their Next Moves & Our Counter-Strategy</div>
+                    
+                    <div class="strategy-card">
+                        <div class="strategy-title">They'll Copy Our Messaging</div>
+                        <div class="move-counter">
+                            <div class="their-move">
+                                <div class="move-label">Their Move</div>
+                                Adopt "strategic alignment" language
+                            </div>
+                            <div class="our-counter">
+                                <div class="counter-label">Our Counter</div>
+                                Own it with proprietary VMG metrics & certified methodology
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="strategy-card">
+                        <div class="strategy-title">They'll Undercut on Price</div>
+                        <div class="move-counter">
+                            <div class="their-move">
+                                <div class="move-label">Their Move</div>
+                                Race to bottom with $1-3K offerings
+                            </div>
+                            <div class="our-counter">
+                                <div class="counter-label">Our Counter</div>
+                                Emphasize ROI: 70% efficiency = better value, not cheaper price
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="strategy-card">
+                        <div class="strategy-title">They'll Partner with Platforms</div>
+                        <div class="move-counter">
+                            <div class="their-move">
+                                <div class="move-label">Their Move</div>
+                                White-label DataRobot/Scale AI
+                            </div>
+                            <div class="our-counter">
+                                <div class="counter-label">Our Counter</div>
+                                Platform-agnostic with best-in-class tool curation
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="strategy-card">
+                        <div class="strategy-title">They'll Niche Down</div>
+                        <div class="move-counter">
+                            <div class="their-move">
+                                <div class="move-label">Their Move</div>
+                                Own specific verticals deeply
+                            </div>
+                            <div class="our-counter">
+                                <div class="counter-label">Our Counter</div>
+                                VMG framework applies universally + vertical accelerators
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">Our Sustainable Competitive Advantages</div>
+                    
+                    <div class="advantage-card">
+                        <div class="competitor-type">vs. Boutique Consultancies</div>
+                        <div class="advantage-text">
+                            We deliver <strong>70% cost efficiency through AI-powered operations</strong> while they rely on traditional consulting models. Our VMG framework provides measurable progress metrics they can't match.
+                        </div>
+                    </div>
+
+                    <div class="advantage-card">
+                        <div class="competitor-type">vs. Platform Players</div>
+                        <div class="advantage-text">
+                            We provide <strong>human expertise + strategic alignment</strong> while they offer tools without guidance. 67% of AI projects fail without proper alignment - platforms can't solve this.
+                        </div>
+                    </div>
+
+                    <div class="advantage-card">
+                        <div class="competitor-type">vs. Future Big 4 SMB Plays</div>
+                        <div class="advantage-text">
+                            We're <strong>built ground-up for SMBs</strong> with 90-day cycles and $5-25K engagements. They can't match our economics without cannibalizing their enterprise business.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-section">
+                    <div class="timeline-header">Go-to-Market Advantage Timeline</div>
+                    <div class="timeline-grid">
+                        <div class="timeline-phase">
+                            <div class="phase-period">Months 1-6</div>
+                            <div class="phase-content">Establish VMG framework as category standard</div>
+                        </div>
+                        <div class="timeline-phase">
+                            <div class="phase-period">Months 7-12</div>
+                            <div class="phase-content">10 published case studies proving ROI</div>
+                        </div>
+                        <div class="timeline-phase">
+                            <div class="phase-period">Months 13-18</div>
+                            <div class="phase-content">Scale to 100+ clients before competition adapts</div>
+                        </div>
+                        <div class="timeline-phase">
+                            <div class="phase-period">Months 19-24</div>
+                            <div class="phase-content">Market leader in SMB AI strategic alignment</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-note">First-mover advantage in combining strategy + measurement + AI efficiency</div>
+        </div>
+    </div>
+</body>
+</html>

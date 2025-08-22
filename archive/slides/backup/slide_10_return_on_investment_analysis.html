@@ -1,0 +1,37 @@
+<div class="slide slide-10" id="slide10">
+<h1>Return on Investment Analysis</h1>
+<div class="subtitle">5-year NPV projection with adjustable discount rate</div>
+<div class="discount-rate-input">
+<label for="discountRate">Discount Rate (%):</label>
+<input id="discountRate" step="0.1" type="number" value="10"/>
+<button onclick="updateAnalysis()">Update Analysis</button>
+</div>
+<div class="metrics-section">
+<div class="left-panel">
+<div class="metric-group">
+<div class="metric-title">Net present value</div>
+<div class="metric-formula">NPV = Σ (Cash Flow₍ₜ₎ / (1 + r)ᵗ) - Initial Cost</div>
+</div>
+<div class="metric-group">
+<div class="metric-title">Initial Investment</div>
+<div class="metric-value">-$110,000</div>
+<div class="metric-details">3-month development</div>
+</div>
+<div class="metric-group">
+<div class="metric-title">Year 1</div>
+<div class="metric-value" id="year1-cashflow">Loading...</div>
+</div>
+<div class="metric-group">
+<div class="metric-title">Years 2-5</div>
+<div class="metric-details" id="years2-5-details">Loading...</div>
+</div>
+<div class="metric-group">
+<div class="metric-title" style="color: #2e7d32; font-size: 20px;">NPV over 5 years</div>
+<div class="metric-value positive" id="total-npv">Loading...</div>
+</div>
+</div>
+<div class="chart-container">
+<canvas id="npvChart"></canvas>
+</div>
+</div>
+</div>

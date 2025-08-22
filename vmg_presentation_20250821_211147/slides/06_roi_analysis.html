@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Return on Investment Analysis</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+<style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #f5f5f5;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .slide {
+            display: none;
+            width: 100vw;
+            height: 100vh;
+            padding: 3vh 4vw;
+            background: white;
+            position: relative;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        h1 {
+            font-size: 3vw;
+            margin-bottom: 1.5vh;
+            color: #1a1a1a;
+            text-align: center;
+            font-weight: 300;
+            letter-spacing: -0.5px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.2vw;
+            margin-bottom: 2vh;
+            font-weight: 400;
+            animation: fadeInDown 0.8s ease-out 0.2s both;
+        }
+
+        .discount-rate-input {
+            margin-bottom: 20px;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            display: inline-block;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .discount-rate-input label {
+            font-weight: 600;
+            margin-right: 10px;
+        }
+
+        .discount-rate-input input {
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 80px;
+        }
+
+        .discount-rate-input button {
+            margin-left: 10px;
+            padding: 6px 15px;
+            background: linear-gradient(135deg, #0076a8 0%, #00a74f 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .discount-rate-input button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 118, 168, 0.3);
+        }
+
+        .metrics-section {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2vw;
+            margin-bottom: 2vh;
+            height: 60vh;
+            animation: fadeInUp 0.8s ease-out 0.6s both;
+        }
+
+        .left-panel {
+            background: white;
+            border: 2px solid #e0e0e0;
+            padding: 20px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .left-panel:hover {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .metric-group {
+            margin-bottom: 25px;
+        }
+
+        .metric-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .metric-formula {
+            font-style: italic;
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .metric-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #d32f2f;
+            margin-bottom: 5px;
+        }
+
+        .metric-value.positive {
+            color: #2e7d32;
+        }
+
+        .metric-details {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 50vh;
+            background: white;
+            padding: 1.5vw;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .chart-container:hover {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+
+<style>
+        .slide-navigation {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            z-index: 1000;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .nav-prev, .nav-next {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background 0.3s;
+            font-weight: 600;
+            font-size: 16px;
+        }
+        
+        .nav-prev:hover, .nav-next:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+        
+        .nav-center {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+        
+        .nav-home {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        .nav-home:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .nav-counter {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+        }
+        
+        /* Adjust slide container to account for navigation */
+        .presentation-container, .slide {
+            padding-bottom: 80px !important;
+        }
+    </style>
+</head>
+<body>
+<div class="presentation-container">
+<div class="slide active" id="slide10">
+<h1>Return on Investment Analysis</h1>
+<div class="subtitle">5-year NPV projection with adjustable discount rate</div>
+<div class="discount-rate-input">
+<label for="discountRate">Discount Rate (%):</label>
+<input id="discountRate" step="0.1" type="number" value="10"/>
+<button onclick="updateAnalysis()">Update Analysis</button>
+</div>
+<div class="metrics-section">
+<div class="left-panel">
+<div class="metric-group">
+<div class="metric-title">Net present value</div>
+<div class="metric-formula">NPV = Σ (Cash Flow₍ₜ₎ / (1 + r)ᵗ) - Initial Cost</div>
+</div>
+<div class="metric-group">
+<div class="metric-title">Initial Investment</div>
+<div class="metric-value">-$110,000</div>
+<div class="metric-details">3-month development</div>
+</div>
+<div class="metric-group">
+<div class="metric-title">Year 1</div>
+<div class="metric-value" id="year1-cashflow">$6,730</div>
+</div>
+<div class="metric-group">
+<div class="metric-title">Years 2-5</div>
+<div class="metric-details" id="years2-5-details">Net benefit = $474,525<br/>Average annual = $118,631</div>
+</div>
+<div class="metric-group">
+<div class="metric-title" style="color: #2e7d32; font-size: 20px;">NPV over 5 years</div>
+<div class="metric-value positive" id="total-npv">$231,583</div>
+</div>
+</div>
+<div class="chart-container">
+<canvas id="npvChart"></canvas>
+</div>
+</div>
+</div>
+</div>
+<script>
+        let chartInstance = null;
+
+        function calculateCashFlows() {
+            const monthlyPlatformFee = 1000;
+            const operatingCost = 2440;
+            const initialInvestment = 110400;
+            
+            // Customer growth: Y1=4, Y2=8, Y3=12, Y4=16, Y5=20
+            const customerSchedule = [
+                0, 0, 0, // First 3 months (development)
+                1, 1, 2, 2, 3, 3, 4, 4, 4, // Y1 ramp up to 4 customers
+                5, 5, 6, 6, 7, 7, 8, 8, 8, 8, 8, 8, // Y2 to 8 customers
+                9, 9, 10, 10, 11, 11, 12, 12, 12, 12, 12, 12, // Y3 to 12 customers
+                13, 13, 14, 14, 15, 15, 16, 16, 16, 16, 16, 16, // Y4 to 16 customers
+                17, 17, 18, 18, 19, 19, 20, 20, 20, 20, 20, 20  // Y5 to 20 customers
+            ];
+            
+            const cashFlows = [];
+            
+            // Month 0: Initial investment
+            cashFlows.push({
+                month: 0,
+                revenue: 0,
+                cost: initialInvestment,
+                netCashFlow: -initialInvestment,
+                customers: 0
+            });
+            
+            // Months 1-60
+            for (let month = 1; month <= 60; month++) {
+                const customers = month <= customerSchedule.length ? customerSchedule[month - 1] : 20;
+                const revenue = customers * monthlyPlatformFee;
+                const cost = operatingCost;
+                
+                cashFlows.push({
+                    month: month,
+                    revenue: revenue,
+                    cost: cost,
+                    netCashFlow: revenue - cost,
+                    customers: customers
+                });
+            }
+            
+            return cashFlows;
+        }
+
+        function calculateNPV(cashFlows, discountRate) {
+            const monthlyRate = discountRate / 100 / 12;
+            let npv = 0;
+            let cumulativeNPV = [];
+            
+            cashFlows.forEach((cf, index) => {
+                const discountedCashFlow = cf.netCashFlow / Math.pow(1 + monthlyRate, index);
+                npv += discountedCashFlow;
+                cumulativeNPV.push(npv);
+            });
+            
+            return { npv, cumulativeNPV };
+        }
+
+        function updateAnalysis() {
+            const discountRate = parseFloat(document.getElementById('discountRate').value) || 10;
+            const cashFlows = calculateCashFlows();
+            const { npv, cumulativeNPV } = calculateNPV(cashFlows, discountRate);
+            
+            // Calculate yearly summaries
+            const yearlyData = [];
+            
+            // Year 0
+            yearlyData.push({
+                year: 0,
+                cashFlow: cashFlows[0].netCashFlow,
+                cumulativeNPV: cumulativeNPV[0]
+            });
+            
+            // Years 1-5
+            for (let year = 1; year <= 5; year++) {
+                const startMonth = (year - 1) * 12 + 1;
+                const endMonth = year * 12;
+                let yearCashFlow = 0;
+                
+                for (let m = startMonth; m <= endMonth && m < cashFlows.length; m++) {
+                    yearCashFlow += cashFlows[m].netCashFlow;
+                }
+                
+                yearlyData.push({
+                    year: year,
+                    cashFlow: yearCashFlow,
+                    cumulativeNPV: cumulativeNPV[endMonth] || cumulativeNPV[cumulativeNPV.length - 1]
+                });
+            }
+            
+            // Update display values with original formatting
+            document.getElementById('year1-cashflow').textContent = 
+                '$' + yearlyData[1].cashFlow.toLocaleString();
+            
+            const totalBenefit = yearlyData[2].cashFlow + yearlyData[3].cashFlow + 
+                               yearlyData[4].cashFlow + yearlyData[5].cashFlow;
+            const avgAnnual = totalBenefit / 4;
+            
+            document.getElementById('years2-5-details').innerHTML = 
+                `Net benefit = $${totalBenefit.toLocaleString()}<br>Average annual = $${Math.round(avgAnnual).toLocaleString()}`;
+            
+            const npvElement = document.getElementById('total-npv');
+            npvElement.textContent = '$' + Math.round(npv).toLocaleString();
+            npvElement.className = npv > 0 ? 'metric-value positive' : 'metric-value';
+            
+            // Update chart
+            updateChart(yearlyData);
+        }
+
+        function updateChart(yearlyData) {
+            const ctx = document.getElementById('npvChart').getContext('2d');
+            
+            // Destroy existing chart if it exists
+            if (chartInstance) {
+                chartInstance.destroy();
+            }
+            
+            chartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Year 0', 'Year 1', 'Year 2', 'Year 3', 'Year 4', 'Year 5'],
+                    datasets: [
+                        {
+                            label: 'Annual Cash Flow',
+                            data: yearlyData.map(d => d.cashFlow),
+                            backgroundColor: yearlyData.map(d => 
+                                d.cashFlow < 0 ? '#dc3545' : '#28a745'
+                            ),
+                            borderWidth: 0,
+                            barThickness: 40,
+                            order: 2
+                        },
+                        {
+                            label: 'Cumulative NPV',
+                            data: yearlyData.map(d => d.cumulativeNPV),
+                            type: 'line',
+                            borderColor: '#667eea',
+                            backgroundColor: 'transparent',
+                            borderWidth: 2,
+                            tension: 0.1,
+                            order: 1,
+                            pointRadius: 4,
+                            pointBackgroundColor: '#667eea',
+                            pointBorderColor: '#667eea',
+                            pointBorderWidth: 0
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                font: { 
+                                    size: 12,
+                                    family: "'Segoe UI', 'Arial', sans-serif"
+                                },
+                                padding: 10,
+                                usePointStyle: true,
+                                pointStyle: 'circle',
+                                boxWidth: 15,
+                                boxHeight: 15
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                            padding: 10,
+                            cornerRadius: 4,
+                            titleFont: { 
+                                size: 12,
+                                weight: 'normal'
+                            },
+                            bodyFont: { 
+                                size: 12 
+                            },
+                            displayColors: true,
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.dataset.label || '';
+                                    const value = '$' + Math.round(context.parsed.y).toLocaleString();
+                                    return label + ': ' + value;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.08)',
+                                drawBorder: false
+                            },
+                            ticks: {
+                                font: { 
+                                    size: 11,
+                                    family: "'Segoe UI', 'Arial', sans-serif"
+                                },
+                                color: '#666',
+                                padding: 5,
+                                callback: function(value) {
+                                    if (value === 0) return '$0';
+                                    return '$' + (value / 1000) + 'K';
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false,
+                                drawBorder: false
+                            },
+                            ticks: {
+                                font: { 
+                                    size: 11,
+                                    family: "'Segoe UI', 'Arial', sans-serif"
+                                },
+                                color: '#666',
+                                padding: 5
+                            }
+                        }
+                    },
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    },
+                    elements: {
+                        bar: {
+                            borderRadius: 2
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Initializing ROI Analysis slide...');
+            setTimeout(() => {
+                updateAnalysis();
+            }, 100);
+        });
+    </script>
+
+<nav class="slide-navigation">
+<a class="nav-prev" href="05_customer_growth.html">← Previous</a>
+<div class="nav-center">
+<a class="nav-home" href="../index.html">☰ Contents</a>
+<span class="nav-counter">Slide 6 of 9</span>
+</div>
+<a class="nav-next" href="07_timeline.html">Next →</a>
+</nav>
+
+<script>
+        document.addEventListener('keydown', function(e) {
+            switch(e.key) {
+                case 'ArrowLeft':
+                    const prevLink = document.querySelector('.nav-prev:not(.nav-disabled)');
+                    if (prevLink) prevLink.click();
+                    break;
+                case 'ArrowRight':
+                case ' ':
+                    e.preventDefault();
+                    const nextLink = document.querySelector('.nav-next:not(.nav-disabled)');
+                    if (nextLink) nextLink.click();
+                    break;
+                case 'Home':
+                    e.preventDefault();
+                    document.querySelector('.nav-home').click();
+                    break;
+                case 'f':
+                case 'F':
+                    if (document.fullscreenElement) {
+                        document.exitFullscreen();
+                    } else {
+                        document.documentElement.requestFullscreen();
+                    }
+                    break;
+            }
+        });
+    </script>
+</body>
+</html>
