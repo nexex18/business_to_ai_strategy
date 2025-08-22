@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VMG Presentation - Fullscreen Presenter</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #000;
+            overflow: hidden;
+        }
+        
+        /* Main container */
+        .presenter-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            background: #000;
+        }
+        
+        /* Presentation iframe */
+        #presentationFrame {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: white;
+        }
+        
+        /* Loading overlay */
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .loading-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid #0076a8;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Control panel - removed to not interfere with slide navigation */
+        .control-panel {
+            display: none;
+        }
+        
+        .control-btn {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+        
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .slide-counter {
+            color: white;
+            font-size: 14px;
+            padding: 0 20px;
+        }
+        
+        /* Initial welcome screen - now hidden by default */
+        .welcome-screen {
+            display: none; /* Skip welcome screen */
+        }
+        
+        .welcome-content {
+            text-align: center;
+            max-width: 600px;
+            padding: 40px;
+        }
+        
+        .welcome-content h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+        
+        .welcome-content p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .start-btn {
+            background: white;
+            color: #667eea;
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .start-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .keyboard-hint {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Welcome Screen -->
+    <div class="welcome-screen" id="welcomeScreen">
+        <div class="welcome-content">
+            <h1>VMG Strategic Initiative</h1>
+            <p>AI-Enabled Consulting Platform</p>
+            <button class="start-btn" onclick="startPresentation()">
+                Start Fullscreen Presentation
+            </button>
+        </div>
+        <div class="keyboard-hint">
+            Press F at any time to toggle fullscreen • Use arrow keys to navigate
+        </div>
+    </div>
+    
+    <!-- Main Presenter Container -->
+    <div class="presenter-container">
+        <!-- Loading Overlay -->
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="loading-spinner"></div>
+        </div>
+        
+        <!-- Presentation iframe -->
+        <iframe id="presentationFrame"></iframe>
+        
+        <!-- Control Panel (appears on hover) -->
+        <div class="control-panel">
+            <button class="control-btn" onclick="goHome()">⌂ Home</button>
+            <button class="control-btn" onclick="previousSlide()">← Previous</button>
+            <span class="slide-counter" id="slideCounter">Slide 1 of 24</span>
+            <button class="control-btn" onclick="nextSlide()">Next →</button>
+            <button class="control-btn" onclick="toggleFullscreen()">🔳 Fullscreen</button>
+        </div>
+    </div>
+    
+    <script>
+        // Configuration
+        const TOTAL_SLIDES = 25; // Including TOC
+        const BASE_PATH = ''; // Empty since this file will be copied into the presentation directory
+        
+        // Slide mapping (including TOC as first slide)
+        const slides = [
+            {num: '00', name: 'index', title: 'Table of Contents', path: 'index.html'},
+            {num: '01', name: 'title', title: 'VMG AI-Enabled Consulting Platform', path: 'slides/01_title.html'},
+            {num: '02', name: 'agenda', title: 'Agenda', path: 'slides/02_agenda.html'},
+            {num: '03', name: 'executive_summary', title: 'Executive Summary', path: 'slides/03_executive_summary.html'},
+            {num: '04', name: 'evolution_combined', title: 'Evolution of Consulting', path: 'slides/04_evolution_combined.html'},
+            {num: '05', name: 'competitive_landscape', title: 'Competitive Landscape', path: 'slides/05_competitive_landscape.html'},
+            {num: '06', name: 'vmg_built_for_ai', title: 'VMG Built for AI', path: 'slides/06_vmg_built_for_ai.html'},
+            {num: '07', name: 'porters_five_forces', title: "Porter's Five Forces", path: 'slides/07_porters_five_forces.html'},
+            {num: '08', name: 'smb_ai_dilemma', title: 'The SMB AI Dilemma', path: 'slides/08_smb_ai_dilemma.html'},
+            {num: '09', name: 'market_opportunity', title: 'Market Opportunity', path: 'slides/09_market_opportunity.html'},
+            {num: '10', name: 'core_strategies', title: 'Core Business Strategies', path: 'slides/10_core_strategies.html'},
+            {num: '11', name: 'extended_positioning', title: 'Extended Positioning', path: 'slides/11_extended_positioning.html'},
+            {num: '12', name: 'three_moats', title: 'Three Strategic Moats', path: 'slides/12_three_moats.html'},
+            {num: '13', name: 'ai_maturity_framework', title: 'AI Maturity Framework', path: 'slides/13_ai_maturity_framework.html'},
+            {num: '14', name: 'maturity_assessment_graph', title: 'Maturity Assessment', path: 'slides/14_maturity_assessment_graph.html'},
+            {num: '15', name: 'initiatives_with_pillars', title: 'AI Initiatives', path: 'slides/15_initiatives_with_pillars.html'},
+            {num: '16', name: 'strategic_prioritization', title: 'Strategic Prioritization', path: 'slides/16_strategic_prioritization.html'},
+            {num: '17', name: 'intelligent_content_generation', title: 'Content Generation', path: 'slides/17_intelligent_content_generation.html'},
+            {num: '18', name: 'financial_overview', title: 'Financial Overview', path: 'slides/18_financial_overview.html'},
+            {num: '19', name: 'cost_benefit_analysis', title: 'Cost-Benefit Analysis', path: 'slides/19_cost_benefit_analysis.html'},
+            {num: '20', name: 'roi_analysis', title: 'ROI Analysis', path: 'slides/20_roi_analysis.html'},
+            {num: '21', name: 'key_investment_metrics', title: 'Investment Metrics', path: 'slides/21_key_investment_metrics.html'},
+            {num: '22', name: 'development_timeline', title: 'Development Timeline', path: 'slides/22_development_timeline.html'},
+            {num: '23', name: 'risk_assessment', title: 'Risk Assessment', path: 'slides/23_risk_assessment.html'},
+            {num: '24', name: 'conclusion', title: 'Velocity Made Good', path: 'slides/24_conclusion.html'}
+        ];
+        
+        // State
+        let currentSlideIndex = 0;
+        let isFullscreen = false;
+        const iframe = document.getElementById('presentationFrame');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const slideCounter = document.getElementById('slideCounter');
+        const welcomeScreen = document.getElementById('welcomeScreen');
+        
+        // Start presentation
+        function startPresentation() {
+            welcomeScreen.classList.add('hidden');
+            loadSlide(1); // Start at slide 1 (title), not TOC
+            enterFullscreen();
+        }
+        
+        // Load a specific slide
+        function loadSlide(index) {
+            if (index < 0 || index >= slides.length) return;
+            
+            currentSlideIndex = index;
+            const slide = slides[index];
+            const url = slide.path ? `${BASE_PATH}${slide.path}` : `${BASE_PATH}slides/${slide.num}_${slide.name}.html`;
+            
+            // Show loading overlay
+            loadingOverlay.classList.add('active');
+            
+            // Update counter (don't count TOC in numbering)
+            if (index === 0) {
+                slideCounter.textContent = 'Table of Contents';
+            } else {
+                slideCounter.textContent = `Slide ${index} of ${TOTAL_SLIDES - 1}`;
+            }
+            
+            // Update iframe source
+            iframe.src = url;
+            
+            // Update URL hash for bookmarking
+            window.location.hash = `slide-${index + 1}`;
+            
+            // Hide loading overlay after iframe loads
+            iframe.onload = () => {
+                setTimeout(() => {
+                    loadingOverlay.classList.remove('active');
+                    // Forward focus to iframe for keyboard events
+                    iframe.contentWindow.focus();
+                    
+                    // Intercept navigation clicks in the slide
+                    try {
+                        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                        
+                        // Find and override Previous/Next buttons
+                        const prevLink = iframeDoc.querySelector('.nav-prev:not(.nav-disabled)');
+                        const nextLink = iframeDoc.querySelector('.nav-next:not(.nav-disabled)');
+                        
+                        if (prevLink && prevLink.href) {
+                            prevLink.onclick = (e) => {
+                                e.preventDefault();
+                                previousSlide();
+                            };
+                        }
+                        
+                        if (nextLink && nextLink.href) {
+                            nextLink.onclick = (e) => {
+                                e.preventDefault();
+                                nextSlide();
+                            };
+                        }
+                        
+                        // Handle TOC button
+                        const tocButton = iframeDoc.querySelector('.breadcrumb-item.toc-item');
+                        if (tocButton) {
+                            tocButton.onclick = (e) => {
+                                e.preventDefault();
+                                loadSlide(0); // Go to TOC
+                            };
+                        }
+                        
+                        // Handle Start Presentation buttons in TOC
+                        const startButtons = iframeDoc.querySelectorAll('.start-button');
+                        startButtons.forEach(button => {
+                            // Only override the first button (Start Presentation)
+                            // The second button (Fullscreen Mode) should not be overridden
+                            if (button.textContent.includes('Start Presentation')) {
+                                button.onclick = (e) => {
+                                    e.preventDefault();
+                                    loadSlide(1); // Go to first slide
+                                };
+                            }
+                        });
+                        
+                        // Handle keyboard events in iframe
+                        iframeDoc.addEventListener('keydown', (e) => {
+                            switch(e.key) {
+                                case 'ArrowRight':
+                                case ' ':
+                                    e.preventDefault();
+                                    nextSlide();
+                                    break;
+                                case 'ArrowLeft':
+                                    e.preventDefault();
+                                    previousSlide();
+                                    break;
+                                case 'Home':
+                                    e.preventDefault();
+                                    loadSlide(0);
+                                    break;
+                                case 'f':
+                                case 'F':
+                                    e.preventDefault();
+                                    toggleFullscreen();
+                                    break;
+                            }
+                        });
+                    } catch (e) {
+                        // Cross-origin restrictions may prevent this
+                        console.log('Could not intercept iframe navigation');
+                    }
+                }, 300);
+            };
+        }
+        
+        // Navigation functions
+        function nextSlide() {
+            if (currentSlideIndex < slides.length - 1) {
+                loadSlide(currentSlideIndex + 1);
+            }
+        }
+        
+        function previousSlide() {
+            if (currentSlideIndex > 0) {
+                loadSlide(currentSlideIndex - 1);
+            }
+        }
+        
+        function goHome() {
+            loadSlide(0);
+        }
+        
+        function goToSlide(num) {
+            const index = num - 1;
+            if (index >= 0 && index < slides.length) {
+                loadSlide(index);
+            }
+        }
+        
+        // Fullscreen management
+        function enterFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().then(() => {
+                    isFullscreen = true;
+                }).catch(err => {
+                    console.log('Error entering fullscreen:', err);
+                });
+            }
+        }
+        
+        function exitFullscreen() {
+            if (document.fullscreenElement) {
+                document.exitFullscreen().then(() => {
+                    isFullscreen = false;
+                });
+            }
+        }
+        
+        function toggleFullscreen() {
+            if (document.fullscreenElement) {
+                exitFullscreen();
+            } else {
+                enterFullscreen();
+            }
+        }
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            // Don't interfere if welcome screen is visible
+            if (!welcomeScreen.classList.contains('hidden')) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    startPresentation();
+                }
+                return;
+            }
+            
+            switch(e.key) {
+                case 'ArrowRight':
+                case ' ':
+                    e.preventDefault();
+                    nextSlide();
+                    break;
+                case 'ArrowLeft':
+                    e.preventDefault();
+                    previousSlide();
+                    break;
+                case 'Home':
+                    e.preventDefault();
+                    goHome();
+                    break;
+                case 'End':
+                    e.preventDefault();
+                    loadSlide(slides.length - 1);
+                    break;
+                case 'f':
+                case 'F':
+                    e.preventDefault();
+                    toggleFullscreen();
+                    break;
+                case 'Escape':
+                    // Let escape work naturally for fullscreen
+                    break;
+                default:
+                    // Number keys for direct navigation
+                    const num = parseInt(e.key);
+                    if (!isNaN(num) && num >= 1 && num <= 9) {
+                        goToSlide(num);
+                    }
+            }
+        });
+        
+        // Handle iframe keyboard events
+        window.addEventListener('message', (e) => {
+            // Listen for navigation messages from slides if implemented
+            if (e.data.action === 'next') nextSlide();
+            if (e.data.action === 'previous') previousSlide();
+        });
+        
+        // Handle hash changes (browser back/forward)
+        window.addEventListener('hashchange', () => {
+            const hash = window.location.hash;
+            const match = hash.match(/slide-(\d+)/);
+            if (match) {
+                const slideNum = parseInt(match[1]);
+                if (slideNum > 0 && slideNum <= slides.length) {
+                    loadSlide(slideNum - 1);
+                }
+            }
+        });
+        
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', () => {
+            // Hide welcome screen (it's already hidden via CSS)
+            if (welcomeScreen) {
+                welcomeScreen.style.display = 'none';
+            }
+            
+            // Small delay to ensure everything is ready
+            setTimeout(() => {
+                // Check for hash or start at TOC
+                const hash = window.location.hash;
+                const match = hash.match(/slide-(\d+)/);
+                if (match) {
+                    const slideNum = parseInt(match[1]);
+                    if (slideNum > 0 && slideNum <= slides.length) {
+                        loadSlide(slideNum - 1);
+                    }
+                } else {
+                    // Start at TOC
+                    loadSlide(0);
+                }
+                
+                // Show fullscreen prompt after a short delay
+                setTimeout(() => {
+                    if (!document.fullscreenElement) {
+                        showFullscreenPrompt();
+                    }
+                }, 500);
+            }, 100);
+        });
+        
+        // Show fullscreen prompt
+        function showFullscreenPrompt() {
+            const prompt = document.createElement('div');
+            prompt.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: rgba(0, 118, 168, 0.95);
+                color: white;
+                padding: 15px 30px;
+                border-radius: 30px;
+                font-size: 16px;
+                z-index: 10000;
+                cursor: pointer;
+                transition: all 0.3s;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            `;
+            prompt.innerHTML = '🔳 Click here or press F for fullscreen presentation';
+            prompt.onclick = () => {
+                enterFullscreen();
+                prompt.remove();
+            };
+            document.body.appendChild(prompt);
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                if (prompt.parentNode) {
+                    prompt.style.opacity = '0';
+                    setTimeout(() => prompt.remove(), 300);
+                }
+            }, 5000);
+        }
+        
+        // Fullscreen change handler
+        document.addEventListener('fullscreenchange', () => {
+            isFullscreen = !!document.fullscreenElement;
+        });
+    </script>
+</body>
+</html>

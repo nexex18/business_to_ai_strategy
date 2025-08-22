@@ -573,11 +573,15 @@ def create_index_page(output_dir):
                 
                 <div class="button-container">
                     <a href="{start_link}" class="start-button">Start Presentation →</a>
+                    <a href="presenter.html" class="start-button" style="background: linear-gradient(135deg, #00a74f 0%, #0076a8 100%); margin-left: 20px;">
+                        🔳 Fullscreen Mode
+                    </a>
                 </div>
                 
                 <div class="keyboard-hint">
                     <strong>Keyboard Shortcuts:</strong> Use arrow keys to navigate between slides, 
-                    Home key to return here, F for fullscreen, and Space for next slide.
+                    Home key to return here, F for fullscreen, and Space for next slide.<br>
+                    <strong>Tip:</strong> Use "Fullscreen Mode" button for seamless presentation without losing fullscreen between slides.
                 </div>
             </div>
         </div>
@@ -632,6 +636,12 @@ def main():
     if image_path.exists():
         shutil.copy(image_path, slides_dir / "image.png")
         print("  ✅ Copied: image.png")
+    
+    # Copy presenter.html if it exists
+    presenter_path = Path("presenter.html")
+    if presenter_path.exists():
+        shutil.copy(presenter_path, output_dir / "presenter.html")
+        print("  ✅ Copied: presenter.html (fullscreen mode)")
     
     print("\n✨ Presentation built successfully!")
     print(f"   Version: {timestamp}")
