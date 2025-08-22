@@ -1,0 +1,24 @@
+# Temporary and development files
+slides/backup/
+slides_review/
+slides_complete/
+*.pyc
+__pycache__/
+.DS_Store
+
+# Original/source files we don't need in repo
+Submitted_Assignment_4.html
+extract_*.py
+interactive_extract.py
+presentation.html
+slides_manifest.json
+
+# Old extraction attempts
+slides/
+scripts/extracted_scripts.js
+styles/extracted_styles.css
+styles/presentation.css
+templates/
+
+# Keep only the final presentation
+# vmg_presentation/ is what we want to keep
