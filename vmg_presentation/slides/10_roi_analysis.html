@@ -155,7 +155,6 @@
             max-height: 100%;
         }
     </style>
-
 <style>
         .slide-navigation {
             position: fixed;
@@ -479,43 +478,106 @@
             }, 100);
         });
     </script>
-
 <nav class="slide-navigation">
-<a class="nav-prev" href="09_customer_growth.html">← Previous</a>
+<a class="nav-prev" href="09_customer_growth.html" onclick="saveFullscreenState(); return true;">← Previous</a>
 <div class="nav-center">
-<a class="nav-home" href="../index.html">☰ Contents</a>
+<a class="nav-home" href="../index.html" onclick="saveFullscreenState(); return true;">☰ Contents</a>
 <span class="nav-counter">Slide 10 of 13</span>
 </div>
-<a class="nav-next" href="11_timeline.html">Next →</a>
+<a class="nav-next" href="11_timeline.html" onclick="saveFullscreenState(); return true;">Next →</a>
 </nav>
-
 <script>
+    
+        // Save fullscreen state before navigation
+        function saveFullscreenState() {
+            if (document.fullscreenElement) {
+                sessionStorage.setItem('wasFullscreen', 'true');
+            } else {
+                sessionStorage.removeItem('wasFullscreen');
+            }
+        }
+        
+        // Restore fullscreen state on page load
+        function restoreFullscreenState() {
+            if (sessionStorage.getItem('wasFullscreen') === 'true') {
+                // Small delay to ensure page is fully loaded
+                setTimeout(() => {
+                    document.documentElement.requestFullscreen().then(() => {
+                        console.log('Fullscreen restored');
+                        // Clear the flag after successful restore
+                        // Keep it for continuous navigation
+                        // sessionStorage.removeItem('wasFullscreen');
+                    }).catch(err => {
+                        console.log('Could not restore fullscreen:', err);
+                        // Clear on error to prevent repeated attempts
+                        sessionStorage.removeItem('wasFullscreen');
+                    });
+                }, 100);
+            }
+        }
+        
+        // Enhanced keyboard navigation with state saving
         document.addEventListener('keydown', function(e) {
             switch(e.key) {
                 case 'ArrowLeft':
                     const prevLink = document.querySelector('.nav-prev:not(.nav-disabled)');
-                    if (prevLink) prevLink.click();
+                    if (prevLink) {
+                        saveFullscreenState();
+                        prevLink.click();
+                    }
                     break;
                 case 'ArrowRight':
                 case ' ':
                     e.preventDefault();
                     const nextLink = document.querySelector('.nav-next:not(.nav-disabled)');
-                    if (nextLink) nextLink.click();
+                    if (nextLink) {
+                        saveFullscreenState();
+                        nextLink.click();
+                    }
                     break;
                 case 'Home':
                     e.preventDefault();
-                    document.querySelector('.nav-home').click();
+                    const homeLink = document.querySelector('.nav-home');
+                    if (homeLink) {
+                        saveFullscreenState();
+                        homeLink.click();
+                    }
                     break;
                 case 'f':
                 case 'F':
                     if (document.fullscreenElement) {
                         document.exitFullscreen();
+                        sessionStorage.removeItem('wasFullscreen');
                     } else {
                         document.documentElement.requestFullscreen();
+                        sessionStorage.setItem('wasFullscreen', 'true');
                     }
+                    break;
+                case 'Escape':
+                    // Clear fullscreen state when user explicitly exits
+                    sessionStorage.removeItem('wasFullscreen');
                     break;
             }
         });
+        
+        // Listen for fullscreen changes
+        document.addEventListener('fullscreenchange', function() {
+            if (!document.fullscreenElement) {
+                // User exited fullscreen
+                sessionStorage.removeItem('wasFullscreen');
+            }
+        });
+        
+        // Restore fullscreen on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            restoreFullscreenState();
+        });
+        
+        // Also try to restore immediately in case DOM is already loaded
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            restoreFullscreenState();
+        }
+    
     </script>
 </body>
 </html>

@@ -39,123 +39,150 @@
         }
         
         h1 {
-            font-size: 2.5vw;
+            font-size: 3vw;
             margin-bottom: 1vh;
             color: #1a1a1a;
+            text-align: center;
+            font-weight: 300;
+            letter-spacing: -0.5px;
+            animation: fadeInDown 0.8s ease-out;
         }
         
         .subtitle {
-            font-size: 1.2vw;
+            text-align: center;
             color: #666;
+            font-size: 1.2vw;
             margin-bottom: 3vh;
+            font-weight: 400;
+            animation: fadeInDown 0.8s ease-out 0.2s both;
         }
         
         .summary-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 2vw;
-            margin-bottom: 3vh;
+            margin-bottom: 2vh;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
         }
         
         .summary-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 2.5vh 2vw;
+            background: white;
+            border: 2px solid #e0e0e0;
+            padding: 35px;
             border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
             display: flex;
             flex-direction: column;
+            justify-content: center;
             align-items: center;
             text-align: center;
-            transition: transform 0.3s;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .summary-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #0076a8 0%, #00a74f 100%);
         }
         
         .summary-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-color: #0076a8;
         }
         
         .summary-label {
-            font-size: 1vw;
-            font-weight: 300;
-            margin-bottom: 1vh;
-            opacity: 0.95;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #666;
+            font-weight: 600;
+            margin-bottom: 15px;
         }
         
         .summary-value {
-            font-size: 2.5vw;
+            font-size: 42px;
             font-weight: 700;
-            margin-bottom: 0.5vh;
+            background: linear-gradient(135deg, #0076a8 0%, #00a74f 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         
         .breakeven-section {
-            background: white;
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border: 2px solid #e0e0e0;
             border-radius: 12px;
-            padding: 3vh 3vw;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 2vh 2vw;
+            animation: fadeInUp 0.8s ease-out 0.6s both;
         }
         
         .breakeven-title {
             font-size: 1.5vw;
             font-weight: 600;
-            margin-bottom: 2vh;
-            color: #2c3e50;
+            color: #1a1a1a;
+            margin-bottom: 1.5vh;
             text-align: center;
         }
         
         .breakeven-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 2vw;
-            margin-bottom: 2vh;
+            gap: 1.5vw;
         }
         
         .breakeven-item {
             text-align: center;
-            padding: 2vh 1vw;
-            background: #f8f9fa;
+            padding: 1.5vh 1vw;
+            background: white;
             border-radius: 8px;
-            transition: background 0.3s;
-        }
-        
-        .breakeven-item:hover {
-            background: #e9ecef;
+            border: 1px solid #e0e0e0;
         }
         
         .breakeven-number {
-            font-size: 3vw;
+            font-size: 2.5vw;
             font-weight: 700;
-            color: #667eea;
-            margin-bottom: 1vh;
+            color: #0076a8;
+            margin-bottom: 0.5vh;
         }
         
         .breakeven-label {
-            font-size: 1.1vw;
-            font-weight: 600;
-            color: #495057;
+            font-size: 0.9vw;
+            color: #666;
             margin-bottom: 0.5vh;
         }
         
         .breakeven-detail {
-            font-size: 0.9vw;
-            color: #6c757d;
+            font-size: 0.8vw;
+            color: #999;
         }
         
-        .insight-box {
-            text-align: center;
-            margin-top: 1.5vh;
-            padding: 1.5vh 2vw;
-            background: linear-gradient(135deg, #e3f2fd 0%, #ffffff 100%);
-            border-radius: 8px;
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-        
-        .insight-text {
-            font-size: 1vw;
-            color: #0076a8;
-            font-weight: 600;
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
-
 <style>
         .slide-navigation {
             position: fixed;
@@ -232,19 +259,19 @@
 <div class="summary-grid">
 <div class="summary-card">
 <div class="summary-label">Payback Period</div>
-<div class="summary-value" id="payback-period">21 months</div>
+<div class="summary-value" id="payback-period">2 years, 10 months</div>
 </div>
 <div class="summary-card">
 <div class="summary-label">Internal Rate of Return</div>
-<div class="summary-value" id="irr">87%</div>
+<div class="summary-value" id="irr">47.3%</div>
 </div>
 <div class="summary-card">
 <div class="summary-label">Total Revenue (5 years)</div>
-<div class="summary-value" id="total-revenue">$720K</div>
+<div class="summary-value" id="total-revenue">$604,000</div>
 </div>
 <div class="summary-card">
 <div class="summary-label">Net Present Value</div>
-<div class="summary-value" id="summary-npv">$435K</div>
+<div class="summary-value" id="summary-npv">$231,583</div>
 </div>
 </div>
 <div class="breakeven-section">
@@ -266,8 +293,8 @@
 <div class="breakeven-detail">With 4 customers</div>
 </div>
 </div>
-<div class="insight-box">
-<div class="insight-text">
+<div style="text-align: center; margin-top: 1.5vh; padding: 1vh 2vw; background: linear-gradient(135deg, #e3f2fd 0%, #ffffff 100%); border-radius: 8px;">
+<div style="font-size: 1vw; color: #0076a8; font-weight: 600;">
                         Critical Insight: With just 3 customers, the platform covers all operating costs.
                         Each additional customer contributes $1,000/month directly to ROI recovery.
                     </div>
@@ -354,43 +381,106 @@
             calculateMetrics();
         });
     </script>
-
 <nav class="slide-navigation">
-<a class="nav-prev" href="11_timeline.html">← Previous</a>
+<a class="nav-prev" href="11_timeline.html" onclick="saveFullscreenState(); return true;">← Previous</a>
 <div class="nav-center">
-<a class="nav-home" href="../index.html">☰ Contents</a>
+<a class="nav-home" href="../index.html" onclick="saveFullscreenState(); return true;">☰ Contents</a>
 <span class="nav-counter">Slide 12 of 13</span>
 </div>
-<a class="nav-next" href="13_risk_assessment.html">Next →</a>
+<a class="nav-next" href="13_risk_assessment.html" onclick="saveFullscreenState(); return true;">Next →</a>
 </nav>
-
 <script>
+    
+        // Save fullscreen state before navigation
+        function saveFullscreenState() {
+            if (document.fullscreenElement) {
+                sessionStorage.setItem('wasFullscreen', 'true');
+            } else {
+                sessionStorage.removeItem('wasFullscreen');
+            }
+        }
+        
+        // Restore fullscreen state on page load
+        function restoreFullscreenState() {
+            if (sessionStorage.getItem('wasFullscreen') === 'true') {
+                // Small delay to ensure page is fully loaded
+                setTimeout(() => {
+                    document.documentElement.requestFullscreen().then(() => {
+                        console.log('Fullscreen restored');
+                        // Clear the flag after successful restore
+                        // Keep it for continuous navigation
+                        // sessionStorage.removeItem('wasFullscreen');
+                    }).catch(err => {
+                        console.log('Could not restore fullscreen:', err);
+                        // Clear on error to prevent repeated attempts
+                        sessionStorage.removeItem('wasFullscreen');
+                    });
+                }, 100);
+            }
+        }
+        
+        // Enhanced keyboard navigation with state saving
         document.addEventListener('keydown', function(e) {
             switch(e.key) {
                 case 'ArrowLeft':
                     const prevLink = document.querySelector('.nav-prev:not(.nav-disabled)');
-                    if (prevLink) prevLink.click();
+                    if (prevLink) {
+                        saveFullscreenState();
+                        prevLink.click();
+                    }
                     break;
                 case 'ArrowRight':
                 case ' ':
                     e.preventDefault();
                     const nextLink = document.querySelector('.nav-next:not(.nav-disabled)');
-                    if (nextLink) nextLink.click();
+                    if (nextLink) {
+                        saveFullscreenState();
+                        nextLink.click();
+                    }
                     break;
                 case 'Home':
                     e.preventDefault();
-                    document.querySelector('.nav-home').click();
+                    const homeLink = document.querySelector('.nav-home');
+                    if (homeLink) {
+                        saveFullscreenState();
+                        homeLink.click();
+                    }
                     break;
                 case 'f':
                 case 'F':
                     if (document.fullscreenElement) {
                         document.exitFullscreen();
+                        sessionStorage.removeItem('wasFullscreen');
                     } else {
                         document.documentElement.requestFullscreen();
+                        sessionStorage.setItem('wasFullscreen', 'true');
                     }
+                    break;
+                case 'Escape':
+                    // Clear fullscreen state when user explicitly exits
+                    sessionStorage.removeItem('wasFullscreen');
                     break;
             }
         });
+        
+        // Listen for fullscreen changes
+        document.addEventListener('fullscreenchange', function() {
+            if (!document.fullscreenElement) {
+                // User exited fullscreen
+                sessionStorage.removeItem('wasFullscreen');
+            }
+        });
+        
+        // Restore fullscreen on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            restoreFullscreenState();
+        });
+        
+        // Also try to restore immediately in case DOM is already loaded
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            restoreFullscreenState();
+        }
+    
     </script>
 </body>
 </html>

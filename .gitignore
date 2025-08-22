@@ -14,7 +14,7 @@ presentation.html
 slides_manifest.json
 
 # Old extraction attempts
-slides/
+/slides/
 scripts/extracted_scripts.js
 styles/extracted_styles.css
 styles/presentation.css
