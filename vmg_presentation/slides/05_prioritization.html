@@ -47,16 +47,34 @@
             flex-direction: column;
         }
         
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
         h1 {
-            font-size: 2.5vw;
-            margin-bottom: 1vh;
+            font-size: 3vw;
+            margin-bottom: 1.5vh;
             color: #1a1a1a;
+            text-align: center;
+            font-weight: 300;
+            letter-spacing: -0.5px;
+            animation: fadeInDown 0.8s ease-out;
         }
         
         .subtitle {
-            font-size: 1.2vw;
+            text-align: center;
             color: #666;
-            margin-bottom: 2vh;
+            font-size: 1.3vw;
+            margin-bottom: 3vh;
+            font-weight: 400;
+            animation: fadeInDown 0.8s ease-out 0.2s both;
         }
         
         /* Original matrix styles */
