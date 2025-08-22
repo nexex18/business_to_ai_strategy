@@ -1,24 +1,25 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Return on Investment Analysis - Fixed</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-<style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Return on Investment Analysis</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
             background: #f5f5f5;
             overflow: hidden;
+            margin: 0;
+            padding: 0;
         }
-        
+
         .presentation-container {
             width: 100vw;
             height: 100vh;
@@ -26,10 +27,9 @@
             flex-direction: column;
             position: relative;
         }
-        
+
         .slide {
-            display: flex;
-            flex-direction: column;
+            display: none;
             width: 100vw;
             height: 100vh;
             padding: 3vh 4vw;
@@ -37,125 +37,163 @@
             position: relative;
             overflow-y: auto;
             overflow-x: hidden;
+            padding-bottom: 80px;
         }
-        
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+        }
+
         h1 {
-            font-size: 2.5vw;
+            font-size: 3vw;
             margin-bottom: 1vh;
             color: #1a1a1a;
+            text-align: center;
+            font-weight: 300;
+            letter-spacing: -0.5px;
+            animation: fadeInDown 0.8s ease-out;
         }
-        
+
         .subtitle {
-            font-size: 1.2vw;
+            text-align: center;
             color: #666;
+            font-size: 1.2vw;
             margin-bottom: 2vh;
+            font-weight: 400;
+            animation: fadeInDown 0.8s ease-out 0.2s both;
         }
-        
+
         .discount-rate-input {
-            display: flex;
-            align-items: center;
-            gap: 1vw;
-            margin-bottom: 2vh;
-            padding: 1vh 1.5vw;
-            background: #f8f9fa;
-            border-radius: 8px;
-            width: fit-content;
+            margin-bottom: 20px;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            display: inline-block;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
         }
-        
+
         .discount-rate-input label {
-            font-size: 1vw;
             font-weight: 600;
+            margin-right: 10px;
         }
-        
+
         .discount-rate-input input {
-            padding: 0.5vh 1vw;
-            font-size: 1vw;
-            border: 2px solid #dee2e6;
+            padding: 5px 10px;
+            border: 1px solid #ccc;
             border-radius: 4px;
             width: 80px;
         }
-        
+
         .discount-rate-input button {
-            padding: 0.5vh 1.5vw;
-            background: #667eea;
+            margin-left: 10px;
+            padding: 6px 15px;
+            background: linear-gradient(135deg, #0076a8 0%, #00a74f 100%);
             color: white;
             border: none;
-            border-radius: 4px;
-            font-size: 1vw;
+            border-radius: 6px;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: all 0.3s ease;
         }
-        
+
         .discount-rate-input button:hover {
-            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 118, 168, 0.3);
         }
-        
+
         .metrics-section {
             display: grid;
-            grid-template-columns: 1fr 1.5fr;
+            grid-template-columns: 1fr 2fr;
             gap: 2vw;
-            flex: 1;
+            margin-bottom: 2vh;
+            height: 60vh;
+            animation: fadeInUp 0.8s ease-out 0.6s both;
         }
-        
+
         .left-panel {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5vh;
+            background: white;
+            border: 2px solid #e0e0e0;
+            padding: 20px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
         }
-        
+
+        .left-panel:hover {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
         .metric-group {
-            background: white;
-            padding: 1.5vh 1.5vw;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
         }
-        
+
         .metric-title {
-            font-size: 1.1vw;
+            font-size: 18px;
             font-weight: 600;
-            margin-bottom: 0.5vh;
-            color: #495057;
+            margin-bottom: 10px;
+            color: #333;
         }
-        
+
         .metric-formula {
-            font-size: 0.9vw;
-            color: #6c757d;
             font-style: italic;
-            margin-bottom: 1vh;
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 14px;
         }
-        
+
         .metric-value {
-            font-size: 1.8vw;
-            font-weight: 700;
-            color: #dc3545;
+            font-size: 24px;
+            font-weight: bold;
+            color: #d32f2f;
+            margin-bottom: 5px;
         }
-        
+
         .metric-value.positive {
-            color: #28a745;
+            color: #2e7d32;
         }
-        
+
         .metric-details {
-            font-size: 0.9vw;
-            color: #6c757d;
-            margin-top: 0.5vh;
+            font-size: 16px;
+            line-height: 1.6;
+            color: #555;
         }
-        
+
         .chart-container {
+            position: relative;
+            height: 50vh;
             background: white;
-            padding: 2vh 2vw;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            padding: 1.5vw;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            transition: all 0.3s ease;
         }
-        
-        #npvChart {
-            max-width: 100%;
-            max-height: 100%;
+
+        .chart-container:hover {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
-    </style>
-<style>
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .slide-navigation {
             position: fixed;
             bottom: 0;
@@ -186,11 +224,6 @@
             background: rgba(255, 255, 255, 0.1);
         }
         
-        .nav-disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-        }
-        
         .nav-center {
             display: flex;
             align-items: center;
@@ -216,56 +249,66 @@
             color: rgba(255, 255, 255, 0.8);
             font-size: 14px;
         }
-        
-        /* Adjust slide container to account for navigation */
-        .presentation-container, .slide {
-            padding-bottom: 80px !important;
-        }
     </style>
 </head>
 <body>
-<div class="presentation-container">
-<div class="slide active" id="slide10">
-<h1>Return on Investment Analysis</h1>
-<div class="subtitle">5-year NPV projection with adjustable discount rate</div>
-<div class="discount-rate-input">
-<label for="discountRate">Discount Rate (%):</label>
-<input id="discountRate" step="0.1" type="number" value="10"/>
-<button onclick="updateAnalysis()">Update Analysis</button>
-</div>
-<div class="metrics-section">
-<div class="left-panel">
-<div class="metric-group">
-<div class="metric-title">Net present value</div>
-<div class="metric-formula">NPV = Σ (Cash Flow₍ₜ₎ / (1 + r)ᵗ) - Initial Cost</div>
-</div>
-<div class="metric-group">
-<div class="metric-title">Initial Investment</div>
-<div class="metric-value">-$110,000</div>
-<div class="metric-details">3-month development</div>
-</div>
-<div class="metric-group">
-<div class="metric-title">Year 1</div>
-<div class="metric-value" id="year1-cashflow">$18,720</div>
-</div>
-<div class="metric-group">
-<div class="metric-title">Years 2-5</div>
-<div class="metric-details" id="years2-5-details">
-                            Y2: $67,200 | Y3: $106,560 | Y4: $152,640 | Y5: $199,680
-                        </div>
-</div>
-<div class="metric-group">
-<div class="metric-title" style="color: #2e7d32; font-size: 20px;">NPV over 5 years</div>
-<div class="metric-value positive" id="total-npv">$434,800</div>
-</div>
-</div>
-<div class="chart-container">
-<canvas id="npvChart"></canvas>
-</div>
-</div>
-</div>
-</div>
-<script>
+    <div class="presentation-container">
+        <div class="slide active" id="slide10">
+            <h1>Return on Investment Analysis</h1>
+            <div class="subtitle">5-year NPV projection with adjustable discount rate</div>
+            
+            <div class="discount-rate-input">
+                <label for="discountRate">Discount Rate (%):</label>
+                <input type="number" id="discountRate" value="10" step="0.1">
+                <button onclick="updateAnalysis()">Update Analysis</button>
+            </div>
+
+            <div class="metrics-section">
+                <div class="left-panel">
+                    <div class="metric-group">
+                        <div class="metric-title">Net present value</div>
+                        <div class="metric-formula">NPV = Σ (Cash Flow₍ₜ₎ / (1 + r)ᵗ) - Initial Cost</div>
+                    </div>
+
+                    <div class="metric-group">
+                        <div class="metric-title">Initial Investment</div>
+                        <div class="metric-value">-$110,000</div>
+                        <div class="metric-details">3-month development</div>
+                    </div>
+
+                    <div class="metric-group">
+                        <div class="metric-title">Year 1</div>
+                        <div class="metric-value" id="year1-cashflow">$6,730</div>
+                    </div>
+
+                    <div class="metric-group">
+                        <div class="metric-title">Years 2-5</div>
+                        <div class="metric-details" id="years2-5-details">Net benefit = $474,525<br>Average annual = $118,631</div>
+                    </div>
+
+                    <div class="metric-group">
+                        <div class="metric-title" style="color: #2e7d32; font-size: 20px;">NPV over 5 years</div>
+                        <div class="metric-value positive" id="total-npv">$231,583</div>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="npvChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <nav class="slide-navigation">
+        <a href="09_customer_growth.html" class="nav-prev" onclick="saveFullscreenState(); return true;">← Previous</a>
+        <div class="nav-center">
+            <a href="../index.html" class="nav-home" onclick="saveFullscreenState(); return true;">☰ Contents</a>
+            <span class="nav-counter">Slide 10 of 13</span>
+        </div>
+        <a href="11_timeline.html" class="nav-next" onclick="saveFullscreenState(); return true;">Next →</a>
+    </nav>
+    
+    <script>
         let chartInstance = null;
 
         function calculateCashFlows() {
@@ -358,15 +401,16 @@
                 });
             }
             
-            // Update display values
+            // Update display values with original formatting
             document.getElementById('year1-cashflow').textContent = 
                 '$' + yearlyData[1].cashFlow.toLocaleString();
             
+            const totalBenefit = yearlyData[2].cashFlow + yearlyData[3].cashFlow + 
+                               yearlyData[4].cashFlow + yearlyData[5].cashFlow;
+            const avgAnnual = totalBenefit / 4;
+            
             document.getElementById('years2-5-details').innerHTML = 
-                `Y2: $${yearlyData[2].cashFlow.toLocaleString()} | ` +
-                `Y3: $${yearlyData[3].cashFlow.toLocaleString()} | ` +
-                `Y4: $${yearlyData[4].cashFlow.toLocaleString()} | ` +
-                `Y5: $${yearlyData[5].cashFlow.toLocaleString()}`;
+                `Net benefit = $${totalBenefit.toLocaleString()}<br>Average annual = $${Math.round(avgAnnual).toLocaleString()}`;
             
             const npvElement = document.getElementById('total-npv');
             npvElement.textContent = '$' + Math.round(npv).toLocaleString();
@@ -387,33 +431,31 @@
             chartInstance = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: yearlyData.map(d => `Year ${d.year}`),
+                    labels: ['Year 0', 'Year 1', 'Year 2', 'Year 3', 'Year 4', 'Year 5'],
                     datasets: [
                         {
                             label: 'Annual Cash Flow',
                             data: yearlyData.map(d => d.cashFlow),
                             backgroundColor: yearlyData.map(d => 
-                                d.cashFlow < 0 ? 'rgba(220, 53, 69, 0.6)' : 'rgba(40, 167, 69, 0.6)'
+                                d.cashFlow < 0 ? '#dc3545' : '#28a745'
                             ),
-                            borderColor: yearlyData.map(d => 
-                                d.cashFlow < 0 ? 'rgba(220, 53, 69, 1)' : 'rgba(40, 167, 69, 1)'
-                            ),
-                            borderWidth: 2,
+                            borderWidth: 0,
+                            barThickness: 40,
                             order: 2
                         },
                         {
                             label: 'Cumulative NPV',
                             data: yearlyData.map(d => d.cumulativeNPV),
                             type: 'line',
-                            borderColor: 'rgba(102, 126, 234, 1)',
-                            backgroundColor: 'rgba(102, 126, 234, 0.1)',
-                            borderWidth: 3,
-                            tension: 0.3,
+                            borderColor: '#667eea',
+                            backgroundColor: 'transparent',
+                            borderWidth: 2,
+                            tension: 0.1,
                             order: 1,
-                            pointRadius: 6,
-                            pointBackgroundColor: 'rgba(102, 126, 234, 1)',
-                            pointBorderColor: '#fff',
-                            pointBorderWidth: 2
+                            pointRadius: 4,
+                            pointBackgroundColor: '#667eea',
+                            pointBorderColor: '#667eea',
+                            pointBorderWidth: 0
                         }
                     ]
                 },
@@ -425,16 +467,29 @@
                             display: true,
                             position: 'top',
                             labels: {
-                                font: { size: 14 },
-                                padding: 15
+                                font: { 
+                                    size: 12,
+                                    family: "'Segoe UI', 'Arial', sans-serif"
+                                },
+                                padding: 10,
+                                usePointStyle: true,
+                                pointStyle: 'circle',
+                                boxWidth: 15,
+                                boxHeight: 15
                             }
                         },
                         tooltip: {
-                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                            padding: 12,
-                            cornerRadius: 8,
-                            titleFont: { size: 14 },
-                            bodyFont: { size: 13 },
+                            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                            padding: 10,
+                            cornerRadius: 4,
+                            titleFont: { 
+                                size: 12,
+                                weight: 'normal'
+                            },
+                            bodyFont: { 
+                                size: 12 
+                            },
+                            displayColors: true,
                             callbacks: {
                                 label: function(context) {
                                     const label = context.dataset.label || '';
@@ -448,47 +503,51 @@
                         y: {
                             beginAtZero: true,
                             grid: {
-                                color: 'rgba(0, 0, 0, 0.05)'
+                                color: 'rgba(0, 0, 0, 0.08)',
+                                drawBorder: false
                             },
                             ticks: {
-                                font: { size: 12 },
+                                font: { 
+                                    size: 11,
+                                    family: "'Segoe UI', 'Arial', sans-serif"
+                                },
+                                color: '#666',
+                                padding: 5,
                                 callback: function(value) {
+                                    if (value === 0) return '$0';
                                     return '$' + (value / 1000) + 'K';
                                 }
                             }
                         },
                         x: {
                             grid: {
-                                display: false
+                                display: false,
+                                drawBorder: false
                             },
                             ticks: {
-                                font: { size: 12 }
+                                font: { 
+                                    size: 11,
+                                    family: "'Segoe UI', 'Arial', sans-serif"
+                                },
+                                color: '#666',
+                                padding: 5
                             }
+                        }
+                    },
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    },
+                    elements: {
+                        bar: {
+                            borderRadius: 2
                         }
                     }
                 }
             });
         }
 
-        // Initialize on load
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('Initializing ROI Analysis slide...');
-            setTimeout(() => {
-                updateAnalysis();
-            }, 100);
-        });
-    </script>
-<nav class="slide-navigation">
-<a class="nav-prev" href="09_customer_growth.html" onclick="saveFullscreenState(); return true;">← Previous</a>
-<div class="nav-center">
-<a class="nav-home" href="../index.html" onclick="saveFullscreenState(); return true;">☰ Contents</a>
-<span class="nav-counter">Slide 10 of 13</span>
-</div>
-<a class="nav-next" href="11_timeline.html" onclick="saveFullscreenState(); return true;">Next →</a>
-</nav>
-<script>
-    
-        // Save fullscreen state before navigation
+        // Fullscreen persistence functions
         function saveFullscreenState() {
             if (document.fullscreenElement) {
                 sessionStorage.setItem('wasFullscreen', 'true');
@@ -497,30 +556,22 @@
             }
         }
         
-        // Restore fullscreen state on page load
         function restoreFullscreenState() {
             if (sessionStorage.getItem('wasFullscreen') === 'true') {
-                // Small delay to ensure page is fully loaded
                 setTimeout(() => {
-                    document.documentElement.requestFullscreen().then(() => {
-                        console.log('Fullscreen restored');
-                        // Clear the flag after successful restore
-                        // Keep it for continuous navigation
-                        // sessionStorage.removeItem('wasFullscreen');
-                    }).catch(err => {
+                    document.documentElement.requestFullscreen().catch(err => {
                         console.log('Could not restore fullscreen:', err);
-                        // Clear on error to prevent repeated attempts
                         sessionStorage.removeItem('wasFullscreen');
                     });
                 }, 100);
             }
         }
         
-        // Enhanced keyboard navigation with state saving
+        // Keyboard navigation
         document.addEventListener('keydown', function(e) {
             switch(e.key) {
                 case 'ArrowLeft':
-                    const prevLink = document.querySelector('.nav-prev:not(.nav-disabled)');
+                    const prevLink = document.querySelector('.nav-prev');
                     if (prevLink) {
                         saveFullscreenState();
                         prevLink.click();
@@ -529,7 +580,7 @@
                 case 'ArrowRight':
                 case ' ':
                     e.preventDefault();
-                    const nextLink = document.querySelector('.nav-next:not(.nav-disabled)');
+                    const nextLink = document.querySelector('.nav-next');
                     if (nextLink) {
                         saveFullscreenState();
                         nextLink.click();
@@ -553,31 +604,17 @@
                         sessionStorage.setItem('wasFullscreen', 'true');
                     }
                     break;
-                case 'Escape':
-                    // Clear fullscreen state when user explicitly exits
-                    sessionStorage.removeItem('wasFullscreen');
-                    break;
             }
         });
         
-        // Listen for fullscreen changes
-        document.addEventListener('fullscreenchange', function() {
-            if (!document.fullscreenElement) {
-                // User exited fullscreen
-                sessionStorage.removeItem('wasFullscreen');
-            }
-        });
-        
-        // Restore fullscreen on page load
+        // Initialize on load
         document.addEventListener('DOMContentLoaded', function() {
+            console.log('Initializing ROI Analysis slide...');
+            setTimeout(() => {
+                updateAnalysis();
+            }, 100);
             restoreFullscreenState();
         });
-        
-        // Also try to restore immediately in case DOM is already loaded
-        if (document.readyState === 'complete' || document.readyState === 'interactive') {
-            restoreFullscreenState();
-        }
-    
     </script>
 </body>
 </html>
