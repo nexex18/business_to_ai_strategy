@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VMG's AI Stack Architecture</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #f5f5f5;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .slide {
+            display: none;
+            width: 100vw;
+            height: 100vh;
+            padding: 3vh 4vw;
+            background: white;
+            position: relative;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        h1 {
+            font-size: 2.8vw;
+            margin-bottom: 2vh;
+            color: #1a1a1a;
+            text-align: center;
+            font-weight: 300;
+            letter-spacing: -0.5px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            animation: fadeInUp 0.8s ease-out 0.3s both;
+        }
+
+        .ai-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 2vh;
+            width: 80%;
+            max-width: 80vw;
+        }
+
+        .stack-layer {
+            background: white;
+            border-radius: 15px;
+            padding: 2.5vh 3vw;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            animation: scaleIn 0.8s ease-out backwards;
+            display: flex;
+            align-items: center;
+            gap: 2vw;
+        }
+
+        .stack-layer:nth-child(1) { 
+            animation-delay: 1.5s; 
+            background: linear-gradient(135deg, rgba(52, 152, 219, 0.1), rgba(52, 152, 219, 0.05));
+            border-left: 6px solid #3498db;
+        }
+        
+        .stack-layer:nth-child(2) { 
+            animation-delay: 1.2s; 
+            background: linear-gradient(135deg, rgba(243, 156, 18, 0.1), rgba(243, 156, 18, 0.05));
+            border-left: 6px solid #f39c12;
+        }
+        
+        .stack-layer:nth-child(3) { 
+            animation-delay: 0.9s; 
+            background: linear-gradient(135deg, rgba(0, 167, 79, 0.1), rgba(0, 167, 79, 0.05));
+            border-left: 6px solid #00a74f;
+        }
+
+        .stack-layer:nth-child(4) { 
+            animation-delay: 0.6s; 
+            background: linear-gradient(135deg, rgba(0, 118, 168, 0.1), rgba(0, 118, 168, 0.05));
+            border-left: 6px solid #0076a8;
+        }
+
+        .stack-layer:nth-child(5) { 
+            animation-delay: 0.3s; 
+            background: linear-gradient(135deg, rgba(155, 89, 182, 0.1), rgba(155, 89, 182, 0.05));
+            border-left: 6px solid #9b59b6;
+        }
+
+        .stack-layer:hover {
+            transform: translateX(10px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+
+        .layer-number {
+            display: inline-block;
+            width: 3.5vw;
+            height: 3.5vw;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.5vw;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+            flex-shrink: 0;
+        }
+
+        .stack-layer:nth-child(1) .layer-number {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+        }
+
+        .stack-layer:nth-child(2) .layer-number {
+            background: linear-gradient(135deg, #f39c12, #d68910);
+        }
+
+        .stack-layer:nth-child(3) .layer-number {
+            background: linear-gradient(135deg, #00a74f, #008940);
+        }
+
+        .stack-layer:nth-child(4) .layer-number {
+            background: linear-gradient(135deg, #0076a8, #005a85);
+        }
+
+        .stack-layer:nth-child(5) .layer-number {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+        }
+
+        .layer-content {
+            flex: 1;
+        }
+
+        .layer-title {
+            font-size: 1.6vw;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 0.5vh;
+        }
+
+        .layer-description {
+            font-size: 1.2vw;
+            color: #555;
+            line-height: 1.4;
+            font-weight: 500;
+        }
+
+        .conclusion-text {
+            text-align: center;
+            font-size: 1.3vw;
+            color: #666;
+            font-weight: 500;
+            line-height: 1.4;
+            margin-top: 3vh;
+            padding: 2vh 3vw;
+            background: rgba(245, 245, 245, 0.8);
+            border-radius: 10px;
+            animation: fadeInUp 1s ease-out 2s both;
+        }
+
+        .highlight-text {
+            color: #0076a8;
+            font-weight: 700;
+        }
+
+        /* Background gradient accent */
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 15vh;
+            background: linear-gradient(135deg, 
+                rgba(52,152,219,0.03) 0%, 
+                rgba(243,156,18,0.03) 25%,
+                rgba(0,167,79,0.03) 50%, 
+                rgba(0,118,168,0.03) 75%,
+                rgba(155,89,182,0.03) 100%);
+            z-index: -1;
+        }
+
+        .references-note {
+            position: absolute;
+            bottom: 2vh;
+            right: 4vw;
+            font-size: 1vw;
+            color: #999;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="slide active" id="slide10">
+            <h1>VMG's "AI Stack" Architecture</h1>
+            
+            <div class="content-wrapper">
+                <div class="ai-stack">
+                    <!-- Layer 5: Human Layer -->
+                    <div class="stack-layer">
+                        <div class="layer-number">5</div>
+                        <div class="layer-content">
+                            <div class="layer-title">Human Layer</div>
+                            <div class="layer-description">Strategic oversight and relationship management</div>
+                        </div>
+                    </div>
+
+                    <!-- Layer 4: Agentic Layer -->
+                    <div class="stack-layer">
+                        <div class="layer-number">4</div>
+                        <div class="layer-content">
+                            <div class="layer-title">Agentic Layer</div>
+                            <div class="layer-description">Autonomous monitoring and optimization</div>
+                        </div>
+                    </div>
+
+                    <!-- Layer 3: Generative Layer -->
+                    <div class="stack-layer">
+                        <div class="layer-number">3</div>
+                        <div class="layer-content">
+                            <div class="layer-title">Generative Layer</div>
+                            <div class="layer-description">Create personalized content and strategies</div>
+                        </div>
+                    </div>
+
+                    <!-- Layer 2: Predictive Layer -->
+                    <div class="stack-layer">
+                        <div class="layer-number">2</div>
+                        <div class="layer-content">
+                            <div class="layer-title">Predictive Layer</div>
+                            <div class="layer-description">Forecast outcomes and identify patterns</div>
+                        </div>
+                    </div>
+
+                    <!-- Layer 1: Data Layer -->
+                    <div class="stack-layer">
+                        <div class="layer-number">1</div>
+                        <div class="layer-content">
+                            <div class="layer-title">Data Layer</div>
+                            <div class="layer-description">Aggregate insights from all client engagements</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="conclusion-text">
+                    This integrated approach allows VMG to deliver <span class="highlight-text">"Augmented Strategic Intelligence"</span> - 
+                    combining the best of human expertise with AI capabilities to ensure every client achieves their 
+                    <span class="highlight-text">Velocity Made Good</span>.
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Our AI Creates Three Moats</title>
+<style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #f5f5f5;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .slide {
+            display: none;
+            width: 100vw;
+            height: 100vh;
+            padding: 3vh 4vw;
+            background: white;
+            position: relative;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        h1 {
+            font-size: 2.8vw;
+            margin-bottom: 2vh;
+            color: #1a1a1a;
+            text-align: center;
+            font-weight: 300;
+            letter-spacing: -0.5px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            animation: fadeInUp 0.8s ease-out 0.3s both;
+        }
+
+        .moats-container {
+            display: flex;
+            gap: 3vw;
+            width: 90%;
+            max-width: 90vw;
+            justify-content: space-between;
+            margin-top: 3vh;
+        }
+
+        .moat-card {
+            flex: 1;
+            background: white;
+            border-radius: 20px;
+            padding: 4vh 2vw;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            animation: scaleIn 0.8s ease-out backwards;
+            text-align: center;
+        }
+
+        .moat-card:nth-child(1) { 
+            animation-delay: 0.6s; 
+            border-top: 6px solid #0076a8;
+        }
+        
+        .moat-card:nth-child(2) { 
+            animation-delay: 0.9s; 
+            border-top: 6px solid #00a74f;
+        }
+        
+        .moat-card:nth-child(3) { 
+            animation-delay: 1.2s; 
+            border-top: 6px solid #f39c12;
+        }
+
+        .moat-card:hover {
+            transform: translateY(-15px) scale(1.03);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+        }
+
+        .moat-number {
+            display: inline-block;
+            width: 4vw;
+            height: 4vw;
+            border-radius: 50%;
+            color: white;
+            font-size: 2vw;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2vh;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        .moat-card:nth-child(1) .moat-number {
+            background: linear-gradient(135deg, #0076a8, #005a85);
+        }
+
+        .moat-card:nth-child(2) .moat-number {
+            background: linear-gradient(135deg, #00a74f, #008940);
+        }
+
+        .moat-card:nth-child(3) .moat-number {
+            background: linear-gradient(135deg, #f39c12, #d68910);
+        }
+
+        .moat-title {
+            font-size: 1.8vw;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 1vh;
+            line-height: 1.2;
+        }
+
+        .moat-card:nth-child(1) .moat-title {
+            color: #0076a8;
+        }
+
+        .moat-card:nth-child(2) .moat-title {
+            color: #00a74f;
+        }
+
+        .moat-card:nth-child(3) .moat-title {
+            color: #f39c12;
+        }
+
+        .moat-description {
+            font-size: 1.3vw;
+            color: #555;
+            line-height: 1.4;
+            font-weight: 500;
+        }
+
+        .moat-icon {
+            font-size: 3vw;
+            margin-bottom: 2vh;
+            opacity: 0.8;
+        }
+
+        .moat-card:nth-child(1) .moat-icon {
+            color: #0076a8;
+        }
+
+        .moat-card:nth-child(2) .moat-icon {
+            color: #00a74f;
+        }
+
+        .moat-card:nth-child(3) .moat-icon {
+            color: #f39c12;
+        }
+
+        /* Background gradient accent */
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 15vh;
+            background: linear-gradient(135deg, 
+                rgba(0,118,168,0.05) 0%, 
+                rgba(0,167,79,0.05) 50%, 
+                rgba(243,156,18,0.05) 100%);
+            z-index: -1;
+        }
+
+        /* Connecting flow lines */
+        .moats-container::after {
+            content: '→';
+            position: absolute;
+            top: 45%;
+            left: 30%;
+            font-size: 3vw;
+            color: #0076a8;
+            opacity: 0;
+            animation: slideInLeft 0.8s ease-out 1.5s forwards;
+        }
+
+        .moats-container::before {
+            content: '→';
+            position: absolute;
+            top: 45%;
+            right: 30%;
+            font-size: 3vw;
+            color: #00a74f;
+            opacity: 0;
+            animation: slideInLeft 0.8s ease-out 1.8s forwards;
+        }
+
+        /* Subtle pattern background for cards */
+        .moat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.03;
+            background-size: 30px 30px;
+            background-image: radial-gradient(circle, currentColor 2px, transparent 2px);
+            z-index: -1;
+        }
+
+        .references-note {
+            position: absolute;
+            bottom: 2vh;
+            right: 4vw;
+            font-size: 1vw;
+            color: #999;
+            font-style: italic;
+        }
+    </style>
+
+<style>
+        .slide-navigation {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            z-index: 1000;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .nav-prev, .nav-next {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background 0.3s;
+            font-weight: 600;
+            font-size: 16px;
+        }
+        
+        .nav-prev:hover, .nav-next:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+        
+        .nav-center {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+        
+        .nav-home {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        .nav-home:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .nav-counter {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+        }
+        
+        /* Adjust slide container to account for navigation */
+        .presentation-container, .slide {
+            padding-bottom: 80px !important;
+        }
+    </style>
+</head>
+<body>
+<div class="presentation-container">
+<div class="slide active" id="slide05">
+<h1>Our AI Creates Three Moats</h1>
+<div class="content-wrapper">
+<div class="moats-container">
+<!-- Data Moat -->
+<div class="moat-card">
+<div class="moat-number">1</div>
+<div class="moat-icon">📊</div>
+<div class="moat-title">Data Moat</div>
+<div class="moat-description">
+                            Every engagement improves our AI
+                        </div>
+</div>
+<!-- Efficiency Moat -->
+<div class="moat-card">
+<div class="moat-number">2</div>
+<div class="moat-icon">⚡</div>
+<div class="moat-title">Efficiency Moat</div>
+<div class="moat-description">
+                            Deliver faster and cheaper while maintaining quality
+                        </div>
+</div>
+<!-- Outcome Moat -->
+<div class="moat-card">
+<div class="moat-number">3</div>
+<div class="moat-icon">🎯</div>
+<div class="moat-title">Outcome Moat</div>
+<div class="moat-description">
+                            Higher success rates create references and referrals
+                        </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<nav class="slide-navigation">
+<a class="nav-prev" href="11_extended_positioning.html">← Previous</a>
+<div class="nav-center">
+<a class="nav-home" href="../index.html">☰ Contents</a>
+<span class="nav-counter">Slide 12 of 23</span>
+</div>
+<a class="nav-next" href="13_ai_maturity_framework.html">Next →</a>
+</nav>
+
+<script>
+        document.addEventListener('keydown', function(e) {
+            switch(e.key) {
+                case 'ArrowLeft':
+                    const prevLink = document.querySelector('.nav-prev:not(.nav-disabled)');
+                    if (prevLink) prevLink.click();
+                    break;
+                case 'ArrowRight':
+                case ' ':
+                    e.preventDefault();
+                    const nextLink = document.querySelector('.nav-next:not(.nav-disabled)');
+                    if (nextLink) nextLink.click();
+                    break;
+                case 'Home':
+                    e.preventDefault();
+                    document.querySelector('.nav-home').click();
+                    break;
+                case 'f':
+                case 'F':
+                    if (document.fullscreenElement) {
+                        document.exitFullscreen();
+                    } else {
+                        document.documentElement.requestFullscreen();
+                    }
+                    break;
+            }
+        });
+    </script>
+</body>
+</html>

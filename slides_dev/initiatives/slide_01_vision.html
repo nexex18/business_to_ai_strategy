@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Vision - VMG AI-Enabled Consulting Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #f5f5f5;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .slide {
+            display: none;
+            width: 100vw;
+            height: 100vh;
+            padding: 3vh 4vw;
+            background: white;
+            position: relative;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        h1 {
+            font-size: 3vw;
+            margin-bottom: 3vh;
+            color: #1a1a1a;
+            text-align: center;
+            font-weight: 300;
+            letter-spacing: -0.5px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .vision-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4vh;
+            animation: fadeInUp 0.8s ease-out 0.3s both;
+        }
+
+        .vision-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(35vw, 1fr));
+            gap: 3vh 3vw;
+            width: 100%;
+            max-width: 90vw;
+        }
+
+        .vision-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 3vh 2vw;
+            display: flex;
+            align-items: center;
+            gap: 2vw;
+            transition: all 0.3s ease;
+            animation: slideInLeft 0.6s ease-out backwards;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .vision-card:nth-child(1) { animation-delay: 0.4s; }
+        .vision-card:nth-child(2) { animation-delay: 0.5s; }
+        .vision-card:nth-child(3) { animation-delay: 0.6s; }
+        .vision-card:nth-child(4) { animation-delay: 0.7s; }
+        .vision-card:nth-child(5) { animation-delay: 0.8s; }
+
+        .vision-card:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 10px 30px rgba(0, 118, 168, 0.15);
+            border-color: #0076a8;
+        }
+
+        .vision-icon {
+            font-size: 3vw;
+            min-width: 4vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 4vw;
+            background: linear-gradient(135deg, #0076a8 0%, #00a74f 100%);
+            border-radius: 50%;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .vision-content {
+            flex: 1;
+        }
+
+        .vision-title {
+            font-size: 1.3vw;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 0.5vh;
+            line-height: 1.3;
+        }
+
+        .vision-description {
+            font-size: 1.1vw;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        .highlight-metric {
+            font-weight: 700;
+            color: #0076a8;
+        }
+
+        .highlight-green {
+            font-weight: 700;
+            color: #00a74f;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1400px) {
+            .vision-title {
+                font-size: 1.4vw;
+            }
+            
+            .vision-description {
+                font-size: 1.2vw;
+            }
+            
+            .vision-icon {
+                font-size: 3.2vw;
+                min-width: 4.2vw;
+                height: 4.2vw;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .vision-cards {
+                grid-template-columns: 1fr;
+                gap: 2vh;
+            }
+            
+            .vision-card {
+                padding: 2.5vh 3vw;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="slide active" id="slide01">
+            <h1>Our Vision: VMG AI-Enabled Consulting Platform</h1>
+            
+            <div class="vision-container">
+                <div class="vision-cards">
+                    <div class="vision-card">
+                        <div class="vision-icon">🧠</div>
+                        <div class="vision-content">
+                            <div class="vision-title">Transform Consulting Delivery</div>
+                            <div class="vision-description">Revolutionize how consulting is delivered through <span class="highlight-metric">AI automation</span> and intelligent insights</div>
+                        </div>
+                    </div>
+                    
+                    <div class="vision-card">
+                        <div class="vision-icon">⚡</div>
+                        <div class="vision-content">
+                            <div class="vision-title">10x Faster Delivery</div>
+                            <div class="vision-description">Deliver projects at <span class="highlight-metric">10x faster speed</span> while maintaining quality at <span class="highlight-green">30% of traditional cost</span></div>
+                        </div>
+                    </div>
+                    
+                    <div class="vision-card">
+                        <div class="vision-icon">📈</div>
+                        <div class="vision-content">
+                            <div class="vision-title">Scale Without Limits</div>
+                            <div class="vision-description">Scale from <span class="highlight-metric">10 to 100+ clients</span> without proportionally adding consultants</div>
+                        </div>
+                    </div>
+                    
+                    <div class="vision-card">
+                        <div class="vision-icon">📊</div>
+                        <div class="vision-content">
+                            <div class="vision-title">Continuous Value Creation</div>
+                            <div class="vision-description">Create ongoing value through <span class="highlight-green">intelligent monitoring</span> and predictive insights</div>
+                        </div>
+                    </div>
+                    
+                    <div class="vision-card">
+                        <div class="vision-icon">🛡️</div>
+                        <div class="vision-content">
+                            <div class="vision-title">Competitive Moat</div>
+                            <div class="vision-description">Build an <span class="highlight-metric">unbeatable competitive advantage</span> through accumulated intelligence and learning</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

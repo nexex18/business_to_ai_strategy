@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Velocity MG: Built for the AI-First Era</title>
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Velocity MG: Built for the AI-First Era</title>
+<style>
         * {
             margin: 0;
             padding: 0;
@@ -277,91 +278,191 @@
             font-style: italic;
         }
     </style>
+
+<style>
+        .slide-navigation {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            z-index: 1000;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .nav-prev, .nav-next {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background 0.3s;
+            font-weight: 600;
+            font-size: 16px;
+        }
+        
+        .nav-prev:hover, .nav-next:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+        
+        .nav-center {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+        
+        .nav-home {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        .nav-home:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .nav-counter {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+        }
+        
+        /* Adjust slide container to account for navigation */
+        .presentation-container, .slide {
+            padding-bottom: 80px !important;
+        }
+    </style>
 </head>
 <body>
-    <div class="presentation-container">
-        <div class="slide active" id="slide20">
-            <h1>Velocity MG: Built for the AI-First Era</h1>
-            
-            <div class="content-grid">
-                <!-- Top row -->
-                <div class="section-box vision-box">
-                    <div class="box-title">Vision</div>
-                    <div class="box-content">
+<div class="presentation-container">
+<div class="slide active" id="slide20">
+<h1>Velocity MG: Built for the AI-First Era</h1>
+<div class="content-grid">
+<!-- Top row -->
+<div class="section-box vision-box">
+<div class="box-title">Vision</div>
+<div class="box-content">
                         "A world where every business achieves Velocity Made Good through strategic AI adoption"
                     </div>
-                </div>
-                
-                <div class="section-box mission-box">
-                    <div class="box-title">Mission</div>
-                    <div class="box-content">
+</div>
+<div class="section-box mission-box">
+<div class="box-title">Mission</div>
+<div class="box-content">
                         "We guide customers to harness AI's transformative power while ensuring it propels them toward their true business goals, delivering enterprise-grade consulting through AI-powered models at accessible prices"
                     </div>
-                </div>
-                
-                <!-- Middle row -->
-                <div class="section-box strategy-box">
-                    <div class="box-title">Strategy</div>
-                    <ol class="strategy-list">
-                        <li class="strategy-item">Strategic alignment first, technology second</li>
-                        <li class="strategy-item">AI-powered operations enabling 70% cost efficiency</li>
-                        <li class="strategy-item">Measurable progress toward business goals</li>
-                        <li class="strategy-item">Continuous optimization with VMG tracking</li>
-                    </ol>
-                </div>
-                
-                <div class="section-box values-box">
-                    <div class="box-title">Core Values</div>
-                    <div class="values-grid">
-                        <div class="value-item">
-                            <div class="value-icon">N</div>
-                            <div class="value-text">
-                                <div class="value-name">Navigation</div>
-                                <div class="value-desc">Guide clients to their true destination</div>
-                            </div>
-                        </div>
-                        <div class="value-item">
-                            <div class="value-icon">A</div>
-                            <div class="value-text">
-                                <div class="value-name">Alignment</div>
-                                <div class="value-desc">Technology serves strategy</div>
-                            </div>
-                        </div>
-                        <div class="value-item">
-                            <div class="value-icon">A</div>
-                            <div class="value-text">
-                                <div class="value-name">Accessibility</div>
-                                <div class="value-desc">Enterprise wisdom for every business</div>
-                            </div>
-                        </div>
-                        <div class="value-item">
-                            <div class="value-icon">T</div>
-                            <div class="value-text">
-                                <div class="value-name">Transparency</div>
-                                <div class="value-desc">Clear metrics, no black boxes</div>
-                            </div>
-                        </div>
-                        <div class="value-item">
-                            <div class="value-icon">I</div>
-                            <div class="value-text">
-                                <div class="value-name">Impact</div>
-                                <div class="value-desc">Success by reaching goals</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Bottom row spans both columns -->
-                <div class="why-now-section">
-                    <div class="why-now-title">Why Now?</div>
-                    <div class="why-now-item">McKinsey predicts consultants evolving into "superagents"—human experts augmented by AI<span class="citation">²⁰</span></div>
-                    <div class="why-now-item">The future belongs to firms that master the "orchestration layer" combining human insight with AI capability<span class="citation">²¹</span></div>
-                    <div class="why-now-item">Traditional pyramid model collapsing as AI automates routine analysis<span class="citation">²²</span></div>
-                </div>
-            </div>
-            
-            <div class="references-note">*See References slide for full citations</div>
-        </div>
-    </div>
+</div>
+<!-- Middle row -->
+<div class="section-box strategy-box">
+<div class="box-title">Strategy</div>
+<ol class="strategy-list">
+<li class="strategy-item">Strategic alignment first, technology second</li>
+<li class="strategy-item">AI-powered operations enabling 70% cost efficiency</li>
+<li class="strategy-item">Measurable progress toward business goals</li>
+<li class="strategy-item">Continuous optimization with VMG tracking</li>
+</ol>
+</div>
+<div class="section-box values-box">
+<div class="box-title">Core Values</div>
+<div class="values-grid">
+<div class="value-item">
+<div class="value-icon">N</div>
+<div class="value-text">
+<div class="value-name">Navigation</div>
+<div class="value-desc">Guide clients to their true destination</div>
+</div>
+</div>
+<div class="value-item">
+<div class="value-icon">A</div>
+<div class="value-text">
+<div class="value-name">Alignment</div>
+<div class="value-desc">Technology serves strategy</div>
+</div>
+</div>
+<div class="value-item">
+<div class="value-icon">A</div>
+<div class="value-text">
+<div class="value-name">Accessibility</div>
+<div class="value-desc">Enterprise wisdom for every business</div>
+</div>
+</div>
+<div class="value-item">
+<div class="value-icon">T</div>
+<div class="value-text">
+<div class="value-name">Transparency</div>
+<div class="value-desc">Clear metrics, no black boxes</div>
+</div>
+</div>
+<div class="value-item">
+<div class="value-icon">I</div>
+<div class="value-text">
+<div class="value-name">Impact</div>
+<div class="value-desc">Success by reaching goals</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom row spans both columns -->
+<div class="why-now-section">
+<div class="why-now-title">Why Now?</div>
+<div class="why-now-item">McKinsey predicts consultants evolving into "superagents"—human experts augmented by AI<span class="citation">²⁰</span></div>
+<div class="why-now-item">The future belongs to firms that master the "orchestration layer" combining human insight with AI capability<span class="citation">²¹</span></div>
+<div class="why-now-item">Traditional pyramid model collapsing as AI automates routine analysis<span class="citation">²²</span></div>
+</div>
+</div>
+<div class="references-note">*See References slide for full citations</div>
+</div>
+</div>
+
+<nav class="slide-navigation">
+<a class="nav-prev" href="05_competitive_landscape.html">← Previous</a>
+<div class="nav-center">
+<a class="nav-home" href="../index.html">☰ Contents</a>
+<span class="nav-counter">Slide 6 of 23</span>
+</div>
+<a class="nav-next" href="07_porters_five_forces.html">Next →</a>
+</nav>
+
+<script>
+        document.addEventListener('keydown', function(e) {
+            switch(e.key) {
+                case 'ArrowLeft':
+                    const prevLink = document.querySelector('.nav-prev:not(.nav-disabled)');
+                    if (prevLink) prevLink.click();
+                    break;
+                case 'ArrowRight':
+                case ' ':
+                    e.preventDefault();
+                    const nextLink = document.querySelector('.nav-next:not(.nav-disabled)');
+                    if (nextLink) nextLink.click();
+                    break;
+                case 'Home':
+                    e.preventDefault();
+                    document.querySelector('.nav-home').click();
+                    break;
+                case 'f':
+                case 'F':
+                    if (document.fullscreenElement) {
+                        document.exitFullscreen();
+                    } else {
+                        document.documentElement.requestFullscreen();
+                    }
+                    break;
+            }
+        });
+    </script>
 </body>
 </html>

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Velocity MG: Making Good on AI's Promise</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #f5f5f5;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .slide {
+            display: none;
+            width: 100vw;
+            height: 100vh;
+            padding: 3vh 4vw;
+            background: white;
+            position: relative;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+        
+        h1 {
+            font-size: 3.2vw;
+            margin-bottom: 1vh;
+            color: #1a1a1a;
+            text-align: center;
+            font-weight: 300;
+            letter-spacing: -0.5px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .tagline {
+            text-align: center;
+            color: #666;
+            font-size: 1.3vw;
+            margin-bottom: 3vh;
+            font-style: italic;
+            animation: fadeInDown 0.8s ease-out 0.2s both;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2vw;
+            margin-bottom: 3vh;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .summary-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2vh 1.8vw;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .summary-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #0076a8, #00a74f);
+        }
+
+        .summary-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .card-icon {
+            font-size: 2.5vw;
+            margin-bottom: 1vh;
+            display: block;
+            text-align: center;
+        }
+
+        .card-title {
+            color: #0076a8;
+            font-size: 1.3vw;
+            font-weight: 600;
+            margin-bottom: 1vh;
+            text-align: center;
+        }
+
+        .card-content {
+            font-size: 1vw;
+            color: #555;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        .highlight-number {
+            font-size: 2.2vw;
+            font-weight: 700;
+            background: linear-gradient(135deg, #0076a8, #00a74f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: block;
+            margin: 0.5vh 0;
+        }
+
+        .key-insight {
+            background: linear-gradient(135deg, rgba(0, 118, 168, 0.08) 0%, rgba(0, 167, 79, 0.08) 100%);
+            border-left: 4px solid #00a74f;
+            border-radius: 10px;
+            padding: 2vh 2vw;
+            margin: 3vh 0;
+            animation: scaleIn 0.8s ease-out 0.6s both;
+        }
+
+        .insight-text {
+            font-size: 1.2vw;
+            color: #333;
+            line-height: 1.7;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .insight-text strong {
+            color: #0076a8;
+            font-weight: 700;
+        }
+
+        .references-note {
+            position: absolute;
+            bottom: 2vh;
+            right: 4vw;
+            font-size: 0.8vw;
+            color: #999;
+            font-style: italic;
+        }
+
+        .market-growth {
+            font-size: 0.9vw;
+            color: #666;
+            margin-top: 0.5vh;
+        }
+
+        .success-rate {
+            color: #dc3545;
+            font-weight: 600;
+        }
+
+        .solution-highlight {
+            background: rgba(0, 167, 79, 0.1);
+            padding: 0.2vh 0.4vw;
+            border-radius: 4px;
+            color: #00a74f;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="slide active" id="slide16">
+            <h1>Velocity MG: Making Good on AI's Promise</h1>
+            <div class="tagline">Ensuring Your AI Journey Reaches Its True Destination</div>
+            
+            <div class="summary-grid">
+                <div class="summary-card">
+                    <span class="card-icon">📈</span>
+                    <div class="card-title">AI Consulting Market Explosion</div>
+                    <div class="card-content">
+                        <span class="highlight-number">$8.8B → $257B</span>
+                        <div class="market-growth">2024 to 2033 projection</div>
+                        Global AI consulting services market experiencing unprecedented growth
+                    </div>
+                </div>
+                
+                <div class="summary-card">
+                    <span class="card-icon">⚙️</span>
+                    <div class="card-title">Strategic Alignment Crisis</div>
+                    <div class="card-content">
+                        <span class="highlight-number">67%</span>
+                        of AI projects struggle to achieve full strategic alignment
+                        <div class="market-growth">Only <span class="success-rate">30%</span> deemed fully successful</div>
+                    </div>
+                </div>
+                
+                <div class="summary-card">
+                    <span class="card-icon">🚀</span>
+                    <div class="card-title">Velocity MG Solution</div>
+                    <div class="card-content">
+                        <span class="solution-highlight">AI-Powered Consulting</span>
+                        <div style="margin-top: 1vh;">
+                            Enterprise expertise at revolutionary prices through 70% AI efficiency
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="key-insight">
+                <div class="insight-text">
+                    <strong>Velocity MG</strong> is well-positioned to capitalize on the explosive growth in the AI consulting market by offering a unique, AI-powered solution that helps SMBs achieve <strong>measurable progress</strong> toward their strategic goals.
+                </div>
+            </div>
+            
+            <div class="references-note">*See References slide for full citations</div>
+        </div>
+    </div>
+</body>
+</html>

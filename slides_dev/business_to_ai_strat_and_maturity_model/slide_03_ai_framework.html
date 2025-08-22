@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VMG's AI Strategy Framework</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #f5f5f5;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .slide {
+            display: none;
+            width: 100vw;
+            height: 100vh;
+            padding: 3vh 4vw;
+            background: white;
+            position: relative;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.95);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        h1 {
+            font-size: 2.8vw;
+            margin-bottom: 1vh;
+            color: #1a1a1a;
+            text-align: center;
+            font-weight: 300;
+            letter-spacing: -0.5px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.5vw;
+            margin-bottom: 3vh;
+            font-weight: 500;
+            animation: fadeInDown 0.8s ease-out 0.2s both;
+        }
+
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeInUp 0.8s ease-out 0.3s both;
+        }
+
+        .framework-container {
+            display: flex;
+            gap: 2vw;
+            width: 95%;
+            max-width: 95vw;
+            justify-content: space-between;
+            margin-top: 2vh;
+        }
+
+        .framework-pillar {
+            flex: 1;
+            background: white;
+            border-radius: 15px;
+            padding: 2vh 1.5vw;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            animation: scaleIn 0.6s ease-out backwards;
+        }
+
+        .framework-pillar:nth-child(1) { 
+            animation-delay: 0.5s; 
+            border-top: 4px solid #0076a8;
+        }
+        
+        .framework-pillar:nth-child(2) { 
+            animation-delay: 0.7s; 
+            border-top: 4px solid #00a74f;
+        }
+        
+        .framework-pillar:nth-child(3) { 
+            animation-delay: 0.9s; 
+            border-top: 4px solid #f39c12;
+        }
+
+        .framework-pillar:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+
+        .pillar-header {
+            text-align: center;
+            margin-bottom: 2vh;
+            position: relative;
+        }
+
+        .pillar-number {
+            display: inline-block;
+            width: 3vw;
+            height: 3vw;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.2vw;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1vh;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .framework-pillar:nth-child(1) .pillar-number {
+            background: linear-gradient(135deg, #0076a8, #005a85);
+        }
+
+        .framework-pillar:nth-child(2) .pillar-number {
+            background: linear-gradient(135deg, #00a74f, #008940);
+        }
+
+        .framework-pillar:nth-child(3) .pillar-number {
+            background: linear-gradient(135deg, #f39c12, #d68910);
+        }
+
+        .pillar-title {
+            font-size: 1.3vw;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 0.5vh;
+        }
+
+        .pillar-subtitle {
+            font-size: 1.15vw;
+            color: #666;
+            font-weight: 500;
+            font-style: italic;
+        }
+
+        .pillar-content {
+            margin-top: 1.5vh;
+        }
+
+        .capability-item {
+            background: white;
+            border-radius: 8px;
+            padding: 2vh 1.5vw;
+            margin-bottom: 1.5vh;
+            position: relative;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .framework-pillar:nth-child(1) .capability-item {
+            border-left-color: #0076a8;
+        }
+
+        .framework-pillar:nth-child(2) .capability-item {
+            border-left-color: #00a74f;
+        }
+
+        .framework-pillar:nth-child(3) .capability-item {
+            border-left-color: #f39c12;
+        }
+
+        .capability-item:hover {
+            background: rgba(240, 240, 240, 0.8);
+            transform: translateX(5px);
+        }
+
+        .capability-name {
+            font-size: 1.15vw;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.3vh;
+        }
+
+        .capability-desc {
+            font-size: 1vw;
+            color: #555;
+            line-height: 1.4;
+        }
+
+        /* Background gradient accents */
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 15vh;
+            background: linear-gradient(135deg, 
+                rgba(0,118,168,0.03) 0%, 
+                rgba(0,167,79,0.03) 50%, 
+                rgba(243,156,18,0.03) 100%);
+            z-index: -1;
+        }
+
+        /* Connecting lines between pillars */
+        .framework-container::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 33%;
+            right: 33%;
+            height: 2px;
+            background: linear-gradient(to right, 
+                rgba(0,118,168,0.3), 
+                rgba(0,167,79,0.3), 
+                rgba(243,156,18,0.3));
+            z-index: -1;
+            border-radius: 2px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 1.2s forwards;
+        }
+
+        .references-note {
+            position: absolute;
+            bottom: 2vh;
+            right: 4vw;
+            font-size: 0.8vw;
+            color: #999;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="slide active" id="slide03">
+            <h1>VMG's AI Strategy Framework</h1>
+            <div class="subtitle">Our Integrated Approach</div>
+            
+            <div class="content-wrapper">
+                <div class="framework-container">
+                    <!-- Pillar 1: Internal Excellence -->
+                    <div class="framework-pillar">
+                        <div class="pillar-header">
+                            <div class="pillar-number">1</div>
+                            <div class="pillar-title">Internal Excellence</div>
+                            <div class="pillar-subtitle">How We Operate</div>
+                        </div>
+                        <div class="pillar-content">
+                            <div class="capability-item">
+                                <div class="capability-name">Operational AI</div>
+                                <div class="capability-desc">Automate routine consulting tasks</div>
+                            </div>
+                            <div class="capability-item">
+                                <div class="capability-name">Analytical AI</div>
+                                <div class="capability-desc">Extract insights from engagement data</div>
+                            </div>
+                            <div class="capability-item">
+                                <div class="capability-name">Generative AI</div>
+                                <div class="capability-desc">Create customized deliverables at scale</div>
+                            </div>
+                            <div class="capability-item">
+                                <div class="capability-name">Predictive AI</div>
+                                <div class="capability-desc">Forecast outcomes and optimize resources</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pillar 2: Client Value Delivery -->
+                    <div class="framework-pillar">
+                        <div class="pillar-header">
+                            <div class="pillar-number">2</div>
+                            <div class="pillar-title">Client Value Delivery</div>
+                            <div class="pillar-subtitle">What We Provide</div>
+                        </div>
+                        <div class="pillar-content">
+                            <div class="capability-item">
+                                <div class="capability-name">Assessment AI</div>
+                                <div class="capability-desc">Rapid, accurate maturity evaluation</div>
+                            </div>
+                            <div class="capability-item">
+                                <div class="capability-name">Strategy AI</div>
+                                <div class="capability-desc">Personalized roadmap generation</div>
+                            </div>
+                            <div class="capability-item">
+                                <div class="capability-name">Monitoring AI</div>
+                                <div class="capability-desc">Continuous progress tracking</div>
+                            </div>
+                            <div class="capability-item">
+                                <div class="capability-name">Optimization AI</div>
+                                <div class="capability-desc">Real-time course correction</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pillar 3: Platform Innovation -->
+                    <div class="framework-pillar">
+                        <div class="pillar-header">
+                            <div class="pillar-number">3</div>
+                            <div class="pillar-title">Platform Innovation</div>
+                            <div class="pillar-subtitle">How We Scale</div>
+                        </div>
+                        <div class="pillar-content">
+                            <div class="capability-item">
+                                <div class="capability-name">Self-Service Tools</div>
+                                <div class="capability-desc">AI-powered assessments clients can run</div>
+                            </div>
+                            <div class="capability-item">
+                                <div class="capability-name">Partner Portal</div>
+                                <div class="capability-desc">White-label VMG methodology</div>
+                            </div>
+                            <div class="capability-item">
+                                <div class="capability-name">Knowledge Platform</div>
+                                <div class="capability-desc">Continuously learning system</div>
+                            </div>
+                            <div class="capability-item">
+                                <div class="capability-name">Community Intelligence</div>
+                                <div class="capability-desc">Aggregate insights from all clients</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

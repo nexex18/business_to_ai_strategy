@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Impact vs Implementation Ease - Priority Matrix</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #f5f5f5;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .slide {
+            display: none;
+            width: 100vw;
+            height: 100vh;
+            padding: 3vh 4vw;
+            background: white;
+            position: relative;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        h1 {
+            font-size: 3vw;
+            margin-bottom: 3vh;
+            color: #1a1a1a;
+            text-align: center;
+            font-weight: 300;
+            letter-spacing: -0.5px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .matrix-container {
+            display: flex;
+            gap: 3vw;
+            animation: fadeInUp 0.8s ease-out 0.3s both;
+        }
+
+        .chart-container {
+            flex: 1.5;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 2vh 2vw;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .legend-container {
+            flex: 1;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 2vh 2vw;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .legend-title {
+            font-size: 1.4vw;
+            font-weight: 600;
+            color: #0076a8;
+            margin-bottom: 2vh;
+            text-align: center;
+        }
+
+        .initiative-item {
+            display: flex;
+            align-items: center;
+            padding: 1vh 1vw;
+            margin-bottom: 1.5vh;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .initiative-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+        }
+
+        .initiative-color {
+            width: 1.5vw;
+            height: 1.5vw;
+            border-radius: 50%;
+            margin-right: 1vw;
+            flex-shrink: 0;
+        }
+
+        .initiative-name {
+            font-size: 1.1vw;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.3vh;
+        }
+
+        .initiative-scores {
+            font-size: 0.9vw;
+            color: #666;
+        }
+
+        .priority-high { background: rgba(0, 118, 168, 0.1); }
+        .priority-medium { background: rgba(255, 145, 0, 0.1); }
+        .priority-low { background: rgba(211, 47, 47, 0.1); }
+
+        .quadrant-labels {
+            position: absolute;
+            font-size: 1vw;
+            font-weight: 600;
+            color: #666;
+            opacity: 0.7;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1400px) {
+            .legend-title {
+                font-size: 1.5vw;
+            }
+            
+            .initiative-name {
+                font-size: 1.2vw;
+            }
+            
+            .initiative-scores {
+                font-size: 1vw;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .matrix-container {
+                flex-direction: column;
+                gap: 3vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="slide active" id="slide13">
+            <h1>Business Impact vs Implementation Ease - Priority Matrix</h1>
+            
+            <div class="matrix-container">
+                <div class="chart-container">
+                    <div id="priorityMatrix" style="width:100%;height:65vh;"></div>
+                </div>
+                
+                <div class="legend-container">
+                    <div class="legend-title">Initiative Priorities</div>
+                    
+                    <div class="initiative-item priority-high">
+                        <div class="initiative-color" style="background: #0076a8;"></div>
+                        <div>
+                            <div class="initiative-name">Content Generation Platform <span style="background: #00a74f; color: white; padding: 0.2vh 0.5vw; border-radius: 4px; font-size: 0.9vw; margin-left: 0.5vw;">START HERE</span></div>
+                            <div class="initiative-scores">Impact: 10 | Ease: 8 | Total: 18</div>
+                        </div>
+                    </div>
+                    
+                    <div class="initiative-item priority-medium">
+                        <div class="initiative-color" style="background: #ff9100;"></div>
+                        <div>
+                            <div class="initiative-name">Discovery & Assessment Suite</div>
+                            <div class="initiative-scores">Impact: 9 | Ease: 6 | Total: 15</div>
+                        </div>
+                    </div>
+                    
+                    <div class="initiative-item priority-medium">
+                        <div class="initiative-color" style="background: #00a74f;"></div>
+                        <div>
+                            <div class="initiative-name">Client Success Command Center</div>
+                            <div class="initiative-scores">Impact: 8 | Ease: 7 | Total: 15</div>
+                        </div>
+                    </div>
+                    
+                    <div class="initiative-item priority-medium">
+                        <div class="initiative-color" style="background: #9c27b0;"></div>
+                        <div>
+                            <div class="initiative-name">Continuous Intelligence Monitor</div>
+                            <div class="initiative-scores">Impact: 9 | Ease: 5 | Total: 14</div>
+                        </div>
+                    </div>
+                    
+                    <div class="initiative-item priority-low">
+                        <div class="initiative-color" style="background: #d32f2f;"></div>
+                        <div>
+                            <div class="initiative-name">Knowledge Amplification System</div>
+                            <div class="initiative-scores">Impact: 7 | Ease: 4 | Total: 11</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const initiatives = [
+                {
+                    name: 'Content Generation<br>Platform',
+                    x: 8,
+                    y: 10,
+                    color: '#0076a8',
+                    size: 25
+                },
+                {
+                    name: 'Discovery &<br>Assessment Suite',
+                    x: 6,
+                    y: 9,
+                    color: '#ff9100',
+                    size: 22
+                },
+                {
+                    name: 'Client Success<br>Command Center',
+                    x: 7,
+                    y: 8,
+                    color: '#00a74f',
+                    size: 20
+                },
+                {
+                    name: 'Continuous<br>Intelligence Monitor',
+                    x: 5,
+                    y: 9,
+                    color: '#9c27b0',
+                    size: 22
+                },
+                {
+                    name: 'Knowledge<br>Amplification System',
+                    x: 4,
+                    y: 7,
+                    color: '#d32f2f',
+                    size: 18
+                }
+            ];
+
+            const trace = {
+                x: initiatives.map(i => i.x),
+                y: initiatives.map(i => i.y),
+                text: initiatives.map(i => i.name),
+                mode: 'markers+text',
+                type: 'scatter',
+                textposition: 'bottom center',
+                textfont: {
+                    color: 'black',
+                    size: 11,
+                    family: 'Arial, sans-serif'
+                },
+                marker: {
+                    size: initiatives.map(i => i.size),
+                    color: initiatives.map(i => i.color),
+                    line: {
+                        color: 'white',
+                        width: 2
+                    }
+                },
+                hovertemplate: '<b>%{text}</b><br>Implementation Ease: %{x}<br>Business Impact: %{y}<extra></extra>'
+            };
+
+            const layout = {
+                title: '',
+                xaxis: {
+                    title: {
+                        text: 'Implementation Ease →',
+                        font: { size: 14, color: '#333' }
+                    },
+                    range: [3, 9],
+                    gridcolor: '#e8e8e8',
+                    tickfont: { size: 12, color: '#666' }
+                },
+                yaxis: {
+                    title: {
+                        text: 'Business Impact →',
+                        font: { size: 14, color: '#333' }
+                    },
+                    range: [6, 11],
+                    gridcolor: '#e8e8e8',
+                    tickfont: { size: 12, color: '#666' }
+                },
+                plot_bgcolor: '#fafafa',
+                paper_bgcolor: 'white',
+                font: {
+                    family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+                },
+                showlegend: false,
+                margin: { t: 20, r: 20, b: 80, l: 80 },
+                shapes: [
+                    {
+                        type: 'rect',
+                        xref: 'x',
+                        yref: 'y',
+                        x0: 7,
+                        y0: 8.5,
+                        x1: 9,
+                        y1: 11,
+                        fillcolor: 'rgba(0, 118, 168, 0.1)',
+                        line: { width: 0 }
+                    }
+                ],
+                annotations: [
+                    {
+                        x: 8,
+                        y: 10.7,
+                        text: 'Quick Wins<br>(High Impact, Easy)',
+                        showarrow: false,
+                        font: { size: 10, color: '#0076a8' }
+                    }
+                ]
+            };
+
+            const config = {
+                displayModeBar: false,
+                responsive: true
+            };
+
+            Plotly.newPlot('priorityMatrix', [trace], layout, config);
+            
+            console.log('Priority matrix chart created successfully');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Agenda</title>
+<style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #f5f5f5;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .slide {
+            display: none;
+            width: 100vw;
+            height: 100vh;
+            padding: 3vh 4vw;
+            background: white;
+            position: relative;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        
+        h1 {
+            font-size: 3vw;
+            margin-bottom: 3vh;
+            color: #1a1a1a;
+            text-align: center;
+            font-weight: 300;
+            letter-spacing: -0.5px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .agenda-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+
+        .agenda-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1vh;
+            padding: 0 10vw;
+            width: 100%;
+            max-width: 100vw;
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 0.8s ease-out 0.3s both;
+        }
+
+        .agenda-item {
+            background: white;
+            border-radius: 10px;
+            padding: 1.2vh 2vw;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border-left: 4px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 1.5vw;
+            animation: slideInLeft 0.6s ease-out backwards;
+        }
+
+        /* Color progression for borders */
+        .agenda-item:nth-child(1) { animation-delay: 0.4s; border-left-color: #d73502; }
+        .agenda-item:nth-child(2) { animation-delay: 0.5s; border-left-color: #cb5a00; }
+        .agenda-item:nth-child(3) { animation-delay: 0.6s; border-left-color: #bf7800; }
+        .agenda-item:nth-child(4) { animation-delay: 0.7s; border-left-color: #b39000; }
+        .agenda-item:nth-child(5) { animation-delay: 0.8s; border-left-color: #97a000; }
+        .agenda-item:nth-child(6) { animation-delay: 0.9s; border-left-color: #7aad00; }
+        .agenda-item:nth-child(7) { animation-delay: 1.0s; border-left-color: #5cb600; }
+        .agenda-item:nth-child(8) { animation-delay: 1.1s; border-left-color: #3dbd00; }
+        .agenda-item:nth-child(9) { animation-delay: 1.2s; border-left-color: #1dc200; }
+        .agenda-item:nth-child(10) { animation-delay: 1.3s; border-left-color: #00c624; }
+
+        .agenda-item:hover {
+            transform: translateX(5px) scale(1.02);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.12);
+        }
+
+        .agenda-number {
+            width: 2.2vw;
+            height: 2.2vw;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1vw;
+            font-weight: 700;
+            flex-shrink: 0;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+        }
+        
+        /* Color progression for number backgrounds */
+        .agenda-item:nth-child(1) .agenda-number { background: linear-gradient(135deg, #d73502, #e04512); }
+        .agenda-item:nth-child(2) .agenda-number { background: linear-gradient(135deg, #cb5a00, #d56a10); }
+        .agenda-item:nth-child(3) .agenda-number { background: linear-gradient(135deg, #bf7800, #c98810); }
+        .agenda-item:nth-child(4) .agenda-number { background: linear-gradient(135deg, #b39000, #bda010); }
+        .agenda-item:nth-child(5) .agenda-number { background: linear-gradient(135deg, #97a000, #a1aa10); }
+        .agenda-item:nth-child(6) .agenda-number { background: linear-gradient(135deg, #7aad00, #84b710); }
+        .agenda-item:nth-child(7) .agenda-number { background: linear-gradient(135deg, #5cb600, #66c010); }
+        .agenda-item:nth-child(8) .agenda-number { background: linear-gradient(135deg, #3dbd00, #47c710); }
+        .agenda-item:nth-child(9) .agenda-number { background: linear-gradient(135deg, #1dc200, #27cc10); }
+        .agenda-item:nth-child(10) .agenda-number { background: linear-gradient(135deg, #00c624, #10d034); }
+
+        .agenda-content {
+            flex: 1;
+        }
+
+        .agenda-title {
+            font-size: 1vw;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0;
+        }
+
+        .agenda-description {
+            font-size: 0.8vw;
+            color: #666;
+            line-height: 1.3;
+        }
+
+        /* Progress bar at bottom */
+        .progress-indicator {
+            margin-top: 2vh;
+            width: 50vw;
+            height: 0.6vh;
+            background: #f0f0f0;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #d73502 0%, #cb5a00 10%, #bf7800 20%, #b39000 30%, #97a000 40%, #7aad00 50%, #5cb600 60%, #3dbd00 70%, #1dc200 80%, #00c624 100%);
+            width: 0;
+            animation: fillProgress 3s ease-out 0.5s forwards;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 198, 36, 0.3);
+        }
+
+        @keyframes fillProgress {
+            to {
+                width: 100%;
+            }
+        }
+
+        /* Connection dots between items */
+        .connection-dot {
+            position: absolute;
+            width: 0.5vw;
+            height: 0.5vw;
+            border-radius: 50%;
+            background: rgba(150, 150, 150, 0.3);
+            opacity: 0;
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+    </style>
+
+<style>
+        .slide-navigation {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            z-index: 1000;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .nav-prev, .nav-next {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background 0.3s;
+            font-weight: 600;
+            font-size: 16px;
+        }
+        
+        .nav-prev:hover, .nav-next:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+        
+        .nav-center {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+        
+        .nav-home {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        .nav-home:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .nav-counter {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+        }
+        
+        /* Adjust slide container to account for navigation */
+        .presentation-container, .slide {
+            padding-bottom: 80px !important;
+        }
+    </style>
+</head>
+<body>
+<div class="presentation-container">
+<div class="slide active" id="slide02">
+<h1>Agenda</h1>
+<div class="agenda-wrapper">
+<div class="agenda-container">
+<div class="agenda-item">
+<div class="agenda-number">1</div>
+<div class="agenda-content">
+<div class="agenda-title">Velocity MG Background</div>
+<div class="agenda-description">Our foundation and vision for AI transformation</div>
+</div>
+</div>
+<div class="agenda-item">
+<div class="agenda-number">2</div>
+<div class="agenda-content">
+<div class="agenda-title">Competitive Landscape</div>
+<div class="agenda-description">Understanding the current market dynamics</div>
+</div>
+</div>
+<div class="agenda-item">
+<div class="agenda-number">3</div>
+<div class="agenda-content">
+<div class="agenda-title">Internal Assessment</div>
+<div class="agenda-description">Our strengths and capabilities</div>
+</div>
+</div>
+<div class="agenda-item">
+<div class="agenda-number">4</div>
+<div class="agenda-content">
+<div class="agenda-title">Opportunities</div>
+<div class="agenda-description">Market gaps and growth potential</div>
+</div>
+</div>
+<div class="agenda-item">
+<div class="agenda-number">5</div>
+<div class="agenda-content">
+<div class="agenda-title">Business and AI Strategies</div>
+<div class="agenda-description">Aligning technology with business objectives</div>
+</div>
+</div>
+<div class="agenda-item">
+<div class="agenda-number">6</div>
+<div class="agenda-content">
+<div class="agenda-title">AI Maturity</div>
+<div class="agenda-description">Framework for assessing readiness</div>
+</div>
+</div>
+<div class="agenda-item">
+<div class="agenda-number">7</div>
+<div class="agenda-content">
+<div class="agenda-title">AI Initiatives</div>
+<div class="agenda-description">Key projects and implementations</div>
+</div>
+</div>
+<div class="agenda-item">
+<div class="agenda-number">8</div>
+<div class="agenda-content">
+<div class="agenda-title">Financial Analysis</div>
+<div class="agenda-description">ROI projections and investment strategy</div>
+</div>
+</div>
+<div class="agenda-item">
+<div class="agenda-number">9</div>
+<div class="agenda-content">
+<div class="agenda-title">Timeline</div>
+<div class="agenda-description">Implementation roadmap and milestones</div>
+</div>
+</div>
+<div class="agenda-item">
+<div class="agenda-number">10</div>
+<div class="agenda-content">
+<div class="agenda-title">Risks and Mitigation Strategies</div>
+<div class="agenda-description">Proactive approach to challenges</div>
+</div>
+</div>
+</div>
+<!-- Progress bar at bottom -->
+<div class="progress-indicator">
+<div class="progress-fill"></div>
+</div>
+</div>
+</div>
+</div>
+
+<nav class="slide-navigation">
+<a class="nav-prev" href="01_title.html">← Previous</a>
+<div class="nav-center">
+<a class="nav-home" href="../index.html">☰ Contents</a>
+<span class="nav-counter">Slide 2 of 23</span>
+</div>
+<a class="nav-next" href="03_executive_summary.html">Next →</a>
+</nav>
+
+<script>
+        document.addEventListener('keydown', function(e) {
+            switch(e.key) {
+                case 'ArrowLeft':
+                    const prevLink = document.querySelector('.nav-prev:not(.nav-disabled)');
+                    if (prevLink) prevLink.click();
+                    break;
+                case 'ArrowRight':
+                case ' ':
+                    e.preventDefault();
+                    const nextLink = document.querySelector('.nav-next:not(.nav-disabled)');
+                    if (nextLink) nextLink.click();
+                    break;
+                case 'Home':
+                    e.preventDefault();
+                    document.querySelector('.nav-home').click();
+                    break;
+                case 'f':
+                case 'F':
+                    if (document.fullscreenElement) {
+                        document.exitFullscreen();
+                    } else {
+                        document.documentElement.requestFullscreen();
+                    }
+                    break;
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Key Differentiators from Traditional Consulting</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #f5f5f5;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .slide {
+            display: none;
+            width: 100vw;
+            height: 100vh;
+            padding: 3vh 4vw;
+            background: white;
+            position: relative;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        h1 {
+            font-size: 2.8vw;
+            margin-bottom: 2vh;
+            color: #1a1a1a;
+            text-align: center;
+            font-weight: 300;
+            letter-spacing: -0.5px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeInUp 0.8s ease-out 0.3s both;
+        }
+
+        .differentiators-table {
+            width: 95%;
+            max-width: 95vw;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            margin-top: 2vh;
+        }
+
+        .differentiators-table thead {
+            background: linear-gradient(135deg, #0076a8, #00a74f, #f39c12);
+            color: white;
+        }
+
+        .differentiators-table thead th {
+            padding: 2.5vh 1.5vw;
+            font-weight: 600;
+            font-size: 1.3vw;
+            text-align: left;
+            border: none;
+        }
+
+        .differentiators-table tbody tr {
+            transition: all 0.3s ease;
+            animation: slideInLeft 0.6s ease-out backwards;
+        }
+
+        .differentiators-table tbody tr:nth-child(1) { animation-delay: 0.5s; }
+        .differentiators-table tbody tr:nth-child(2) { animation-delay: 0.7s; }
+        .differentiators-table tbody tr:nth-child(3) { animation-delay: 0.9s; }
+
+        .differentiators-table tbody tr:hover {
+            transform: scale(1.01);
+            box-shadow: 0 5px 15px rgba(0,167,79,0.15);
+        }
+
+        .differentiators-table td {
+            padding: 2.5vh 1.5vw;
+            border-bottom: 2px solid #e8e8e8;
+            vertical-align: top;
+            font-size: 1vw;
+            line-height: 1.4;
+        }
+
+        .differentiators-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .ai-type-name {
+            font-weight: 700;
+            color: #333;
+            font-size: 1.3vw;
+            margin-bottom: 0.5vh;
+        }
+
+        .traditional-approach {
+            color: #666;
+            font-size: 1vw;
+            font-weight: 500;
+            background: rgba(255, 193, 7, 0.1);
+            border-left: 4px solid #ffc107;
+            padding: 1.5vh 1vw;
+            border-radius: 6px;
+            margin-bottom: 0.5vh;
+        }
+
+        .vmg-approach {
+            color: #0076a8;
+            font-size: 1vw;
+            font-weight: 600;
+            background: rgba(0, 118, 168, 0.1);
+            border-left: 4px solid #0076a8;
+            padding: 1.5vh 1vw;
+            border-radius: 6px;
+            margin-bottom: 0.5vh;
+        }
+
+        .client-value {
+            color: #00a74f;
+            font-size: 1vw;
+            font-weight: 700;
+            background: rgba(0, 167, 79, 0.1);
+            border-left: 4px solid #00a74f;
+            padding: 1.5vh 1vw;
+            border-radius: 6px;
+        }
+
+        /* Row-specific colors for AI types */
+        .differentiators-table tbody tr:nth-child(1) {
+            border-left: 6px solid #0076a8;
+        }
+
+        .differentiators-table tbody tr:nth-child(1) .ai-type-name {
+            color: #0076a8;
+        }
+
+        .differentiators-table tbody tr:nth-child(2) {
+            border-left: 6px solid #00a74f;
+        }
+
+        .differentiators-table tbody tr:nth-child(2) .ai-type-name {
+            color: #00a74f;
+        }
+
+        .differentiators-table tbody tr:nth-child(3) {
+            border-left: 6px solid #f39c12;
+        }
+
+        .differentiators-table tbody tr:nth-child(3) .ai-type-name {
+            color: #f39c12;
+        }
+
+        /* Background gradient accent */
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 12vh;
+            background: linear-gradient(135deg, 
+                rgba(0,118,168,0.03) 0%, 
+                rgba(0,167,79,0.03) 50%, 
+                rgba(243,156,18,0.03) 100%);
+            z-index: -1;
+        }
+
+        /* Subtle pattern overlay */
+        .slide::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 80%, rgba(0,118,168,0.02) 0%, transparent 50%),
+                        radial-gradient(circle at 50% 20%, rgba(0,167,79,0.02) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(243,156,18,0.02) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        .references-note {
+            position: absolute;
+            bottom: 2vh;
+            right: 4vw;
+            font-size: 1vw;
+            color: #999;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="slide active" id="slide09">
+            <h1>Key Differentiators from Traditional Consulting</h1>
+            
+            <div class="content-wrapper">
+                <table class="differentiators-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 15%;">AI Type</th>
+                            <th style="width: 30%;">Traditional Consulting</th>
+                            <th style="width: 30%;">VMG AI-Powered Approach</th>
+                            <th style="width: 25%;">Client Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="ai-type-name">Predictive</div>
+                            </td>
+                            <td>
+                                <div class="traditional-approach">
+                                    Relies on consultant experience and intuition
+                                </div>
+                            </td>
+                            <td>
+                                <div class="vmg-approach">
+                                    Data-driven predictions based on hundreds of engagements
+                                </div>
+                            </td>
+                            <td>
+                                <div class="client-value">
+                                    Higher success rates, fewer failed initiatives
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="ai-type-name">Generative</div>
+                            </td>
+                            <td>
+                                <div class="traditional-approach">
+                                    Manual creation of deliverables, one-size-fits-few templates
+                                </div>
+                            </td>
+                            <td>
+                                <div class="vmg-approach">
+                                    Mass personalization of every deliverable
+                                </div>
+                            </td>
+                            <td>
+                                <div class="client-value">
+                                    Truly customized strategies at lower cost
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="ai-type-name">Agentic</div>
+                            </td>
+                            <td>
+                                <div class="traditional-approach">
+                                    Periodic check-ins, reactive support
+                                </div>
+                            </td>
+                            <td>
+                                <div class="vmg-approach">
+                                    Continuous monitoring and proactive intervention
+                                </div>
+                            </td>
+                            <td>
+                                <div class="client-value">
+                                    Real-time course correction, better outcomes
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

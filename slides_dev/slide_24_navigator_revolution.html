@@ -65,13 +65,13 @@
             }
         }
 
-        @keyframes slideInRight {
+        @keyframes scaleIn {
             from {
-                transform: translateX(30px);
+                transform: scale(0.95);
                 opacity: 0;
             }
             to {
-                transform: translateX(0);
+                transform: scale(1);
                 opacity: 1;
             }
         }
@@ -83,7 +83,7 @@
         
         h1 {
             font-size: 2.6vw;
-            margin-bottom: 2vh;
+            margin-bottom: 3vh;
             color: #1a1a1a;
             text-align: center;
             font-weight: 300;
@@ -91,140 +91,186 @@
             animation: fadeInDown 0.8s ease-out;
         }
 
-        .content-grid {
+        /* Main market opportunity section */
+        .opportunity-section {
+            background: linear-gradient(135deg, rgba(0, 118, 168, 0.05) 0%, rgba(0, 167, 79, 0.05) 100%);
+            border-radius: 15px;
+            padding: 2.5vh 3vw;
+            margin-bottom: 2vh;
+            text-align: center;
+            animation: scaleIn 0.8s ease-out 0.3s both;
+        }
+
+        .opportunity-headline {
+            font-size: 1.8vw;
+            color: #333;
+            margin-bottom: 1.5vh;
+            line-height: 1.4;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: center;
+            gap: 4vw;
+            margin-bottom: 1.5vh;
+        }
+
+        .stat-block {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 3vw;
+            font-weight: 700;
+            background: linear-gradient(135deg, #0076a8, #00a74f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9vw;
+            color: #666;
+            margin-top: 0.5vh;
+        }
+
+        .warning-text {
+            font-size: 1.2vw;
+            color: #dc3545;
+            font-weight: 600;
+            margin-top: 1vh;
+        }
+
+        /* Three pillars section */
+        .pillars-container {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(3, 1fr);
             gap: 2vw;
-            flex: 1;
+            margin-bottom: 2.5vh;
+            animation: fadeInUp 0.8s ease-out 0.5s both;
         }
 
-        .left-column {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5vh;
-        }
-
-        .right-column {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5vh;
-        }
-
-        .insight-card {
+        .pillar-card {
             background: white;
             border-radius: 12px;
-            padding: 1.8vh 1.8vw;
+            padding: 2vh 1.5vw;
             box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-            border-left: 4px solid #0076a8;
-            animation: fadeInUp 0.8s ease-out backwards;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
 
-        .insight-card:nth-child(1) { animation-delay: 0.3s; }
-        .insight-card:nth-child(2) { animation-delay: 0.5s; }
-        .insight-card:nth-child(3) { animation-delay: 0.7s; }
+        .pillar-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #0076a8, #00a74f);
+        }
 
-        .card-title {
-            font-size: 1.3vw;
+        .pillar-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+
+        .pillar-icon {
+            font-size: 2.5vw;
+            margin-bottom: 1vh;
+            display: block;
+        }
+
+        .pillar-title {
+            font-size: 1.2vw;
             font-weight: 700;
             color: #0076a8;
             margin-bottom: 0.8vh;
         }
 
-        .card-content {
-            font-size: 1vw;
-            color: #555;
-            line-height: 1.6;
-        }
-
-        .highlight-stat {
-            background: linear-gradient(135deg, #0076a8, #00a74f);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 700;
-            font-size: 1.2vw;
-        }
-
-        .warning-stat {
-            color: #dc3545;
-            font-weight: 700;
-        }
-
-        .success-highlight {
-            background: rgba(0, 167, 79, 0.1);
-            color: #00a74f;
-            padding: 0.2vh 0.4vw;
-            border-radius: 4px;
-            font-weight: 600;
-        }
-
-        .next-steps-container {
-            background: linear-gradient(135deg, rgba(0, 118, 168, 0.05) 0%, rgba(0, 167, 79, 0.05) 100%);
-            border: 2px solid #00a74f;
-            border-radius: 12px;
-            padding: 1.8vh 1.8vw;
-            animation: slideInRight 0.8s ease-out 0.5s both;
-        }
-
-        .steps-list {
-            list-style: none;
-            padding: 0;
-            margin-top: 1vh;
-        }
-
-        .step-item {
-            padding: 0.8vh 0;
-            padding-left: 2vw;
-            position: relative;
+        .pillar-content {
             font-size: 0.95vw;
-            color: #444;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-            animation: slideInRight 0.6s ease-out backwards;
+            color: #555;
+            line-height: 1.5;
         }
 
-        .step-item:last-child {
-            border-bottom: none;
-        }
-
-        .step-item:nth-child(1) { animation-delay: 0.6s; }
-        .step-item:nth-child(2) { animation-delay: 0.7s; }
-        .step-item:nth-child(3) { animation-delay: 0.8s; }
-        .step-item:nth-child(4) { animation-delay: 0.9s; }
-
-        .step-item::before {
-            content: "✓";
-            position: absolute;
-            left: 0.5vw;
+        .highlight-value {
             color: #00a74f;
             font-weight: 700;
             font-size: 1.1vw;
         }
 
+        /* Next steps section */
+        .next-steps-section {
+            background: white;
+            border: 2px solid #00a74f;
+            border-radius: 12px;
+            padding: 2vh 2.5vw;
+            margin-bottom: 2vh;
+            animation: fadeInUp 0.8s ease-out 0.7s both;
+        }
+
+        .steps-header {
+            font-size: 1.3vw;
+            font-weight: 700;
+            color: #00a74f;
+            margin-bottom: 1.5vh;
+            text-align: center;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5vw;
+        }
+
+        .step-box {
+            text-align: center;
+            position: relative;
+        }
+
+        .step-number {
+            width: 2.5vw;
+            height: 2.5vw;
+            background: linear-gradient(135deg, #00a74f, #00cc5f);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2vw;
+            font-weight: 700;
+            margin: 0 auto 0.8vh;
+        }
+
+        .step-text {
+            font-size: 0.85vw;
+            color: #555;
+            line-height: 1.4;
+        }
+
+        /* Bottom line */
         .bottom-line {
-            grid-column: 1 / -1;
             background: linear-gradient(135deg, #0076a8, #00a74f);
             color: white;
             border-radius: 12px;
-            padding: 2vh 2vw;
+            padding: 2vh 3vw;
             text-align: center;
-            animation: pulse 3s ease-in-out infinite, fadeInUp 0.8s ease-out 1s both;
-        }
-
-        .bottom-line-title {
-            font-size: 1.3vw;
-            font-weight: 700;
-            margin-bottom: 0.5vh;
+            animation: pulse 3s ease-in-out infinite, fadeInUp 0.8s ease-out 0.9s both;
         }
 
         .bottom-line-text {
-            font-size: 1.1vw;
+            font-size: 1.3vw;
             line-height: 1.6;
-            opacity: 0.95;
+            font-weight: 500;
         }
 
         .emphasis-underline {
             text-decoration: underline;
             text-decoration-thickness: 2px;
             text-underline-offset: 3px;
+            font-weight: 700;
         }
 
         .citation {
@@ -241,21 +287,6 @@
             color: #999;
             font-style: italic;
         }
-
-        .unique-position {
-            background: white;
-            border: 2px solid #0076a8;
-            border-radius: 12px;
-            padding: 1.5vh 1.5vw;
-            text-align: center;
-            animation: fadeInUp 0.8s ease-out 0.4s both;
-        }
-
-        .position-text {
-            font-size: 1.1vw;
-            color: #0076a8;
-            font-weight: 600;
-        }
     </style>
 </head>
 <body>
@@ -263,50 +294,89 @@
         <div class="slide active" id="slide24">
             <h1>Velocity MG: Your Navigator in the $257 Billion AI Revolution</h1>
             
-            <div class="content-grid">
-                <div class="left-column">
-                    <div class="insight-card">
-                        <div class="card-title">The Opportunity is Massive and Immediate</div>
-                        <div class="card-content">
-                            The AI consulting market is exploding, projected to grow from <span class="highlight-stat">$8.8 billion</span> in 2024 to <span class="highlight-stat">$73-257 billion</span> by 2033<span class="citation">¹²</span>. Yet <span class="warning-stat">78%</span> of organizations use AI but only <span class="warning-stat">30%</span> achieve full success, creating a desperate need for affordable strategic guidance among SMBs<span class="citation">¹⁹</span>.
-                        </div>
+            <!-- Market opportunity highlight -->
+            <div class="opportunity-section">
+                <div class="opportunity-headline">
+                    The AI consulting market is exploding exponentially
+                </div>
+                <div class="stat-row">
+                    <div class="stat-block">
+                        <span class="stat-number">$8.8B</span>
+                        <span class="stat-label">2024 Market</span>
                     </div>
-                    
-                    <div class="unique-position">
-                        <div class="card-title">Velocity MG's Unique Position</div>
-                        <div class="position-text">
-                            Leader in measuring AI Progress not just AI Activity
-                        </div>
+                    <div class="stat-block">
+                        <span class="stat-number">→</span>
+                        <span class="stat-label">&nbsp;</span>
                     </div>
-                    
-                    <div class="insight-card">
-                        <div class="card-title">Validated Business Model</div>
-                        <div class="card-content">
-                            Major consulting firms like BCG (generating <span class="success-highlight">$2.7B from AI</span>)<span class="citation">¹⁶</span> are already proving the viability of this approach.
-                        </div>
+                    <div class="stat-block">
+                        <span class="stat-number">$257B</span>
+                        <span class="stat-label">2033 Projection<span class="citation">¹²</span></span>
+                    </div>
+                </div>
+                <div class="warning-text">
+                    Yet 78% use AI but only 30% achieve full success<span class="citation">¹⁹</span>
+                </div>
+            </div>
+            
+            <!-- Three key differentiators -->
+            <div class="pillars-container">
+                <div class="pillar-card">
+                    <span class="pillar-icon">🎯</span>
+                    <div class="pillar-title">Our Unique Position</div>
+                    <div class="pillar-content">
+                        Leader in measuring <span class="highlight-value">AI Progress</span><br>
+                        not just AI Activity
                     </div>
                 </div>
                 
-                <div class="right-column">
-                    <div class="next-steps-container">
-                        <div class="card-title">Next Steps</div>
-                        <div class="card-content">
-                            Velocity MG's key next steps include:
-                            <ul class="steps-list">
-                                <li class="step-item">Developing an MVP of its VMG assessment tool</li>
-                                <li class="step-item">Securing 10 pilot clients for case studies</li>
-                                <li class="step-item">Building strategic partnerships with AI platform providers</li>
-                                <li class="step-item">Launching a thought leadership campaign on the intersection of Business and AI strategy</li>
-                            </ul>
-                        </div>
+                <div class="pillar-card">
+                    <span class="pillar-icon">✓</span>
+                    <div class="pillar-title">Validated Model</div>
+                    <div class="pillar-content">
+                        BCG generating <span class="highlight-value">$2.7B</span> from AI<span class="citation">¹⁶</span><br>
+                        proves viability
                     </div>
                 </div>
                 
-                <div class="bottom-line">
-                    <div class="bottom-line-title">The Bottom Line</div>
-                    <div class="bottom-line-text">
-                        In the race to AI transformation, speed without direction is just expensive chaos. Velocity MG ensures your AI investments create true <span class="emphasis-underline">Velocity Made Good</span>—measurable progress toward your strategic destination.
+                <div class="pillar-card">
+                    <span class="pillar-icon">🚀</span>
+                    <div class="pillar-title">Market Timing</div>
+                    <div class="pillar-content">
+                        Desperate need for affordable<br>
+                        strategic guidance for SMBs
                     </div>
+                </div>
+            </div>
+            
+            <!-- Next steps -->
+            <div class="next-steps-section">
+                <div class="steps-header">Next Steps to Market Leadership</div>
+                <div class="steps-grid">
+                    <div class="step-box">
+                        <div class="step-number">1</div>
+                        <div class="step-text">Develop MVP of VMG assessment tool</div>
+                    </div>
+                    <div class="step-box">
+                        <div class="step-number">2</div>
+                        <div class="step-text">Secure 10 pilot clients for case studies</div>
+                    </div>
+                    <div class="step-box">
+                        <div class="step-number">3</div>
+                        <div class="step-text">Build AI platform partnerships</div>
+                    </div>
+                    <div class="step-box">
+                        <div class="step-number">4</div>
+                        <div class="step-text">Launch thought leadership campaign</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bottom line -->
+            <div class="bottom-line">
+                <div class="bottom-line-text">
+                    In the race to AI transformation, speed without direction is just expensive chaos.<br>
+                    Velocity MG ensures your AI investments create true <span class="emphasis-underline">Velocity Made Good</span>—<br>
+                    measurable progress toward your strategic destination.
                 </div>
             </div>
             

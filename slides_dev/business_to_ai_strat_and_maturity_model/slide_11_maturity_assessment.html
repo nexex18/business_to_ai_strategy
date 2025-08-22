@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VMG AI Maturity Assessment - Executive Summary</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #f5f5f5;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .slide {
+            display: none;
+            width: 100vw;
+            height: 100vh;
+            padding: 3vh 4vw;
+            background: white;
+            position: relative;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.95);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        h1 {
+            font-size: 2.8vw;
+            margin-bottom: 1vh;
+            color: #1a1a1a;
+            text-align: center;
+            font-weight: 300;
+            letter-spacing: -0.5px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.5vw;
+            margin-bottom: 3vh;
+            font-weight: 500;
+            animation: fadeInDown 0.8s ease-out 0.2s both;
+        }
+
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            animation: fadeInUp 0.8s ease-out 0.3s both;
+        }
+
+        .summary-content {
+            display: flex;
+            gap: 3vw;
+            flex: 1;
+        }
+
+        .main-summary {
+            flex: 2;
+            background: white;
+            border-radius: 15px;
+            padding: 3vh 2.5vw;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-left: 6px solid #0076a8;
+            animation: slideInLeft 0.8s ease-out 0.5s both;
+        }
+
+        .key-metrics {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2vh;
+        }
+
+        .metric-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2vh 2vw;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: all 0.3s ease;
+            animation: scaleIn 0.6s ease-out backwards;
+        }
+
+        .metric-card:nth-child(1) { 
+            animation-delay: 0.7s;
+            border-top: 4px solid #00a74f;
+        }
+        
+        .metric-card:nth-child(2) { 
+            animation-delay: 0.9s;
+            border-top: 4px solid #f39c12;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+
+        .summary-text {
+            font-size: 1.3vw;
+            line-height: 1.6;
+            color: #333;
+            margin-bottom: 2vh;
+            font-weight: 500;
+        }
+
+        .highlight-box {
+            background: rgba(0, 118, 168, 0.05);
+            border: 2px solid rgba(0, 118, 168, 0.2);
+            border-radius: 10px;
+            padding: 2vh 2vw;
+            margin: 2vh 0;
+        }
+
+        .highlight-text {
+            color: #0076a8;
+            font-weight: 700;
+        }
+
+        .risk-text {
+            color: #f39c12;
+            font-weight: 700;
+        }
+
+        .metric-value {
+            font-size: 2.5vw;
+            font-weight: 700;
+            margin-bottom: 0.5vh;
+        }
+
+        .metric-card:nth-child(1) .metric-value {
+            color: #00a74f;
+        }
+
+        .metric-card:nth-child(2) .metric-value {
+            color: #f39c12;
+        }
+
+        .metric-label {
+            font-size: 1.1vw;
+            color: #666;
+            font-weight: 600;
+        }
+
+        .metric-sublabel {
+            font-size: 1vw;
+            color: #888;
+            margin-top: 0.5vh;
+            font-style: italic;
+        }
+
+        .bottom-insight {
+            background: rgba(245, 245, 245, 0.8);
+            border-radius: 10px;
+            padding: 2vh 2.5vw;
+            margin-top: 2vh;
+            text-align: center;
+            animation: fadeInUp 0.8s ease-out 1.2s both;
+        }
+
+        .bottom-insight-text {
+            font-size: 1.2vw;
+            color: #555;
+            font-weight: 500;
+            font-style: italic;
+        }
+
+        /* Background gradient accent */
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 12vh;
+            background: linear-gradient(135deg, rgba(0,118,168,0.03), rgba(243,156,18,0.03));
+            z-index: -1;
+        }
+
+        .references-note {
+            position: absolute;
+            bottom: 2vh;
+            right: 4vw;
+            font-size: 1vw;
+            color: #999;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="slide active" id="slide11">
+            <h1>VMG AI Maturity Assessment</h1>
+            <div class="subtitle">Executive Summary</div>
+            
+            <div class="content-wrapper">
+                <div class="summary-content">
+                    <div class="main-summary">
+                        <div class="summary-text">
+                            As an <span class="highlight-text">AI-first consulting startup</span>, Velocity MG presents an interesting maturity profile. While we have exceptionally strong vision and strategy (Level 4), our execution capabilities are still developing (Levels 1-3).
+                        </div>
+                        
+                        <div class="highlight-box">
+                            <div class="summary-text">
+                                This creates an <span class="risk-text">"At Risk"</span> maturity state - not due to lack of direction, but because our ambitious vision is ahead of our current operational capabilities. This is expected for a startup, provided we execute on building our capabilities to match our strategic ambition.
+                            </div>
+                        </div>
+                        
+                        <div class="summary-text">
+                            Our <span class="risk-text">"At Risk"</span> status isn't a weakness - it's a natural state that provides clear priorities for investment. The key is to build execution capabilities systematically while maintaining the vision and agility that make us unique.
+                        </div>
+                    </div>
+
+                    <div class="key-metrics">
+                        <div class="metric-card">
+                            <div class="metric-value">2.4</div>
+                            <div class="metric-label">Overall Maturity</div>
+                            <div class="metric-sublabel">Transitioning from Reactive to Proactive</div>
+                        </div>
+                        
+                        <div class="metric-card">
+                            <div class="metric-value">At Risk</div>
+                            <div class="metric-label">Health Status</div>
+                            <div class="metric-sublabel">Vision leading, execution building</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bottom-insight">
+                    <div class="bottom-insight-text">
+                        <span class="highlight-text">Bottom Line:</span> We know where we're going (Vision), we know how to get there (Strategy), and now we need to build the engine (Operations) to make the journey at scale.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

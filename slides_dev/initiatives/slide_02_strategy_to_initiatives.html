@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>From AI Strategy to Five Integrated Initiatives</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #f5f5f5;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .slide {
+            display: none;
+            width: 100vw;
+            height: 100vh;
+            padding: 2.5vh 3vw;
+            background: white;
+            position: relative;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        h1 {
+            font-size: 2.8vw;
+            margin-bottom: 2vh;
+            color: #1a1a1a;
+            text-align: center;
+            font-weight: 300;
+            letter-spacing: -0.5px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .strategy-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 2vh 3vw;
+            margin-bottom: 3vh;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+            animation: fadeInDown 0.8s ease-out 0.2s both;
+        }
+
+        .strategy-title {
+            font-size: 1.6vw;
+            font-weight: 600;
+            margin-bottom: 1.5vh;
+            text-align: center;
+        }
+
+        .strategy-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 2vw;
+            margin-bottom: 1.5vh;
+        }
+
+        .vision-item {
+            text-align: center;
+        }
+
+        .vision-icon {
+            font-size: 2vw;
+            margin-bottom: 0.5vh;
+        }
+
+        .vision-text {
+            font-size: 0.95vw;
+            line-height: 1.3;
+            opacity: 0.95;
+        }
+
+        .strategy-outcome {
+            text-align: center;
+            font-size: 1.2vw;
+            font-weight: 600;
+            padding-top: 1.5vh;
+            border-top: 2px solid rgba(255,255,255,0.3);
+            margin-top: 1vh;
+        }
+
+        .transition-arrow {
+            text-align: center;
+            font-size: 2.5vw;
+            color: #999;
+            margin: 1vh 0;
+            animation: pulse 2s infinite;
+        }
+
+        .initiatives-section {
+            animation: fadeInUp 0.8s ease-out 0.6s both;
+        }
+
+        .section-label {
+            font-size: 1.3vw;
+            font-weight: 600;
+            color: #666;
+            text-align: center;
+            margin-bottom: 2vh;
+        }
+
+        .initiatives-flow {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5vh;
+            align-items: center;
+        }
+
+        .flow-section {
+            width: 95%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .category-label {
+            font-size: 0.9vw;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #999;
+            margin-bottom: 0.8vh;
+        }
+
+        .initiatives-row {
+            display: flex;
+            justify-content: center;
+            gap: 2vw;
+            width: 100%;
+        }
+
+        .initiative-box {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 1.2vh 1.5vw;
+            width: 16vw;
+            text-align: center;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            animation: slideInLeft 0.6s ease-out backwards;
+            position: relative;
+        }
+
+        .initiative-box:nth-child(1) { animation-delay: 0.8s; }
+        .initiative-box:nth-child(2) { animation-delay: 0.9s; }
+        .initiative-box:nth-child(3) { animation-delay: 1s; }
+
+        .initiative-box:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+
+        .initiative-icon {
+            font-size: 1.8vw;
+            margin-bottom: 0.5vh;
+        }
+
+        .initiative-title {
+            font-size: 1vw;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.3vh;
+            line-height: 1.2;
+        }
+
+        .initiative-score {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 0.8vh;
+            padding-top: 0.8vh;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .score-item {
+            text-align: center;
+        }
+
+        .score-label {
+            font-size: 0.7vw;
+            color: #999;
+            margin-bottom: 0.2vh;
+        }
+
+        .score-value {
+            font-size: 0.9vw;
+            font-weight: 700;
+        }
+
+        /* Color coding for initiatives */
+        .generation { border-left: 4px solid #2196f3; }
+        .discovery { border-left: 4px solid #ff9800; }
+        .command { border-left: 4px solid #00a74f; }
+        .monitor { border-left: 4px solid #9c27b0; }
+        .knowledge { border-left: 4px solid #d32f2f; }
+
+        /* Score color coding */
+        .score-high { color: #2e7d32; }
+        .score-medium { color: #f57c00; }
+        .score-low { color: #e64a19; }
+
+        .flow-arrow {
+            font-size: 1.5vw;
+            color: #bbb;
+            margin: 0.5vh 0;
+        }
+
+        .start-badge {
+            position: absolute;
+            top: -0.8vh;
+            right: -0.5vw;
+            background: #00a74f;
+            color: white;
+            padding: 0.3vh 0.6vw;
+            border-radius: 4px;
+            font-size: 0.7vw;
+            font-weight: 700;
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="slide active" id="slide02">
+            <h1>From AI Strategy to Five Integrated Initiatives</h1>
+            
+            <div class="strategy-section">
+                <div class="strategy-title">Our AI-Enabled Vision</div>
+                <div class="strategy-grid">
+                    <div class="vision-item">
+                        <div class="vision-icon">🧠</div>
+                        <div class="vision-text">Transform consulting through AI automation</div>
+                    </div>
+                    <div class="vision-item">
+                        <div class="vision-icon">⏱️</div>
+                        <div class="vision-text">10x faster delivery at 30% of cost</div>
+                    </div>
+                    <div class="vision-item">
+                        <div class="vision-icon">👥</div>
+                        <div class="vision-text">Scale from 10 to 100+ clients</div>
+                    </div>
+                    <div class="vision-item">
+                        <div class="vision-icon">📈</div>
+                        <div class="vision-text">Create continuous value monitoring</div>
+                    </div>
+                    <div class="vision-item">
+                        <div class="vision-icon">✓</div>
+                        <div class="vision-text">Build competitive moat through intelligence</div>
+                    </div>
+                </div>
+                <div class="strategy-outcome">
+                    This vision requires five integrated AI initiatives that work together to transform our business model
+                </div>
+            </div>
+
+            <div class="transition-arrow">⬇</div>
+            
+            <div class="initiatives-section">
+                <div class="section-label">Five Initiatives Aligned to Our Strategy</div>
+                
+                <div class="initiatives-flow">
+                    <div class="flow-section">
+                        <div class="category-label">Quick Wins - Immediate Impact</div>
+                        <div class="initiatives-row">
+                            <div class="initiative-box generation">
+                                <span class="start-badge">START HERE</span>
+                                <div class="initiative-icon">📝</div>
+                                <div class="initiative-title">Intelligent Content Generation</div>
+                                <div class="initiative-score">
+                                    <div class="score-item">
+                                        <div class="score-label">Ease</div>
+                                        <div class="score-value score-high">8/10</div>
+                                    </div>
+                                    <div class="score-item">
+                                        <div class="score-label">Impact</div>
+                                        <div class="score-value score-medium">6/10</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="initiative-box discovery">
+                                <div class="initiative-icon">🔍</div>
+                                <div class="initiative-title">AI-Powered Discovery</div>
+                                <div class="initiative-score">
+                                    <div class="score-item">
+                                        <div class="score-label">Ease</div>
+                                        <div class="score-value score-medium">6/10</div>
+                                    </div>
+                                    <div class="score-item">
+                                        <div class="score-label">Impact</div>
+                                        <div class="score-value score-high">8/10</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flow-arrow">↓</div>
+
+                    <div class="flow-section">
+                        <div class="category-label">Infrastructure - Operational Excellence</div>
+                        <div class="initiatives-row">
+                            <div class="initiative-box command">
+                                <div class="initiative-icon">🎯</div>
+                                <div class="initiative-title">Command Center</div>
+                                <div class="initiative-score">
+                                    <div class="score-item">
+                                        <div class="score-label">Ease</div>
+                                        <div class="score-value score-high">7/10</div>
+                                    </div>
+                                    <div class="score-item">
+                                        <div class="score-label">Impact</div>
+                                        <div class="score-value score-high">8/10</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flow-arrow">↓</div>
+
+                    <div class="flow-section">
+                        <div class="category-label">Long-term Value - Competitive Advantage</div>
+                        <div class="initiatives-row">
+                            <div class="initiative-box monitor">
+                                <div class="initiative-icon">📊</div>
+                                <div class="initiative-title">Intelligence Monitor</div>
+                                <div class="initiative-score">
+                                    <div class="score-item">
+                                        <div class="score-label">Ease</div>
+                                        <div class="score-value score-medium">5/10</div>
+                                    </div>
+                                    <div class="score-item">
+                                        <div class="score-label">Impact</div>
+                                        <div class="score-value score-high">9/10</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="initiative-box knowledge">
+                                <div class="initiative-icon">🧠</div>
+                                <div class="initiative-title">Knowledge System</div>
+                                <div class="initiative-score">
+                                    <div class="score-item">
+                                        <div class="score-label">Ease</div>
+                                        <div class="score-value score-low">4/10</div>
+                                    </div>
+                                    <div class="score-item">
+                                        <div class="score-label">Impact</div>
+                                        <div class="score-value score-medium">7/10</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
