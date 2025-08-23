@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Cost-Benefit Analysis</title>
+<title>Transforming the Consulting Revenue Model</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 <style>
@@ -924,12 +924,15 @@
         .bottom-insight {
             background: linear-gradient(135deg, #0076a8 0%, #00a74f 100%);
             color: white;
-            padding: 25px 40px;
+            padding: 20px 40px;
             text-align: center;
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 500;
-            margin: 40px -80px -60px -80px;
-            position: relative;
+            position: absolute;
+            bottom: 80px;
+            left: 4vw;
+            right: 4vw;
+            border-radius: 12px;
             animation: slideInFromBottom 1s ease-out 0.5s both;
         }
 
@@ -1962,174 +1965,64 @@
 </head>
 <body>
 <div class="presentation-container">
-<div class="slide active slide-8" id="slide8">
-<h1>Cost-Benefit Analysis</h1>
-<div class="subtitle">Investment requirements and revenue potential for AI consulting platform</div>
-<div class="cost-benefit-container">
-<!-- Costs Section -->
-<div class="cost-section">
-<div class="section-header">
-<div class="section-icon">💰</div>
-<div>
-<div class="section-title"><h2>Platform Costs</h2></div>
+<div class="slide active slide-7" id="slide7">
+<h1>Transforming the Consulting Revenue Model</h1>
+<div class="subtitle">From time-based billing to value-driven platform economics</div>
+<div style="width: 100%; height: 2px; background: linear-gradient(90deg, transparent, #e0e0e0 20%, #e0e0e0 80%, transparent); margin: 0.5vh 0 3vh 0;"></div>
+
+<div class="transformation-journey">
+<!-- Current State -->
+<div class="journey-stage current-state">
+<div class="stage-header">
+<div class="stage-icon">⏰</div>
+<div class="stage-title">
+<div class="stage-label">Current State</div>
+<h3>Traditional T&amp;M Model</h3>
 </div>
 </div>
-<!-- Core Infrastructure -->
-<div class="cost-category">
-<div class="category-title">Core Infrastructure (Monthly)</div>
-<table class="cost-table">
-<tr>
-<td>LLM Access</td>
-<td>$200</td>
-</tr>
-<tr>
-<td>Application Hosting</td>
-<td>$200</td>
-</tr>
-<tr>
-<td>Data Hosting</td>
-<td>$200</td>
-</tr>
-<tr class="subtotal-row">
-<td>Infrastructure Subtotal</td>
-<td>$600/mo</td>
-</tr>
-</table>
+<div class="stage-content">
+<div class="pain-point">Same hourly rate for all activities - from strategic thinking to formatting</div>
+<div class="pain-point">Consultants spend 50% of time on document production</div>
+<div class="pain-point">Client pays premium rates for low-value tasks</div>
+<div class="pain-point">Revenue directly tied to consultant hours</div>
 </div>
-<!-- AI Talent -->
-<div class="cost-category">
-<div class="category-title">AI Talent - Build Phase (3 months)</div>
-<table class="cost-table">
-<tr>
-<td>AI Product Manager</td>
-<td>$25,000/mo</td>
-</tr>
-<tr class="included-role">
-<td>Business Analyst</td>
-<td>Covered by PM role</td>
-</tr>
-<tr class="included-role">
-<td>Project Manager</td>
-<td>Covered by PM role</td>
-</tr>
-<tr>
-<td>AI Engineer - Platform/Backend</td>
-<td>$6,400/mo</td>
-</tr>
-<tr>
-<td>ML Architect</td>
-<td>$1,600/mo</td>
-</tr>
-<tr class="included-role">
-<td>Prompt Engineer</td>
-<td>Covered by AI Engineer</td>
-</tr>
-<tr>
-<td>Data Engineer</td>
-<td>$1,600/mo</td>
-</tr>
-<tr>
-<td>Cloud Architect</td>
-<td>$1,600/mo</td>
-</tr>
-<tr class="subtotal-row">
-<td>Build Team (Monthly)</td>
-<td>$36,200/mo</td>
-</tr>
-</table>
-</div>
-<!-- Operate Phase -->
-<div class="cost-category">
-<div class="category-title">Operate Phase (Month 4+)</div>
-<table class="cost-table">
-<tr>
-<td>Infrastructure (ongoing)</td>
-<td>$600/mo</td>
-</tr>
-<tr>
-<td>Maintenance &amp; Support</td>
-<td>$1,840/mo</td>
-</tr>
-<tr class="subtotal-row">
-<td>Monthly Operating Cost</td>
-<td>$2,440/mo</td>
-</tr>
-</table>
-</div>
-<div class="total-cost">
-                        Initial Investment (3 months): $110,400<br/>
-                        Operating Cost (Month 4+): $2,440/mo
-                    </div>
-</div>
-<!-- Benefits Section -->
-<div class="benefit-section">
-<div class="section-header">
-<div class="section-icon">📈</div>
-<div>
-<div class="section-title"><h2>Revenue &amp; Benefits</h2></div>
+<div class="metric-highlight">
+<span class="metric-value">50%</span>
+<div class="metric-label">Time spent on document production</div>
 </div>
 </div>
-<div class="benefit-item">
-<div class="benefit-icon">💵</div>
-<div class="benefit-content">
-<div class="benefit-title">Platform Fee Revenue</div>
-<div class="benefit-description">Per customer monthly subscription</div>
+<!-- Transformation Arrow -->
+<div class="transformation-arrow">
+<div class="arrow-container">
+<div class="arrow-icon">→</div>
 </div>
-<div class="benefit-value">$1,000/mo</div>
+<div class="arrow-label">Content Generation Platform</div>
 </div>
-<div class="benefit-item">
-<div class="benefit-icon">👥</div>
-<div class="benefit-content">
-<div class="benefit-title">Customer Growth</div>
-<div class="benefit-description">Y1: 4 | Y2: 8 | Y3: 12 | Y4: 16 | Y5: 20</div>
-</div>
-<div class="benefit-value">5x Growth</div>
-</div>
-<div class="benefit-item">
-<div class="benefit-icon">⚡</div>
-<div class="benefit-content">
-<div class="benefit-title">Consultant Productivity</div>
-<div class="benefit-description">50% time saved on documentation</div>
-</div>
-<div class="benefit-value">2x Capacity</div>
-</div>
-<div class="benefit-item">
-<div class="benefit-icon">🎯</div>
-<div class="benefit-content">
-<div class="benefit-title">Quality Consistency</div>
-<div class="benefit-description">100% brand standards adherence</div>
-</div>
-<div class="benefit-value">100%</div>
-</div>
-<div class="total-benefit">
-                        Year 5 Annual Revenue: $240,000
-                    </div>
+<!-- Future State -->
+<div class="journey-stage future-state">
+<div class="stage-header">
+<div class="stage-icon">🚀</div>
+<div class="stage-title">
+<div class="stage-label">Future State</div>
+<h3>Hybrid Platform Model</h3>
 </div>
 </div>
-<div class="cb-summary-section">
-<div class="cb-summary-grid">
-<div class="cb-summary-item">
-<div class="cb-summary-label">Break-Even</div>
-<div class="cb-summary-value">Month 9</div>
-<div class="cb-summary-period">With 4 customers</div>
+<div class="stage-content">
+<div class="benefit-point">Premium hourly rate only for strategic consulting</div>
+<div class="benefit-point">Fixed platform fee for document generation</div>
+<div class="benefit-point">2x consultant capacity through AI automation</div>
+<div class="benefit-point">Scalable revenue without linear headcount growth</div>
 </div>
-<div class="cb-summary-item">
-<div class="cb-summary-label">Year 1 Revenue</div>
-<div class="cb-summary-value">$48K</div>
-<div class="cb-summary-period">4 customers</div>
-</div>
-<div class="cb-summary-item">
-<div class="cb-summary-label">5-Year Revenue</div>
-<div class="cb-summary-value">$720K</div>
-<div class="cb-summary-period">Total platform fees</div>
-</div>
-<div class="cb-summary-item">
-<div class="cb-summary-label">ROI</div>
-<div class="cb-summary-value">552%</div>
-<div class="cb-summary-period">Over 5 years</div>
+<div class="metric-highlight">
+<span class="metric-value">2X</span>
+<div class="metric-label">Consultant capacity doubled</div>
 </div>
 </div>
 </div>
+<div class="bottom-insight">
+<span class="insight-icon">💡</span>
+                Key Insight: Platform model captures 100% of consultant expertise value while reducing delivery costs by 50%
+            </div>
 </div>
 </div>
 

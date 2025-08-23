@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Transforming the Consulting Revenue Model</title>
+<title>Risk Assessment &amp; Mitigation Strategy</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 <style>
@@ -493,8 +493,8 @@
             position: relative;
         }
 
-        .slide-1 h1 {
-            font-size: 3.5vw;
+        .slide-13 h1, h1 {
+            font-size: 3vw;
             margin-bottom: 1.5vh;
             color: #1a1a1a;
             text-align: center;
@@ -503,7 +503,7 @@
             animation: fadeInDown 0.8s ease-out;
         }
 
-        .slide-1 .subtitle {
+        .slide-13 .subtitle, .subtitle {
             text-align: center;
             color: #666;
             font-size: 1.3vw;
@@ -924,15 +924,12 @@
         .bottom-insight {
             background: linear-gradient(135deg, #0076a8 0%, #00a74f 100%);
             color: white;
-            padding: 20px 40px;
+            padding: 25px 40px;
             text-align: center;
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 500;
-            position: absolute;
-            bottom: 80px;
-            left: 4vw;
-            right: 4vw;
-            border-radius: 12px;
+            margin: 40px -80px -60px -80px;
+            position: relative;
             animation: slideInFromBottom 1s ease-out 0.5s both;
         }
 
@@ -1965,62 +1962,149 @@
 </head>
 <body>
 <div class="presentation-container">
-<div class="slide active slide-7" id="slide7">
-<h1>Transforming the Consulting Revenue Model</h1>
-<div class="subtitle">From time-based billing to value-driven platform economics</div>
-<div class="transformation-journey">
-<!-- Current State -->
-<div class="journey-stage current-state">
-<div class="stage-header">
-<div class="stage-icon">⏰</div>
-<div class="stage-title">
-<div class="stage-label">Current State</div>
-<h3>Traditional T&amp;M Model</h3>
+<div class="slide active slide-13" id="slide13">
+<h1>Risk Assessment &amp; Mitigation Strategy</h1>
+<div class="subtitle">Risk management for AI platform initiative</div>
+<div style="width: 100%; height: 2px; background: linear-gradient(90deg, transparent, #e0e0e0 20%, #e0e0e0 80%, transparent); margin: 0.5vh 0 3vh 0;"></div>
+
+<div class="risks-container">
+<!-- Technical Risks -->
+<div class="risk-card technical">
+<div class="severity-indicator severity-medium">Medium</div>
+<div class="risk-header">
+<div class="risk-icon">⚙️</div>
+<div class="risk-title">Technical Risks</div>
+</div>
+<div class="risk-description">
+                    AI model may not generate quality outputs that meet consulting standards
+                </div>
+<div class="mitigation-section">
+<div class="mitigation-label">Mitigation Strategies</div>
+<ul class="mitigation-list">
+<li>Start with one well-defined use case</li>
+<li>Extensive testing with client scenarios</li>
+<li>Iterative prompt refinement</li>
+<li>Weekly progress reviews</li>
+</ul>
 </div>
 </div>
-<div class="stage-content">
-<div class="pain-point">Same hourly rate for all activities - from strategic thinking to formatting</div>
-<div class="pain-point">Consultants spend 50% of time on document production</div>
-<div class="pain-point">Client pays premium rates for low-value tasks</div>
-<div class="pain-point">Revenue directly tied to consultant hours</div>
+<!-- Operational Risks -->
+<div class="risk-card operational">
+<div class="severity-indicator severity-medium">Medium</div>
+<div class="risk-header">
+<div class="risk-icon">🔄</div>
+<div class="risk-title">Operational Risks</div>
 </div>
-<div class="metric-highlight">
-<span class="metric-value">50%</span>
-<div class="metric-label">Time spent on document production</div>
-</div>
-</div>
-<!-- Transformation Arrow -->
-<div class="transformation-arrow">
-<div class="arrow-container">
-<div class="arrow-icon">→</div>
-</div>
-<div class="arrow-label">Content Generation Platform</div>
-</div>
-<!-- Future State -->
-<div class="journey-stage future-state">
-<div class="stage-header">
-<div class="stage-icon">🚀</div>
-<div class="stage-title">
-<div class="stage-label">Future State</div>
-<h3>Hybrid Platform Model</h3>
+<div class="risk-description">
+                    Consultants may resist using AI tools or struggle to integrate them effectively
+                </div>
+<div class="mitigation-section">
+<div class="mitigation-label">Mitigation Strategies</div>
+<ul class="mitigation-list">
+<li>Involve consultants from day one</li>
+<li>Start with early adopter champions</li>
+<li>Provide hands-on training</li>
+<li>Show time savings metrics</li>
+</ul>
 </div>
 </div>
-<div class="stage-content">
-<div class="benefit-point">Premium hourly rate only for strategic consulting</div>
-<div class="benefit-point">Fixed platform fee for document generation</div>
-<div class="benefit-point">2x consultant capacity through AI automation</div>
-<div class="benefit-point">Scalable revenue without linear headcount growth</div>
+<!-- Ethical and Reputational Risks -->
+<div class="risk-card ethical">
+<div class="severity-indicator severity-high">High</div>
+<div class="risk-header">
+<div class="risk-icon">⚖️</div>
+<div class="risk-title">Ethical &amp; Reputational</div>
 </div>
-<div class="metric-highlight">
-<span class="metric-value">2X</span>
-<div class="metric-label">Consultant capacity doubled</div>
+<div class="risk-description">
+                    Clients may perceive AI-generated content as lower quality
+                </div>
+<div class="mitigation-section">
+<div class="mitigation-label">Mitigation Strategies</div>
+<ul class="mitigation-list">
+<li>Maintain human review</li>
+<li>Transparent AI augmentation</li>
+<li>Emphasize faster delivery</li>
+<li>Share pilot success metrics</li>
+</ul>
+</div>
+</div>
+<!-- Strategic Risks -->
+<div class="risk-card strategic">
+<div class="severity-indicator severity-low">Low</div>
+<div class="risk-header">
+<div class="risk-icon">🎯</div>
+<div class="risk-title">Strategic Risks</div>
+</div>
+<div class="risk-description">
+                    Platform capabilities may not align with consultant needs
+                </div>
+<div class="mitigation-section">
+<div class="mitigation-label">Mitigation Strategies</div>
+<ul class="mitigation-list">
+<li>3-month pilot program</li>
+<li>Weekly feedback gathering</li>
+<li>Focus on high-value documents</li>
+<li>Build modular system</li>
+</ul>
+</div>
+</div>
+<!-- Financial Risks -->
+<div class="risk-card financial">
+<div class="severity-indicator severity-high">High</div>
+<div class="risk-header">
+<div class="risk-icon">💰</div>
+<div class="risk-title">Financial Risks</div>
+</div>
+<div class="risk-description">
+                    Development costs may exceed budget; pricing validation needed
+                </div>
+<div class="mitigation-section">
+<div class="mitigation-label">Mitigation Strategies</div>
+<ul class="mitigation-list">
+<li>Fixed-price development contract</li>
+<li>Validate pricing early</li>
+<li>Consider usage-based pricing</li>
+<li>Quarterly contracts initially</li>
+</ul>
+</div>
+</div>
+<!-- Regulatory and Compliance Risks -->
+<div class="risk-card regulatory">
+<div class="severity-indicator severity-medium">Medium</div>
+<div class="risk-header">
+<div class="risk-icon">📋</div>
+<div class="risk-title">Regulatory &amp; Compliance</div>
+</div>
+<div class="risk-description">
+                    Client data security and IP ownership concerns
+                </div>
+<div class="mitigation-section">
+<div class="mitigation-label">Mitigation Strategies</div>
+<ul class="mitigation-list">
+<li>Enterprise-grade security</li>
+<li>Strict data segregation</li>
+<li>Clear IP ownership contracts</li>
+<li>Regular security audits</li>
+</ul>
 </div>
 </div>
 </div>
-<div class="bottom-insight">
-<span class="insight-icon">💡</span>
-                Key Insight: Platform model captures 100% of consultant expertise value while reducing delivery costs by 50%
-            </div>
+<div class="risk-summary-section">
+<div class="risk-summary-grid">
+<div class="risk-summary-item">
+<div class="risk-summary-value">6</div>
+<div class="risk-summary-label">Risk Categories</div>
+</div>
+<div class="risk-summary-item">
+<div class="risk-summary-value">24</div>
+<div class="risk-summary-label">Mitigation Strategies</div>
+</div>
+<div class="risk-summary-item">
+<div class="risk-summary-value">85%</div>
+<div class="risk-summary-label">Risk Coverage</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 

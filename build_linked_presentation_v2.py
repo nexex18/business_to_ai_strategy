@@ -277,9 +277,24 @@ def add_navigation_css():
             margin: 0 -3px;
         }
         
-        /* Adjust slide container to account for navigation */
-        .presentation-container, .slide {
-            padding-bottom: 80px !important;
+        /* Adjust slide container to account for navigation without affecting content */
+        .presentation-container {
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .slide {
+            height: calc(100vh - 60px);
+            overflow-y: auto;
+            padding-bottom: 20px;
+        }
+        
+        /* Ensure header elements stay visible */
+        .slide > h1:first-of-type,
+        .slide > .subtitle,
+        .slide > div[style*="height: 2px"] {
+            position: relative;
+            z-index: 1;
         }
         
         /* Responsive adjustments for smaller screens */

@@ -19,6 +19,7 @@
             padding: 0;
         }
 
+
         .presentation-container {
             width: 100vw;
             height: 100vh;
@@ -36,6 +37,14 @@
             position: relative;
             overflow-y: auto;
             overflow-x: hidden;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.3vw;
+            margin-bottom: 5vh;
+            font-weight: 500;
+            animation: fadeInDown 0.8s ease-out 0.2s both;
         }
 
         .slide.active {
@@ -286,7 +295,10 @@
     <div class="presentation-container">
         <div class="slide active" id="slide05">
             <h1>Our AI Creates Three Moats</h1>
+            <div class="subtitle">Place Holder</div>
+            <div style="width: 100%; height: 2px; background: linear-gradient(90deg, transparent, #e0e0e0 20%, #e0e0e0 80%, transparent); margin: 0.5vh 0 3vh 0;"></div>
             
+
             <div class="content-wrapper">
                 <div class="moats-container">
                     <!-- Data Moat -->
