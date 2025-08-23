@@ -1164,9 +1164,8 @@
             color: #ff6b6b;
             text-align: center;
             padding: 10px;
-            background: #fff5f5;
             border-radius: 6px;
-            margin-top: 10px;
+            margin-bottom: 10px;
         }
 
         .total-benefit {
@@ -1175,9 +1174,8 @@
             color: #00a74f;
             text-align: center;
             padding: 10px;
-            background: #f0fff4;
             border-radius: 6px;
-            margin-top: 10px;
+            margin-bottom: 10px;
         }
 
         .cb-summary-section {
@@ -1983,10 +1981,14 @@
 <div class="subtitle">Investment requirements and revenue potential for AI consulting platform</div>
 <hr style="width: 100%; height: 2px; background: linear-gradient(90deg, transparent, #e0e0e0 20%, #e0e0e0 80%, transparent); margin: 0.5vh 0 3vh 0; border: none;">
 
-
 <div class="cost-benefit-container">
-<!-- Costs Section -->
-<div class="cost-section">
+<!-- Costs Column -->
+<div style="display: grid; grid-template-rows: auto 1fr;">
+    <div class="total-cost" style="min-height: 60px; display: flex; align-items: center; justify-content: center;">
+        Initial Investment (3 months): $110,400<br/>
+        Operating Cost (Month 4+): $2,440/mo
+    </div>
+    <div class="cost-section">
 <div class="section-header">
 <div class="section-icon">💰</div>
 <div>
@@ -2075,13 +2077,14 @@
 </tr>
 </table>
 </div>
-<div class="total-cost">
-                        Initial Investment (3 months): $110,400<br/>
-                        Operating Cost (Month 4+): $2,440/mo
-                    </div>
+    </div>
 </div>
-<!-- Benefits Section -->
-<div class="benefit-section">
+<!-- Benefits Column -->
+<div style="display: grid; grid-template-rows: auto 1fr;">
+    <div class="total-benefit" style="min-height: 60px; display: flex; align-items: center; justify-content: center;">
+        Year 5 Annual Revenue: $240,000
+    </div>
+    <div class="benefit-section">
 <div class="section-header">
 <div class="section-icon">📈</div>
 <div>
@@ -2120,9 +2123,7 @@
 </div>
 <div class="benefit-value">100%</div>
 </div>
-<div class="total-benefit">
-                        Year 5 Annual Revenue: $240,000
-                    </div>
+    </div>
 </div>
 </div>
 <!-- Commented out green metrics bar
