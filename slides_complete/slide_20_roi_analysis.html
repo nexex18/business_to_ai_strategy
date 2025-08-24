@@ -198,13 +198,41 @@
     <div class="presentation-container">
         <div class="slide active" id="slide10">
             <h1>Return on Investment Analysis</h1>
-            <div class="subtitle">Investment Payback: 3 Years | Cumulative NPV: <span id="subtitle-npv">$221,696</span> (5YR) | IRR: <span id="subtitle-irr">47.8%</span></div>
+            <div class="subtitle">Investment Payback: <span id="subtitle-payback">3 Years</span> | Cumulative NPV: <span id="subtitle-npv">$221,696</span> (<span id="subtitle-years">5</span>YR) | IRR: <span id="subtitle-irr">47.8%</span></div>
             <div style="width: 100%; height: 2px; background: linear-gradient(90deg, transparent, #e0e0e0 20%, #e0e0e0 80%, transparent); margin: 0.5vh 0 3vh 0;"></div>
 
-            <div class="discount-rate-input">
-                <label for="discountRate">Discount Rate (%):</label>
-                <input type="number" id="discountRate" value="10" step="0.1">
-                <button onclick="updateAnalysis()">Update Analysis</button>
+            <div id="inputs-card" class="discount-rate-input" style="padding: 12px 20px; margin-bottom: 10px;">
+                    <div style="display: flex; align-items: flex-end; gap: 8px; margin-bottom: 8px;">
+                    <div style="flex: 1;">
+                        <label for="discountRate" style="display: block; font-size: 10px; margin-bottom: 2px;">Discount %</label>
+                        <input type="number" id="discountRate" value="10" step="0.1" style="width: 100%; padding: 4px; font-size: 12px;">
+                    </div>
+                    <div style="flex: 0.8;">
+                        <label for="npvYears" style="display: block; font-size: 10px; margin-bottom: 2px;">Years</label>
+                        <input type="number" id="npvYears" value="5" min="1" max="10" style="width: 100%; padding: 4px; font-size: 12px;">
+                    </div>
+                    <div style="flex: 1.3;">
+                        <label for="initialInvestment" style="display: block; font-size: 10px; margin-bottom: 2px;">Initial Invest ($)</label>
+                        <input type="number" id="initialInvestment" value="110400" step="1000" style="width: 100%; padding: 4px; font-size: 12px;">
+                    </div>
+                    <div style="flex: 1.5;">
+                        <label for="revPerCustomer" style="display: block; font-size: 10px; margin-bottom: 2px;">Monthly Inflows/Customer ($)</label>
+                        <input type="number" id="revPerCustomer" value="1000" step="100" style="width: 100%; padding: 4px; font-size: 12px;">
+                    </div>
+                    <div style="flex: 0.8;">
+                        <label for="customersPerQuarter" style="display: block; font-size: 10px; margin-bottom: 2px;">New Cust/Qtr</label>
+                        <input type="number" id="customersPerQuarter" value="1" min="0.5" step="0.5" style="width: 100%; padding: 4px; font-size: 12px;">
+                    </div>
+                    <div style="flex: 1;">
+                        <label for="operatingCost" style="display: block; font-size: 10px; margin-bottom: 2px;">Op Cost ($/month)</label>
+                        <input type="number" id="operatingCost" value="2440" step="100" style="width: 100%; padding: 4px; font-size: 12px;">
+                    </div>
+                    <div style="flex: 1;">
+                        <label for="opCostGrowth" style="display: block; font-size: 10px; margin-bottom: 2px;">Annual Cost Growth %</label>
+                        <input type="number" id="opCostGrowth" value="5" step="1" style="width: 100%; padding: 4px; font-size: 12px;">
+                    </div>
+                    <button onclick="updateAnalysis()" style="padding: 4px 12px; font-size: 12px;">Calculate</button>
+                    </div>
             </div>
 
             <div class="metrics-section">
@@ -216,12 +244,7 @@
 
                     <div class="metric-group">
                         <div class="metric-title">Initial Investment</div>
-                        <div class="metric-value">-$110,400</div>
-                    </div>
-
-                    <div class="metric-group">
-                        <div class="metric-title">Year 1</div>
-                        <div class="metric-value" id="year1-cashflow">$6,730</div>
+                        <div class="metric-value" id="initial-investment-display">-$110,400</div>
                     </div>
 
                     <div class="metric-group">
@@ -245,6 +268,12 @@
                     <canvas id="npvChart"></canvas>
                 </div>
             </div>
+            
+            <div style="display: flex; justify-content: flex-end; margin-top: 10px;">
+                <button onclick="toggleInputs()" style="background: none; border: none; cursor: pointer; font-size: 11px; color: #888; text-decoration: underline; padding: 0;">
+                    <span id="toggle-text">hide inputs</span>
+                </button>
+            </div>
         </div>
     </div>
     
@@ -252,35 +281,27 @@
         let chartInstance = null;
 
         function calculateCashFlows() {
-            const monthlyPlatformFee = 1000;
-            const operatingCost = 2440;
-            const initialInvestment = 110400;
+            // Get dynamic inputs
+            const monthlyPlatformFee = parseFloat(document.getElementById('revPerCustomer').value) || 1000;
+            const baseOperatingCost = parseFloat(document.getElementById('operatingCost').value) || 2440;
+            const opCostGrowthRate = parseFloat(document.getElementById('opCostGrowth').value) || 0;
+            const initialInvestment = parseFloat(document.getElementById('initialInvestment').value) || 110400;
+            const customersPerQuarter = parseFloat(document.getElementById('customersPerQuarter').value) || 1;
+            const npvYears = parseInt(document.getElementById('npvYears').value) || 5;
             
-            // Customer growth: Add 1 customer at the end of each quarter
-            // First 3 months are development (0 customers)
-            const customerSchedule = [
-                0, 0, 0, // Months 1-3: Development phase
-                1, 1, 1, // Q1 Year 1: 1 customer
-                2, 2, 2, // Q2 Year 1: 2 customers
-                3, 3, 3, // Q3 Year 1: 3 customers
-                4, 4, 4, // Q4 Year 1: 4 customers
-                5, 5, 5, // Q1 Year 2: 5 customers
-                6, 6, 6, // Q2 Year 2: 6 customers
-                7, 7, 7, // Q3 Year 2: 7 customers
-                8, 8, 8, // Q4 Year 2: 8 customers
-                9, 9, 9, // Q1 Year 3: 9 customers
-                10, 10, 10, // Q2 Year 3: 10 customers
-                11, 11, 11, // Q3 Year 3: 11 customers
-                12, 12, 12, // Q4 Year 3: 12 customers
-                13, 13, 13, // Q1 Year 4: 13 customers
-                14, 14, 14, // Q2 Year 4: 14 customers
-                15, 15, 15, // Q3 Year 4: 15 customers
-                16, 16, 16, // Q4 Year 4: 16 customers
-                17, 17, 17, // Q1 Year 5: 17 customers
-                18, 18, 18, // Q2 Year 5: 18 customers
-                19, 19, 19, // Q3 Year 5: 19 customers
-                20, 20, 20  // Q4 Year 5: 20 customers
-            ];
+            // Generate customer schedule dynamically
+            const customerSchedule = [0, 0, 0]; // First 3 months development
+            
+            let currentCustomers = 0;
+            const totalMonths = npvYears * 12;
+            
+            for (let month = 4; month <= totalMonths + 3; month++) {
+                // Add customers at the end of each quarter
+                if ((month - 3) % 3 === 1 && month > 3) {
+                    currentCustomers += customersPerQuarter;
+                }
+                customerSchedule.push(currentCustomers);
+            }
             
             const cashFlows = [];
             
@@ -293,11 +314,16 @@
                 customers: 0
             });
             
-            // Months 1-60
-            for (let month = 1; month <= 60; month++) {
-                const customers = month <= customerSchedule.length ? customerSchedule[month - 1] : 20;
+            // Calculate monthly cash flows (use existing totalMonths)
+            for (let month = 1; month <= totalMonths; month++) {
+                // Get customers for this month (accounting for 3-month dev period)
+                const scheduleIndex = month + 2; // +2 because array starts at 0 and we have 3 dev months
+                const customers = scheduleIndex < customerSchedule.length ? customerSchedule[scheduleIndex] : currentCustomers;
                 const revenue = customers * monthlyPlatformFee;
-                const cost = operatingCost;
+                
+                // Apply annual growth to operating costs
+                const yearOfMonth = Math.ceil(month / 12);
+                const cost = baseOperatingCost * Math.pow(1 + opCostGrowthRate / 100, yearOfMonth - 1);
                 
                 cashFlows.push({
                     month: month,
@@ -326,31 +352,38 @@
         }
         
         function calculateAnnualCashFlows() {
-            const monthlyPlatformFee = 1000;
-            const operatingCost = 2440;
-            const initialInvestment = 110400;
+            // Get dynamic inputs
+            const monthlyPlatformFee = parseFloat(document.getElementById('revPerCustomer').value) || 1000;
+            const baseOperatingCost = parseFloat(document.getElementById('operatingCost').value) || 2440;
+            const opCostGrowthRate = parseFloat(document.getElementById('opCostGrowth').value) || 0;
+            const initialInvestment = parseFloat(document.getElementById('initialInvestment').value) || 110400;
+            const customersPerQuarter = parseFloat(document.getElementById('customersPerQuarter').value) || 1;
+            const npvYears = parseInt(document.getElementById('npvYears').value) || 5;
             
-            // Same customer schedule
-            const customerSchedule = [
-                0, 0, 0, // Development
-                1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, // Y1
-                5, 5, 5, 6, 6, 6, 7, 7, 7, 8, 8, 8, // Y2
-                9, 9, 9, 10, 10, 10, 11, 11, 11, 12, 12, 12, // Y3
-                13, 13, 13, 14, 14, 14, 15, 15, 15, 16, 16, 16, // Y4
-                17, 17, 17, 18, 18, 18, 19, 19, 19, 20, 20, 20  // Y5
-            ];
+            // Generate customer schedule dynamically
+            const customerSchedule = [0, 0, 0]; // First 3 months development
+            
+            let currentCustomers = 0;
+            for (let month = 4; month <= npvYears * 12 + 3; month++) {
+                if ((month - 3) % 3 === 1 && month > 3) {
+                    currentCustomers += customersPerQuarter;
+                }
+                customerSchedule.push(currentCustomers);
+            }
             
             const annualCashFlows = [-initialInvestment];
             
-            for (let year = 1; year <= 5; year++) {
+            for (let year = 1; year <= npvYears; year++) {
                 let yearRevenue = 0;
-                let yearCost = 0;
+                
+                // Calculate monthly operating cost for this year with growth factor
+                const monthlyOperatingCost = baseOperatingCost * Math.pow(1 + opCostGrowthRate / 100, year - 1);
+                const yearCost = monthlyOperatingCost * 12;
                 
                 for (let month = 1; month <= 12; month++) {
                     const monthIndex = (year - 1) * 12 + month + 2;
-                    const customers = customerSchedule[monthIndex] || 20;
+                    const customers = monthIndex < customerSchedule.length ? customerSchedule[monthIndex] : currentCustomers;
                     yearRevenue += customers * monthlyPlatformFee;
-                    yearCost += operatingCost;
                 }
                 
                 annualCashFlows.push(yearRevenue - yearCost);
@@ -389,13 +422,31 @@
             return rate;
         }
 
+        function toggleInputs() {
+            const card = document.getElementById('inputs-card');
+            const text = document.getElementById('toggle-text');
+            
+            if (card.style.display === 'none') {
+                card.style.display = 'block';
+                text.textContent = 'hide inputs';
+            } else {
+                card.style.display = 'none';
+                text.textContent = 'show inputs';
+            }
+        }
+        
         function updateAnalysis() {
-            console.log('updateAnalysis called');
-            const discountRate = parseFloat(document.getElementById('discountRate').value) || 10;
-            console.log('Discount rate:', discountRate);
+            try {
+                console.log('Starting updateAnalysis...');
+                const discountRate = parseFloat(document.getElementById('discountRate').value) || 10;
+                const npvYears = parseInt(document.getElementById('npvYears').value) || 5;
+                const initialInvestment = parseFloat(document.getElementById('initialInvestment').value) || 110400;
+                
+                console.log('Parameters:', { discountRate, npvYears, initialInvestment });
             
             // Calculate annual cash flows
             const annualCashFlows = calculateAnnualCashFlows();
+            console.log('Annual cash flows:', annualCashFlows);
             
             // Calculate IRR
             const irr = calculateIRR(annualCashFlows);
@@ -404,17 +455,19 @@
             const yearlyData = [];
             const annualRate = discountRate / 100;
             
-            for (let year = 0; year <= 5; year++) {
-                let cumulativeNPV = 0;
-                for (let t = 0; t <= year; t++) {
-                    cumulativeNPV += annualCashFlows[t] / Math.pow(1 + annualRate, t);
+            for (let year = 0; year <= npvYears; year++) {
+                if (year < annualCashFlows.length) {
+                    let cumulativeNPV = 0;
+                    for (let t = 0; t <= year; t++) {
+                        cumulativeNPV += annualCashFlows[t] / Math.pow(1 + annualRate, t);
+                    }
+                    
+                    yearlyData.push({
+                        year: year,
+                        cashFlow: annualCashFlows[year],
+                        cumulativeNPV: cumulativeNPV
+                    });
                 }
-                
-                yearlyData.push({
-                    year: year,
-                    cashFlow: annualCashFlows[year],
-                    cumulativeNPV: cumulativeNPV
-                });
             }
             
             // Calculate payback period (when cumulative cash flow becomes positive)
@@ -431,13 +484,13 @@
             }
             
             // Update display values
-            const year1Element = document.getElementById('year1-cashflow');
-            if (year1Element) {
-                year1Element.textContent = '$' + annualCashFlows[1].toLocaleString();
+            const initialInvestDisplay = document.getElementById('initial-investment-display');
+            if (initialInvestDisplay) {
+                initialInvestDisplay.textContent = '-$' + initialInvestment.toLocaleString();
             }
             
-            // Update NPV
-            const finalNPV = yearlyData[5].cumulativeNPV;
+            // Update NPV (use last year's cumulative NPV)
+            const finalNPV = yearlyData[yearlyData.length - 1].cumulativeNPV;
             document.getElementById('total-npv').textContent = '$' + Math.round(finalNPV).toLocaleString();
             
             // Update IRR (always calculate fresh, don't use fixed value)
@@ -467,11 +520,32 @@
                 subtitleIRR.textContent = (irr * 100).toFixed(1) + '%';
             }
             
+            const subtitlePayback = document.getElementById('subtitle-payback');
+            if (subtitlePayback) {
+                if (paybackMonth) {
+                    const paybackYears = Math.ceil(paybackMonth / 12);
+                    subtitlePayback.textContent = paybackYears + (paybackYears === 1 ? ' Year' : ' Years');
+                } else {
+                    subtitlePayback.textContent = 'N/A';
+                }
+            }
+            
+            const subtitleYears = document.getElementById('subtitle-years');
+            if (subtitleYears) {
+                subtitleYears.textContent = npvYears;
+            }
+            
             // Update chart
+            console.log('Yearly data for chart:', yearlyData);
             updateChart(yearlyData);
+            } catch(e) {
+                console.error('Error in updateAnalysis:', e);
+                console.error('Stack trace:', e.stack);
+            }
         }
 
         function updateChart(yearlyData) {
+            console.log('UpdateChart called with:', yearlyData);
             const ctx = document.getElementById('npvChart').getContext('2d');
             
             // Destroy existing chart if it exists
@@ -482,7 +556,7 @@
             chartInstance = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: ['Year 0', 'Year 1', 'Year 2', 'Year 3', 'Year 4', 'Year 5'],
+                    labels: yearlyData.map(d => 'Year ' + d.year),
                     datasets: [
                         {
                             label: 'Annual Cash Flow',
@@ -601,9 +675,13 @@
         // Initialize on load
         document.addEventListener('DOMContentLoaded', function() {
             console.log('Initializing ROI Analysis slide...');
-            setTimeout(() => {
-                updateAnalysis();
-            }, 100);
+            try {
+                setTimeout(() => {
+                    updateAnalysis();
+                }, 100);
+            } catch(e) {
+                console.error('Error initializing analysis:', e);
+            }
         });
     </script>
 </body>
