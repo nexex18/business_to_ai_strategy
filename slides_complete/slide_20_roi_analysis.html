@@ -198,7 +198,7 @@
     <div class="presentation-container">
         <div class="slide active" id="slide10">
             <h1>Return on Investment Analysis</h1>
-            <div class="subtitle">5-year NPV projection with adjustable discount rate</div>
+            <div class="subtitle">Investment Payback: 3 Years | Cumulative NPV: <span id="subtitle-npv">$221,696</span> (5YR) | IRR: <span id="subtitle-irr">47.8%</span></div>
             <div style="width: 100%; height: 2px; background: linear-gradient(90deg, transparent, #e0e0e0 20%, #e0e0e0 80%, transparent); margin: 0.5vh 0 3vh 0;"></div>
 
             <div class="discount-rate-input">
@@ -216,8 +216,7 @@
 
                     <div class="metric-group">
                         <div class="metric-title">Initial Investment</div>
-                        <div class="metric-value">-$110,000</div>
-                        <div class="metric-details">3-month development</div>
+                        <div class="metric-value">-$110,400</div>
                     </div>
 
                     <div class="metric-group">
@@ -226,13 +225,19 @@
                     </div>
 
                     <div class="metric-group">
-                        <div class="metric-title">Years 2-5</div>
-                        <div class="metric-details" id="years2-5-details">Net benefit = $474,525<br>Average annual = $118,631</div>
+                        <div class="metric-title">IRR</div>
+                        <div class="metric-value positive" id="irr-value">47.8%</div>
+                        <div class="metric-details">Internal Rate of Return</div>
                     </div>
 
                     <div class="metric-group">
-                        <div class="metric-title" style="color: #2e7d32; font-size: 20px;">NPV over 5 years</div>
-                        <div class="metric-value positive" id="total-npv">$231,583</div>
+                        <div class="metric-title">Payback Period</div>
+                        <div class="metric-value positive" id="payback-period">Month 36</div>
+                    </div>
+
+                    <div class="metric-group">
+                        <div class="metric-title" style="color: #2e7d32; font-size: 20px;">Cumulative NPV (5YR)</div>
+                        <div class="metric-value positive" id="total-npv">$221,696</div>
                     </div>
                 </div>
 
@@ -251,14 +256,30 @@
             const operatingCost = 2440;
             const initialInvestment = 110400;
             
-            // Customer growth: Y1=4, Y2=8, Y3=12, Y4=16, Y5=20
+            // Customer growth: Add 1 customer at the end of each quarter
+            // First 3 months are development (0 customers)
             const customerSchedule = [
-                0, 0, 0, // First 3 months (development)
-                1, 1, 2, 2, 3, 3, 4, 4, 4, // Y1 ramp up to 4 customers
-                5, 5, 6, 6, 7, 7, 8, 8, 8, 8, 8, 8, // Y2 to 8 customers
-                9, 9, 10, 10, 11, 11, 12, 12, 12, 12, 12, 12, // Y3 to 12 customers
-                13, 13, 14, 14, 15, 15, 16, 16, 16, 16, 16, 16, // Y4 to 16 customers
-                17, 17, 18, 18, 19, 19, 20, 20, 20, 20, 20, 20  // Y5 to 20 customers
+                0, 0, 0, // Months 1-3: Development phase
+                1, 1, 1, // Q1 Year 1: 1 customer
+                2, 2, 2, // Q2 Year 1: 2 customers
+                3, 3, 3, // Q3 Year 1: 3 customers
+                4, 4, 4, // Q4 Year 1: 4 customers
+                5, 5, 5, // Q1 Year 2: 5 customers
+                6, 6, 6, // Q2 Year 2: 6 customers
+                7, 7, 7, // Q3 Year 2: 7 customers
+                8, 8, 8, // Q4 Year 2: 8 customers
+                9, 9, 9, // Q1 Year 3: 9 customers
+                10, 10, 10, // Q2 Year 3: 10 customers
+                11, 11, 11, // Q3 Year 3: 11 customers
+                12, 12, 12, // Q4 Year 3: 12 customers
+                13, 13, 13, // Q1 Year 4: 13 customers
+                14, 14, 14, // Q2 Year 4: 14 customers
+                15, 15, 15, // Q3 Year 4: 15 customers
+                16, 16, 16, // Q4 Year 4: 16 customers
+                17, 17, 17, // Q1 Year 5: 17 customers
+                18, 18, 18, // Q2 Year 5: 18 customers
+                19, 19, 19, // Q3 Year 5: 19 customers
+                20, 20, 20  // Q4 Year 5: 20 customers
             ];
             
             const cashFlows = [];
@@ -303,53 +324,148 @@
             
             return { npv, cumulativeNPV };
         }
+        
+        function calculateAnnualCashFlows() {
+            const monthlyPlatformFee = 1000;
+            const operatingCost = 2440;
+            const initialInvestment = 110400;
+            
+            // Same customer schedule
+            const customerSchedule = [
+                0, 0, 0, // Development
+                1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, // Y1
+                5, 5, 5, 6, 6, 6, 7, 7, 7, 8, 8, 8, // Y2
+                9, 9, 9, 10, 10, 10, 11, 11, 11, 12, 12, 12, // Y3
+                13, 13, 13, 14, 14, 14, 15, 15, 15, 16, 16, 16, // Y4
+                17, 17, 17, 18, 18, 18, 19, 19, 19, 20, 20, 20  // Y5
+            ];
+            
+            const annualCashFlows = [-initialInvestment];
+            
+            for (let year = 1; year <= 5; year++) {
+                let yearRevenue = 0;
+                let yearCost = 0;
+                
+                for (let month = 1; month <= 12; month++) {
+                    const monthIndex = (year - 1) * 12 + month + 2;
+                    const customers = customerSchedule[monthIndex] || 20;
+                    yearRevenue += customers * monthlyPlatformFee;
+                    yearCost += operatingCost;
+                }
+                
+                annualCashFlows.push(yearRevenue - yearCost);
+            }
+            
+            return annualCashFlows;
+        }
+        
+        function calculateIRR(cashFlows) {
+            let rate = 0.1;
+            let step = 0.1;
+            let iterations = 0;
+            const maxIterations = 1000;
+            const tolerance = 1;
+            
+            while (iterations < maxIterations) {
+                let npv = 0;
+                for (let t = 0; t < cashFlows.length; t++) {
+                    npv += cashFlows[t] / Math.pow(1 + rate, t);
+                }
+                
+                if (Math.abs(npv) < tolerance) {
+                    return rate;
+                }
+                
+                if (npv > 0) {
+                    rate += step;
+                } else {
+                    rate -= step;
+                    step /= 2;
+                }
+                
+                iterations++;
+            }
+            
+            return rate;
+        }
 
         function updateAnalysis() {
+            console.log('updateAnalysis called');
             const discountRate = parseFloat(document.getElementById('discountRate').value) || 10;
-            const cashFlows = calculateCashFlows();
-            const { npv, cumulativeNPV } = calculateNPV(cashFlows, discountRate);
+            console.log('Discount rate:', discountRate);
             
-            // Calculate yearly summaries
+            // Calculate annual cash flows
+            const annualCashFlows = calculateAnnualCashFlows();
+            
+            // Calculate IRR
+            const irr = calculateIRR(annualCashFlows);
+            
+            // Calculate cumulative NPV for each year
             const yearlyData = [];
+            const annualRate = discountRate / 100;
             
-            // Year 0
-            yearlyData.push({
-                year: 0,
-                cashFlow: cashFlows[0].netCashFlow,
-                cumulativeNPV: cumulativeNPV[0]
-            });
-            
-            // Years 1-5
-            for (let year = 1; year <= 5; year++) {
-                const startMonth = (year - 1) * 12 + 1;
-                const endMonth = year * 12;
-                let yearCashFlow = 0;
-                
-                for (let m = startMonth; m <= endMonth && m < cashFlows.length; m++) {
-                    yearCashFlow += cashFlows[m].netCashFlow;
+            for (let year = 0; year <= 5; year++) {
+                let cumulativeNPV = 0;
+                for (let t = 0; t <= year; t++) {
+                    cumulativeNPV += annualCashFlows[t] / Math.pow(1 + annualRate, t);
                 }
                 
                 yearlyData.push({
                     year: year,
-                    cashFlow: yearCashFlow,
-                    cumulativeNPV: cumulativeNPV[endMonth] || cumulativeNPV[cumulativeNPV.length - 1]
+                    cashFlow: annualCashFlows[year],
+                    cumulativeNPV: cumulativeNPV
                 });
             }
             
-            // Update display values with original formatting
-            document.getElementById('year1-cashflow').textContent = 
-                '$' + yearlyData[1].cashFlow.toLocaleString();
+            // Calculate payback period (when cumulative cash flow becomes positive)
+            let cumulativeCashFlow = 0;
+            let paybackMonth = null;
+            const monthlyData = calculateCashFlows();
             
-            const totalBenefit = yearlyData[2].cashFlow + yearlyData[3].cashFlow + 
-                               yearlyData[4].cashFlow + yearlyData[5].cashFlow;
-            const avgAnnual = totalBenefit / 4;
+            for (let i = 0; i < monthlyData.length; i++) {
+                cumulativeCashFlow += monthlyData[i].netCashFlow;
+                if (cumulativeCashFlow > 0 && paybackMonth === null) {
+                    paybackMonth = i;
+                    break;
+                }
+            }
             
-            document.getElementById('years2-5-details').innerHTML = 
-                `Net benefit = $${totalBenefit.toLocaleString()}<br>Average annual = $${Math.round(avgAnnual).toLocaleString()}`;
+            // Update display values
+            const year1Element = document.getElementById('year1-cashflow');
+            if (year1Element) {
+                year1Element.textContent = '$' + annualCashFlows[1].toLocaleString();
+            }
             
-            const npvElement = document.getElementById('total-npv');
-            npvElement.textContent = '$' + Math.round(npv).toLocaleString();
-            npvElement.className = npv > 0 ? 'metric-value positive' : 'metric-value';
+            // Update NPV
+            const finalNPV = yearlyData[5].cumulativeNPV;
+            document.getElementById('total-npv').textContent = '$' + Math.round(finalNPV).toLocaleString();
+            
+            // Update IRR (always calculate fresh, don't use fixed value)
+            const irrElement = document.getElementById('irr-value');
+            if (irrElement) {
+                const irrPercent = (irr * 100).toFixed(1);
+                irrElement.textContent = irrPercent + '%';
+                console.log('IRR updated to:', irrPercent + '%');
+            }
+            
+            // Update Payback Period
+            const paybackElement = document.getElementById('payback-period');
+            if (paybackElement) {
+                const paybackText = paybackMonth ? `Month ${paybackMonth}` : 'N/A';
+                paybackElement.textContent = paybackText;
+                console.log('Payback period updated to:', paybackText);
+            }
+            
+            // Update subtitle values
+            const subtitleNPV = document.getElementById('subtitle-npv');
+            if (subtitleNPV) {
+                subtitleNPV.textContent = '$' + Math.round(finalNPV).toLocaleString();
+            }
+            
+            const subtitleIRR = document.getElementById('subtitle-irr');
+            if (subtitleIRR) {
+                subtitleIRR.textContent = (irr * 100).toFixed(1) + '%';
+            }
             
             // Update chart
             updateChart(yearlyData);
