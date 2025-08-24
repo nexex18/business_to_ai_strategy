@@ -1678,6 +1678,7 @@
         /* Slide 8 - Risks and Mitigations */
         .slide-8 {
             background: #ffffff;
+            padding-top: 2vh;
         }
 
         .slide-8 h1 {
@@ -1979,7 +1980,7 @@
 <div class="slide active slide-8" id="slide8">
 <h1>Cost-Benefit Analysis</h1>
 <div class="subtitle">Investment requirements and revenue potential for AI consulting platform</div>
-<hr style="width: 100%; height: 2px; background: linear-gradient(90deg, transparent, #e0e0e0 20%, #e0e0e0 80%, transparent); margin: 0.5vh 0 3vh 0; border: none;">
+<div style="width: 100%; height: 2px; background: linear-gradient(90deg, transparent, #e0e0e0 20%, #e0e0e0 80%, transparent); margin: 0.5vh 0 2vh 0; border: none; display: block;"></div>
 
 <div class="cost-benefit-container">
 <!-- Costs Column -->
@@ -2081,14 +2082,15 @@
 </div>
 <!-- Benefits Column -->
 <div style="display: grid; grid-template-rows: auto 1fr;">
-    <div class="total-benefit" style="min-height: 60px; display: flex; align-items: center; justify-content: center;">
-        Year 5 Annual Revenue: $240,000
+    <div class="total-benefit" style="min-height: 60px; display: flex; align-items: flex-start; justify-content: center; flex-direction: column; text-align: left; padding-left: 10px;">
+        Investment Payback: 3 Years | Cumulative NPV: $211,161 (5YR) | IRR: 46.5%<br/>
+        Operating Break Even: 3 Customers (year 1) 
     </div>
     <div class="benefit-section">
 <div class="section-header">
 <div class="section-icon">📈</div>
 <div>
-<div class="section-title"><h2>Revenue &amp; Benefits</h2></div>
+<div class="section-title"><h2>Assumptions &amp; Financials</h2></div>
 </div>
 </div>
 <div class="benefit-item">
@@ -2102,10 +2104,26 @@
 <div class="benefit-item">
 <div class="benefit-icon">👥</div>
 <div class="benefit-content">
-<div class="benefit-title">Customer Growth</div>
-<div class="benefit-description">Y1: 4 | Y2: 8 | Y3: 12 | Y4: 16 | Y5: 20</div>
+<div class="benefit-title">Customer Growth and Annual Revenue</div>
+<div class="benefit-description">Y1: 4 ($30k) | Y2: 8 ($78k) | Y3: 12 ($126k) | Y4: 16 ($174k) | Y5: 20 ($222k)</div>
 </div>
 <div class="benefit-value">5x Growth</div>
+</div>
+<div class="benefit-item">
+<div class="benefit-icon">📊</div>
+<div class="benefit-content">
+<div class="benefit-title">Net Present Value (NPV)</div>
+<div class="benefit-description">Y1: -$110k | Y2: -$71k | Y3: $0k | Y4: $95k | Y5: $211k</div>
+</div>
+<div class="benefit-value">$211,161 | IRR 46.5%</div>
+</div>
+<div class="benefit-item">
+<div class="benefit-icon">📈</div>
+<div class="benefit-content">
+<div class="benefit-title">Break-Even Analysis</div>
+<div class="benefit-description">Cash flow positive Year 1 | NPV positive Year 3 | Payback Month 33</div>
+</div>
+<div class="benefit-value">Month 33</div>
 </div>
 <div class="benefit-item">
 <div class="benefit-icon">⚡</div>
