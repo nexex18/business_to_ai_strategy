@@ -97,8 +97,8 @@
         }
         
         h1 {
-            font-size: 2.8vw;
-            margin-bottom: 0.8vh;
+            font-size: 2.5vw;
+            margin-bottom: 0.5vh;
             color: #1a1a1a;
             text-align: center;
             font-weight: 300;
@@ -109,8 +109,8 @@
         .subtitle {
             text-align: center;
             color: #666;
-            font-size: 1.1vw;
-            margin-bottom: 1.2vh;
+            font-size: 1vw;
+            margin-bottom: 0.8vh;
             font-weight: 400;
             animation: fadeInDown 0.8s ease-out 0.2s both;
         }
@@ -120,7 +120,7 @@
             grid-template-columns: 1fr auto 1fr;
             gap: 1.5vw;
             align-items: stretch;
-            margin-bottom: 0.5vh;
+            margin-bottom: 0.3vh;
             padding: 0 2vw;
             animation: slideInFromBottom 0.8s ease-out;
         }
@@ -129,7 +129,7 @@
             background: white;
             border: 2px solid #e0e0e0;
             border-radius: 12px;
-            padding: 1.2vh 1.5vw;
+            padding: 0.8vh 1.2vw;
             display: flex;
             flex-direction: column;
             transition: all 0.3s ease;
@@ -154,20 +154,20 @@
         .stage-header {
             display: flex;
             align-items: center;
-            gap: 0.8vw;
-            margin-bottom: 1vh;
-            padding-bottom: 0.8vh;
-            border-bottom: 2px solid rgba(0,0,0,0.1);
+            gap: 0.6vw;
+            margin-bottom: 0.6vh;
+            padding-bottom: 0.5vh;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
         }
 
         .stage-icon {
-            width: 2.5vw;
-            height: 2.5vw;
+            width: 2vw;
+            height: 2vw;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 50%;
-            font-size: 1.3vw;
+            font-size: 1.1vw;
         }
 
         .current-state .stage-icon {
@@ -185,19 +185,19 @@
         }
 
         .stage-title h3 {
-            font-size: 1.3vw;
+            font-size: 1.1vw;
             font-weight: 600;
             margin: 0;
             color: #1a1a1a;
         }
 
         .stage-label {
-            font-size: 0.8vw;
+            font-size: 0.7vw;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
             font-weight: 600;
             opacity: 0.7;
-            margin-bottom: 0.3vh;
+            margin-bottom: 0.2vh;
         }
 
         .current-state .stage-label {
@@ -212,17 +212,17 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            gap: 0.5vh;
+            gap: 0.3vh;
         }
 
         .stage-point {
             display: flex;
             align-items: flex-start;
-            gap: 0.8vw;
-            font-size: 0.9vw;
-            line-height: 1.3;
+            gap: 0.6vw;
+            font-size: 0.8vw;
+            line-height: 1.2;
             color: #333;
-            padding: 0.3vh 0;
+            padding: 0.2vh 0;
         }
 
         .stage-point::before {
@@ -242,13 +242,13 @@
         .metric-highlight {
             background: #f8f9fa;
             border-radius: 8px;
-            padding: 0.8vh 1vw;
+            padding: 0.5vh 0.8vw;
             margin-top: auto;
             text-align: center;
         }
 
         .metric-value {
-            font-size: 1.8vw;
+            font-size: 1.5vw;
             font-weight: 700;
             color: #1a1a1a;
             display: block;
@@ -309,32 +309,32 @@
         .evolution-timeline {
             background: linear-gradient(135deg, rgba(0, 118, 168, 0.05) 0%, rgba(0, 167, 79, 0.05) 100%);
             border-radius: 12px;
-            padding: 1.2vh 2vw;
-            margin: 1vh 2vw;
+            padding: 0.8vh 2vw;
+            margin: 0.5vh 2vw;
             animation: fadeInUp 0.8s ease-out 0.4s both;
         }
 
         .timeline-header {
             text-align: center;
-            margin-bottom: 1.2vh;
+            margin-bottom: 0.8vh;
         }
 
         .timeline-title {
-            font-size: 1.2vw;
+            font-size: 1vw;
             font-weight: 600;
             color: #1a1a1a;
-            margin-bottom: 0.3vh;
+            margin-bottom: 0.2vh;
         }
 
         .timeline-subtitle {
-            font-size: 0.85vw;
+            font-size: 0.75vw;
             color: #666;
         }
 
         .timeline-items {
             display: flex;
             flex-direction: column;
-            gap: 1.2vh;
+            gap: 0.8vh;
             align-items: center;
             position: relative;
             max-width: 60vw;
@@ -343,9 +343,9 @@
 
         .timeline-item {
             background: white;
-            border-radius: 12px;
-            padding: 1.2vh 2vw;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            border-radius: 10px;
+            padding: 0.8vh 1.5vw;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
             position: relative;
             z-index: 1;
             animation: slideInLeft 0.6s ease-out backwards;
@@ -353,7 +353,7 @@
             width: 100%;
             display: flex;
             align-items: flex-start;
-            gap: 1.5vw;
+            gap: 1.2vw;
         }
 
         .timeline-item:nth-child(1) { animation-delay: 0.6s; }
@@ -427,12 +427,12 @@
         .bottom-insight {
             background: linear-gradient(135deg, #0076a8 0%, #00a74f 100%);
             color: white;
-            padding: 1vh 2vw;
+            padding: 0.8vh 2vw;
             text-align: center;
-            font-size: 1vw;
+            font-size: 1.05vw;
             font-weight: 500;
-            margin: 0.8vh 4vw;
-            border-radius: 12px;
+            margin: 0.5vh 4vw;
+            border-radius: 10px;
             animation: slideInFromBottom 1s ease-out 1.4s both;
         }
 
@@ -451,13 +451,38 @@
             color: #999;
             font-style: italic;
         }
+        
+        .citations-box {
+            background: rgba(248, 249, 250, 0.9);
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 0.5vh 1.5vw;
+            margin: 0.5vh 2vw 0.4vh 2vw;
+            font-size: 0.55vw;
+            color: #555;
+            line-height: 1.3;
+            column-count: 5;
+            column-gap: 1.3vw;
+        }
+        
+        .citations-box .citation-item {
+            margin-bottom: 0.3vh;
+            break-inside: avoid;
+            page-break-inside: avoid;
+        }
+        
+        .citations-box sup {
+            color: #0076a8;
+            font-weight: 600;
+            margin-right: 0.2vw;
+        }
     </style>
 </head>
 <body>
     <div class="presentation-container">
         <div class="slide active" id="slide18">
-            <h1>From Labor Arbitrage to AI-Powered Transformation</h1>
-            <div class="subtitle">The consulting industry's fundamental shift from time-based to value-based economics</div>
+            <h1>Our clients only pay only for high value human expert activities, not 'grunt work'</h1>
+            <div class="subtitle">Our AI first platform automates everything from research to value realization monitoring to always on SWAT analysis</div>
             <div style="width: 100%; height: 2px; background: linear-gradient(90deg, transparent, #e0e0e0 20%, #e0e0e0 80%, transparent); margin: 0.5vh 0 3vh 0;"></div>
             
             <div class="transformation-journey">
@@ -550,6 +575,14 @@
                         </div>
                     </div>
                 </div>
+                
+                <div class="citations-box">
+                    <div class="citation-item"><sup>7</sup>McKinsey & Company. "The economic potential of generative AI: The next productivity frontier"</div>
+                    <div class="citation-item"><sup>10</sup>McKinsey & Company. "Rewiring the way McKinsey works with Lilli"</div>
+                    <div class="citation-item"><sup>11</sup>Medium - Takafumi Endo. "How AI is Redefining Strategy Consulting: McKinsey, BCG, and Bain"</div>
+                    <div class="citation-item"><sup>14</sup>MCA. "AI and Digital Technology Expected to Drive Growth in Consulting in 2024"</div>
+                    <div class="citation-item"><sup>15</sup>Gartner. "Top Technology Trends 2025"</div>
+                </div>
             </div>
             
             <div class="bottom-insight">
@@ -557,7 +590,6 @@
                 Key Insight: The shift from labor arbitrage to AI-powered services represents the largest transformation in consulting since the industry's inception
             </div>
             
-            <div class="references-note">*See References slide for full citations</div>
         </div>
     </div>
 </body>

@@ -79,7 +79,8 @@ def create_navigation(slide_index, total_slides):
     agenda_sections = []
     for slide in SLIDES:
         section = slide.get('agenda_section', 'General')
-        if section not in seen_sections and section not in ['Title', 'Agenda']:
+        # Include all sections
+        if section not in seen_sections:
             seen_sections.append(section)
             # Find first slide in this section for linking
             first_slide = next((s for s in SLIDES if s.get('agenda_section') == section), None)
@@ -135,8 +136,6 @@ def create_navigation(slide_index, total_slides):
             <span class="nav-counter">Slide {int(current["num"])} of {total_slides}</span>
             <div class="nav-breadcrumbs">
                 <a href="../index.html" class="breadcrumb-item toc-item">TOC</a>
-                <span class="breadcrumb-separator">›</span>
-                <a href="{agenda_link}" class="breadcrumb-item agenda-item">Agenda</a>
                 <span class="breadcrumb-separator">›</span>
                 {breadcrumbs_html}
             </div>

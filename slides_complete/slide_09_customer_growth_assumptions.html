@@ -143,6 +143,26 @@
                 transform: translateY(0);
             }
         }
+        
+        .bottom-insight {
+            background: linear-gradient(135deg, #0076a8 0%, #00a74f 100%);
+            color: white;
+            padding: 20px 40px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 500;
+            position: absolute;
+            bottom: 80px;
+            left: 4vw;
+            right: 4vw;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 118, 168, 0.3);
+        }
+        
+        .insight-icon {
+            margin-right: 10px;
+            font-size: 20px;
+        }
     </style>
 </head>
 <body>
@@ -215,6 +235,11 @@
                         </tr>
                     </tbody>
                 </table>
+            </div>
+            
+            <div class="bottom-insight">
+                <span class="insight-icon">💡</span>
+                Key Assumption: Each consultant handles two customers at a time, this chart forecasts 10 consultants by year 5.
             </div>
         </div>
     </div>
