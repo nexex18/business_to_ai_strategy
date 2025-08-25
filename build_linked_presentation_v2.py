@@ -16,16 +16,16 @@ from datetime import datetime
 AGENDA_COLORS = {
     "Title": "#666",  # Neutral gray for title
     "Agenda": "#666",  # Neutral gray for agenda
-    "VMG background": "#d73502",  # Dark red-orange
-    "Competitive landscape": "#cb5a00",  # Orange
-    "Internal assessment": "#bf7800",  # Dark orange
-    "Opportunities": "#b39000",  # Yellow-orange
-    "Business and AI strategies": "#97a000",  # Yellow-green
-    "AI maturity": "#7aad00",  # Light green
-    "AI initiatives": "#5cb600",  # Green
-    "Financial analysis": "#3dbd00",  # Bright green
+    "Background": "#d73502",  # Dark red-orange
+    "Competitive Landscape": "#cb5a00",  # Orange
+    "Internal Assessment": "#bf7800",  # Dark orange
+    "Opportunity": "#b39000",  # Yellow-orange
+    "Business & AI Strategies": "#97a000",  # Yellow-green
+    "AI Maturity": "#7aad00",  # Light green
+    "AI Initiatives": "#5cb600",  # Green
+    "Financial Analysis": "#3dbd00",  # Bright green
     "Timeline": "#1dc200",  # Bright green
-    "Risks and mitigation strategies": "#00c624",  # Final green
+    "Risks & Mitigations": "#00c624",  # Final green
     "Conclusion": "#00a31f"  # Darker green for conclusion
 }
 
