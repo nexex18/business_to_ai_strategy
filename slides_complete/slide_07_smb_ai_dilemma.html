@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Understanding the SMB AI Dilemma</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #f5f5f5;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .slide {
+            display: none;
+            width: 100vw;
+            height: 100vh;
+            padding: 3vh 4vw;
+            background: white;
+            position: relative;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+        
+        h1 {
+            font-size: 2.8vw;
+            margin-bottom: 1.5vh;
+            color: #1a1a1a;
+            text-align: center;
+            font-weight: 300;
+            letter-spacing: -0.5px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.3vw;
+            margin-bottom: 3vh;
+            font-weight: 500;
+            animation: fadeInDown 0.8s ease-out 0.2s both;
+        }
+
+        .content-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2vw;
+            flex: 1;
+        }
+
+        .target-profile {
+            background: linear-gradient(135deg, rgba(0, 118, 168, 0.08) 0%, rgba(0, 167, 79, 0.08) 100%);
+            border-radius: 15px;
+            padding: 2vh 2vw;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .section-header {
+            font-size: 1.4vw;
+            font-weight: 700;
+            color: #0076a8;
+            margin-bottom: 1.5vh;
+            padding-bottom: 0.8vh;
+            border-bottom: 2px solid rgba(0, 118, 168, 0.2);
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5vw;
+        }
+
+        .profile-item {
+            background: white;
+            border-radius: 10px;
+            padding: 1.2vh 1.2vw;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            animation: slideInRight 0.6s ease-out backwards;
+        }
+
+        .profile-item:nth-child(1) { animation-delay: 0.6s; }
+        .profile-item:nth-child(2) { animation-delay: 0.7s; }
+        .profile-item:nth-child(3) { animation-delay: 0.8s; }
+        .profile-item:nth-child(4) { animation-delay: 0.9s; }
+
+        .profile-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+        }
+
+        .profile-icon {
+            font-size: 1.8vw;
+            margin-bottom: 0.5vh;
+            display: block;
+            text-align: center;
+        }
+
+        .profile-label {
+            font-size: 0.9vw;
+            color: #666;
+            font-weight: 600;
+            margin-bottom: 0.3vh;
+            text-align: center;
+        }
+
+        .profile-value {
+            font-size: 1vw;
+            color: #333;
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        .challenges-section {
+            animation: fadeInUp 0.8s ease-out 0.5s both;
+        }
+
+        .challenge-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5vh 1.5vw;
+            margin-bottom: 1.5vh;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            border-left: 4px solid #dc3545;
+            transition: all 0.3s ease;
+            animation: slideInRight 0.6s ease-out backwards;
+        }
+
+        .challenge-card:nth-child(2) { animation-delay: 0.7s; }
+        .challenge-card:nth-child(3) { animation-delay: 0.8s; }
+        .challenge-card:nth-child(4) { animation-delay: 0.9s; }
+        .challenge-card:nth-child(5) { animation-delay: 1.0s; }
+
+        .challenge-card:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+        }
+
+        .challenge-header {
+            display: flex;
+            align-items: center;
+            gap: 1vw;
+            margin-bottom: 0.5vh;
+        }
+
+        .challenge-emoji {
+            font-size: 1.5vw;
+        }
+
+        .challenge-title {
+            font-size: 1.1vw;
+            font-weight: 700;
+            color: #dc3545;
+        }
+
+        .challenge-desc {
+            font-size: 0.95vw;
+            color: #555;
+            line-height: 1.5;
+            padding-left: 2.5vw;
+        }
+
+        .stat-highlight {
+            font-weight: 700;
+            color: #dc3545;
+            font-size: 1.1vw;
+        }
+
+        .citation {
+            font-size: 0.7vw;
+            color: #999;
+            vertical-align: super;
+            font-weight: 400;
+        }
+
+        .references-note {
+            position: absolute;
+            bottom: 2vh;
+            right: 4vw;
+            font-size: 0.8vw;
+            color: #999;
+            font-style: italic;
+        }
+
+        .highlight-box {
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            padding: 0.2vh 0.4vw;
+            border-radius: 4px;
+            display: inline-block;
+            color: #f39c12;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="slide active" id="slide21">
+            <h1>There is an immediate opportunity to make a true impact on SMBs</h1>
+            <div class="subtitle">The Opportunity Is Clear – They're Ready, We're Ready</div>
+            <div style="width: 100%; height: 2px; background: linear-gradient(90deg, transparent, #e0e0e0 20%, #e0e0e0 80%, transparent); margin: 0.5vh 0 3vh 0;"></div>
+
+            <div class="content-container">
+                <div class="target-profile">
+                    <div class="section-header">Target Profile</div>
+                    <div class="profile-grid">
+                        <div class="profile-item">
+                            <span class="profile-icon">🎯</span>
+                            <div class="profile-label">Company Size</div>
+                            <div class="profile-value">10-500 employees<br>$20M-$500M revenue</div>
+                        </div>
+                        <div class="profile-item">
+                            <span class="profile-icon">📍</span>
+                            <div class="profile-label">Growth Stage</div>
+                            <div class="profile-value">Scaling businesses feeling AI pressure and opportunity</div>
+                        </div>
+                        <div class="profile-item">
+                            <span class="profile-icon">🏭</span>
+                            <div class="profile-label">Industries</div>
+                            <div class="profile-value">Tech, professional services, manufacturing, retail</div>
+                        </div>
+                        <div class="profile-item">
+                            <span class="profile-icon">👥</span>
+                            <div class="profile-label">Decision Makers</div>
+                            <div class="profile-value">CEOs, CTOs, and emerging CAIOs</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="challenges-section">
+                    <div class="section-header">Key Challenges</div>
+                    
+                    <div class="challenge-card">
+                        <div class="challenge-header">
+                            <span class="challenge-emoji">⚠️</span>
+                            <div class="challenge-title">Strategic Confusion</div>
+                        </div>
+                        <div class="challenge-desc">
+                            <span class="stat-highlight">73%</span> lack clear framework for AI alignment<span class="citation">²⁹</span>
+                        </div>
+                    </div>
+                    
+                    <div class="challenge-card">
+                        <div class="challenge-header">
+                            <span class="challenge-emoji">😰</span>
+                            <div class="challenge-title">FOMO-Driven Decisions</div>
+                        </div>
+                        <div class="challenge-desc">
+                            Adopting AI tools without strategic purpose
+                        </div>
+                    </div>
+                    
+                    <div class="challenge-card">
+                        <div class="challenge-header">
+                            <span class="challenge-emoji">🏢</span>
+                            <div class="challenge-title">Integration Complexity</div>
+                        </div>
+                        <div class="challenge-desc">
+                            Organizations without a clear AI Strategy see <span class="highlight-box">2.6x worse outcomes</span><span class="citation">³¹</span>
+                        </div>
+                    </div>
+                    
+                    <div class="challenge-card">
+                        <div class="challenge-header">
+                            <span class="challenge-emoji">💰</span>
+                            <div class="challenge-title">Resource Constraints</div>
+                        </div>
+                        <div class="challenge-desc">
+                            Can't afford Big 4 rates or build internal expertise
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="references-note">*See References slide for full citations</div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detailed Maturity Assessment by Building Block</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #f5f5f5;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.3vw;
+            margin-bottom: 5vh;
+            font-weight: 500;
+            animation: fadeInDown 0.8s ease-out 0.2s both;
+        }
+
+        .slide {
+            display: none;
+            width: 100vw;
+            height: 100vh;
+            padding: 3vh 4vw;
+            background: white;
+            position: relative;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        h1 {
+            font-size: 2.5vw;
+            margin-bottom: 1.2vh;
+            color: #1a1a1a;
+            text-align: center;
+            font-weight: 300;
+            letter-spacing: -0.5px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeInUp 0.8s ease-out 0.3s both;
+        }
+
+        .assessment-table {
+            width: 98%;
+            max-width: 98vw;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            margin-top: 0.5vh;
+        }
+
+        .assessment-table thead {
+            background: linear-gradient(135deg, #0076a8, #00a74f);
+            color: white;
+        }
+
+        .assessment-table thead th {
+            padding: 1.5vh 1vw;
+            font-weight: 600;
+            font-size: 1.1vw;
+            text-align: left;
+            border: none;
+        }
+
+        .assessment-table tbody tr {
+            transition: all 0.3s ease;
+            animation: slideInLeft 0.6s ease-out backwards;
+        }
+
+        .assessment-table tbody tr:nth-child(1) { animation-delay: 0.5s; }
+        .assessment-table tbody tr:nth-child(2) { animation-delay: 0.7s; }
+        .assessment-table tbody tr:nth-child(3) { animation-delay: 0.9s; }
+        .assessment-table tbody tr:nth-child(4) { animation-delay: 1.1s; }
+        .assessment-table tbody tr:nth-child(5) { animation-delay: 1.3s; }
+        .assessment-table tbody tr:nth-child(6) { animation-delay: 1.5s; }
+        .assessment-table tbody tr:nth-child(7) { animation-delay: 1.7s; }
+
+        .assessment-table tbody tr:hover {
+            transform: scale(1.005);
+            box-shadow: 0 5px 15px rgba(0,167,79,0.15);
+        }
+
+        .assessment-table td {
+            padding: 1.3vh 1vw;
+            border-bottom: 2px solid #e8e8e8;
+            vertical-align: top;
+            font-size: 0.9vw;
+            line-height: 1.3;
+        }
+
+        .assessment-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .building-block-name {
+            font-weight: 700;
+            color: #333;
+            font-size: 1vw;
+            margin-bottom: 0.2vh;
+        }
+
+        .current-level {
+            background: rgba(0, 118, 168, 0.1);
+            border: 1px solid rgba(0, 118, 168, 0.3);
+            border-radius: 6px;
+            padding: 0.5vh 0.8vw;
+            color: #0076a8;
+            font-weight: 600;
+            font-size: 0.9vw;
+            text-align: center;
+        }
+
+        .score {
+            font-size: 1.5vw;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .target {
+            background: rgba(0, 167, 79, 0.1);
+            border: 1px solid rgba(0, 167, 79, 0.3);
+            border-radius: 6px;
+            padding: 0.5vh 0.8vw;
+            color: #00a74f;
+            font-weight: 600;
+            font-size: 0.9vw;
+            text-align: center;
+        }
+
+        .rationale-text {
+            font-size: 0.9vw;
+            color: #555;
+            line-height: 1.3;
+        }
+
+        .strength-label {
+            color: #00a74f;
+            font-weight: 700;
+        }
+
+        .gap-label {
+            color: #f39c12;
+            font-weight: 700;
+        }
+
+        .reality-label {
+            color: #0076a8;
+            font-weight: 700;
+        }
+
+        .mixed-label {
+            color: #9b59b6;
+            font-weight: 700;
+        }
+
+        /* Score coloring */
+        .score-high {
+            color: #00a74f;
+        }
+
+        .score-medium {
+            color: #f39c12;
+        }
+
+        .score-low {
+            color: #e74c3c;
+        }
+
+        /* Row-specific left borders */
+        .assessment-table tbody tr:nth-child(1) {
+            border-left: 4px solid #00a74f;
+        }
+
+        .assessment-table tbody tr:nth-child(2) {
+            border-left: 4px solid #00a74f;
+        }
+
+        .assessment-table tbody tr:nth-child(3) {
+            border-left: 4px solid #f39c12;
+        }
+
+        .assessment-table tbody tr:nth-child(4) {
+            border-left: 4px solid #f39c12;
+        }
+
+        .assessment-table tbody tr:nth-child(5) {
+            border-left: 4px solid #f39c12;
+        }
+
+        .assessment-table tbody tr:nth-child(6) {
+            border-left: 4px solid #f39c12;
+        }
+
+        .assessment-table tbody tr:nth-child(7) {
+            border-left: 4px solid #9b59b6;
+        }
+
+        /* Background gradient accent */
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 10vh;
+            background: linear-gradient(135deg, rgba(0,118,168,0.03), rgba(0,167,79,0.03));
+            z-index: -1;
+        }
+
+        .references-note {
+            position: absolute;
+            bottom: 2vh;
+            right: 4vw;
+            font-size: 1vw;
+            color: #999;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="slide active" id="slide12">
+            <h1>## Appendix ## - Detailed Maturity Assessment by Building Block</h1>
+            <div class="subtitle">Place Holder</div>
+            <div style="width: 100%; height: 2px; background: linear-gradient(90deg, transparent, #e0e0e0 20%, #e0e0e0 80%, transparent); margin: 0.5vh 0 3vh 0;"></div>
+            
+            
+            <div class="content-wrapper">
+                <table class="assessment-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 15%;">Building Block</th>
+                            <th style="width: 15%;">Current Level</th>
+                            <th style="width: 10%;">Score</th>
+                            <th style="width: 10%;">Target (12 mo)</th>
+                            <th style="width: 50%;">Rationale</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="building-block-name">Vision</div>
+                            </td>
+                            <td>
+                                <div class="current-level">Managed</div>
+                            </td>
+                            <td>
+                                <div class="score score-high">4.0</div>
+                            </td>
+                            <td>
+                                <div class="target">4.0</div>
+                            </td>
+                            <td>
+                                <div class="rationale-text">
+                                    <span class="strength-label">Strength:</span> Clear, compelling vision of "Velocity Made Good" - using AI to ensure SMBs achieve strategic goals, not just implement technology. Vision directly addresses market need and is championed by leadership.
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="building-block-name">Strategy</div>
+                            </td>
+                            <td>
+                                <div class="current-level">Managed</div>
+                            </td>
+                            <td>
+                                <div class="score score-high">3.5</div>
+                            </td>
+                            <td>
+                                <div class="target">4.0</div>
+                            </td>
+                            <td>
+                                <div class="rationale-text">
+                                    <span class="strength-label">Strength:</span> Well-articulated strategy to deliver enterprise consulting at SMB prices through AI. Strategy is living document, but needs more market validation and iteration.
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="building-block-name">Metrics</div>
+                            </td>
+                            <td>
+                                <div class="current-level">Reactive</div>
+                            </td>
+                            <td>
+                                <div class="score score-medium">2.0</div>
+                            </td>
+                            <td>
+                                <div class="target">3.5</div>
+                            </td>
+                            <td>
+                                <div class="rationale-text">
+                                    <span class="gap-label">Gap:</span> Basic financial metrics in place, but lacking comprehensive KPIs for AI value delivery, client success prediction, and operational efficiency. Building measurement infrastructure.
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="building-block-name">Governance</div>
+                            </td>
+                            <td>
+                                <div class="current-level">Aware/Reactive</div>
+                            </td>
+                            <td>
+                                <div class="score score-low">1.5</div>
+                            </td>
+                            <td>
+                                <div class="target">3.0</div>
+                            </td>
+                            <td>
+                                <div class="rationale-text">
+                                    <span class="gap-label">Gap:</span> Minimal formal governance as startup. Have basic data privacy policies, but need formal AI ethics guidelines, decision rights, and quality assurance processes.
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="building-block-name">People</div>
+                            </td>
+                            <td>
+                                <div class="current-level">Reactive</div>
+                            </td>
+                            <td>
+                                <div class="score score-medium">2.0</div>
+                            </td>
+                            <td>
+                                <div class="target">3.0</div>
+                            </td>
+                            <td>
+                                <div class="rationale-text">
+                                    <span class="reality-label">Reality:</span> Small founding team with strong vision but limited bandwidth. AI expertise concentrated in 1-2 people. Need to build team and distribute AI capabilities.
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="building-block-name">Processes</div>
+                            </td>
+                            <td>
+                                <div class="current-level">Aware/Reactive</div>
+                            </td>
+                            <td>
+                                <div class="score score-low">1.5</div>
+                            </td>
+                            <td>
+                                <div class="target">3.0</div>
+                            </td>
+                            <td>
+                                <div class="rationale-text">
+                                    <span class="gap-label">Gap:</span> Ad-hoc processes typical of startup. Some documented methodologies but inconsistent application. Need to standardize delivery while maintaining agility.
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="building-block-name">Technology</div>
+                            </td>
+                            <td>
+                                <div class="current-level">Reactive/Proactive</div>
+                            </td>
+                            <td>
+                                <div class="score score-medium">2.5</div>
+                            </td>
+                            <td>
+                                <div class="target">4.0</div>
+                            </td>
+                            <td>
+                                <div class="rationale-text">
+                                    <span class="mixed-label">Mixed:</span> Good foundational AI tools (Claude, python, n8n, superset analytics platforms) but lacking integrated platform. Infrastructure can support current scale but needs architecture for growth.
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

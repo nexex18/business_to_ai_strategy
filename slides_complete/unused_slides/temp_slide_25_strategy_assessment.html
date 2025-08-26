@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VMG Strategy Assessment</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #f5f5f5;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .slide {
+            display: none;
+            width: 100vw;
+            height: 100vh;
+            padding: 3vh 4vw;
+            background: white;
+            position: relative;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        h1 {
+            font-size: 2.8vw;
+            font-weight: 300;
+            color: #1a1a1a;
+            text-align: center;
+            margin-bottom: 0.8vh;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.3vw;
+            margin-bottom: 1.2vh;
+            font-weight: 500;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2vw;
+            margin-top: 2vh;
+            flex: 1;
+        }
+
+        /* Strategic Capabilities Assessment Table */
+        .assessment-table {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .assessment-table h3 {
+            background: #2c3e50;
+            color: white;
+            padding: 1vh 1.5vw;
+            font-size: 1.2vw;
+            font-weight: 600;
+        }
+
+        .assessment-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .assessment-table th {
+            background: #f8f9fa;
+            padding: 0.8vh 1vw;
+            text-align: left;
+            font-size: 0.9vw;
+            font-weight: 600;
+            color: #495057;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .assessment-table td {
+            padding: 0.8vh 1vw;
+            font-size: 0.85vw;
+            border-bottom: 1px solid #e9ecef;
+            vertical-align: middle;
+        }
+
+        .assessment-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        /* Harvey Balls */
+        .harvey-ball {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #495057;
+            border-radius: 50%;
+            display: inline-block;
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .harvey-ball.empty {
+            background: white;
+        }
+
+        .harvey-ball.quarter::before {
+            content: '';
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            background: #495057;
+            border-radius: 0 0 0 100%;
+            bottom: 0;
+            left: 0;
+        }
+
+        .harvey-ball.half::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 50%;
+            background: #495057;
+            bottom: 0;
+            left: 0;
+        }
+
+        .harvey-ball.three-quarter::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #495057;
+            border-radius: 50%;
+        }
+
+        .harvey-ball.three-quarter::after {
+            content: '';
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            background: white;
+            border-radius: 0 100% 0 0;
+            top: 0;
+            right: 0;
+        }
+
+        .harvey-ball.full {
+            background: #495057;
+        }
+
+        /* Risk Matrix */
+        .risk-matrix {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5vh 1.5vw;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .risk-matrix h3 {
+            font-size: 1.2vw;
+            color: #2c3e50;
+            margin-bottom: 1.5vh;
+            font-weight: 600;
+        }
+
+        .matrix-grid {
+            display: grid;
+            grid-template-columns: 60px 1fr 1fr 1fr;
+            grid-template-rows: 1fr 1fr 1fr 60px;
+            gap: 1px;
+            background: #dee2e6;
+            border: 1px solid #dee2e6;
+            height: 25vh;
+        }
+
+        .matrix-cell {
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85vw;
+            padding: 0.5vh 0.5vw;
+            position: relative;
+        }
+
+        .matrix-label {
+            background: #f8f9fa;
+            font-weight: 600;
+            font-size: 0.8vw;
+            color: #495057;
+        }
+
+        .risk-low { background: #d4edda; }
+        .risk-medium { background: #fff3cd; }
+        .risk-high { background: #f8d7da; }
+
+        .risk-item {
+            background: #0076a8;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75vw;
+            font-weight: 500;
+            position: absolute;
+            white-space: nowrap;
+        }
+
+        /* Strategic Priorities */
+        .priorities-section {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5vh 1.5vw;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .priorities-section h3 {
+            font-size: 1.2vw;
+            color: #2c3e50;
+            margin-bottom: 1.5vh;
+            font-weight: 600;
+        }
+
+        .priority-item {
+            display: grid;
+            grid-template-columns: 30px 1fr auto;
+            align-items: center;
+            gap: 1vw;
+            padding: 1vh 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .priority-number {
+            width: 30px;
+            height: 30px;
+            background: #0076a8;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9vw;
+        }
+
+        .priority-text {
+            font-size: 0.95vw;
+            color: #333;
+        }
+
+        .priority-timeline {
+            background: #f8f9fa;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.8vw;
+            color: #495057;
+            font-weight: 600;
+        }
+
+        /* Value Creation Framework */
+        .value-framework {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5vh 1.5vw;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .value-framework h3 {
+            font-size: 1.2vw;
+            color: #2c3e50;
+            margin-bottom: 1.5vh;
+            font-weight: 600;
+        }
+
+        .value-drivers {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1vw;
+        }
+
+        .value-card {
+            background: #f8f9fa;
+            padding: 1vh 1vw;
+            border-radius: 6px;
+            border-left: 4px solid #0076a8;
+        }
+
+        .value-metric {
+            font-size: 1.8vw;
+            font-weight: bold;
+            color: #0076a8;
+            margin-bottom: 0.5vh;
+        }
+
+        .value-label {
+            font-size: 0.8vw;
+            color: #666;
+            margin-bottom: 0.5vh;
+        }
+
+        .value-detail {
+            font-size: 0.75vw;
+            color: #999;
+        }
+
+        /* Bottom insight bar */
+        .strategic-verdict {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            padding: 1.5vh 2vw;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 2vh;
+            box-shadow: 0 4px 20px rgba(44, 62, 80, 0.3);
+        }
+
+        .verdict-title {
+            font-size: 1.2vw;
+            font-weight: 600;
+            margin-bottom: 0.5vh;
+        }
+
+        .verdict-text {
+            font-size: 0.95vw;
+            opacity: 0.95;
+        }
+
+        /* Legend */
+        .legend {
+            display: flex;
+            gap: 2vw;
+            justify-content: center;
+            align-items: center;
+            padding: 1vh 0;
+            font-size: 0.8vw;
+            color: #666;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5vw;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="slide active" id="slide25">
+            <h1>Strategic Assessment: VMG Platform Viability</h1>
+            <div class="subtitle">McKinsey-Style Evaluation of Market Position, Capabilities, and Value Creation Potential</div>
+            <div style="width: 100%; height: 2px; background: linear-gradient(90deg, transparent, #e0e0e0 20%, #e0e0e0 80%, transparent); margin: 0.5vh 0 2vh 0;"></div>
+
+            <div class="main-content">
+                <div style="display: flex; flex-direction: column; gap: 2vh;">
+                    <!-- Strategic Capabilities Assessment -->
+                    <div class="assessment-table">
+                        <h3>Strategic Capabilities Assessment</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Capability Domain</th>
+                                    <th style="text-align: center;">Current State</th>
+                                    <th style="text-align: center;">Target State</th>
+                                    <th>Gap Analysis</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Technology Platform</strong></td>
+                                    <td style="text-align: center;"><span class="harvey-ball quarter"></span></td>
+                                    <td style="text-align: center;"><span class="harvey-ball full"></span></td>
+                                    <td>MVP operational, scaling required</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>AI/ML Capabilities</strong></td>
+                                    <td style="text-align: center;"><span class="harvey-ball three-quarter"></span></td>
+                                    <td style="text-align: center;"><span class="harvey-ball full"></span></td>
+                                    <td>Strong foundation, fine-tuning needed</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Market Presence</strong></td>
+                                    <td style="text-align: center;"><span class="harvey-ball empty"></span></td>
+                                    <td style="text-align: center;"><span class="harvey-ball three-quarter"></span></td>
+                                    <td>Pre-launch, no brand recognition</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Consultant Network</strong></td>
+                                    <td style="text-align: center;"><span class="harvey-ball empty"></span></td>
+                                    <td style="text-align: center;"><span class="harvey-ball full"></span></td>
+                                    <td>Recruitment strategy required</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Revenue Model</strong></td>
+                                    <td style="text-align: center;"><span class="harvey-ball half"></span></td>
+                                    <td style="text-align: center;"><span class="harvey-ball full"></span></td>
+                                    <td>Pricing validated, execution pending</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Operations</strong></td>
+                                    <td style="text-align: center;"><span class="harvey-ball quarter"></span></td>
+                                    <td style="text-align: center;"><span class="harvey-ball three-quarter"></span></td>
+                                    <td>Basic processes, automation needed</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="legend">
+                            <div class="legend-item">
+                                <span class="harvey-ball empty" style="width: 16px; height: 16px;"></span>
+                                <span>Not Started</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="harvey-ball quarter" style="width: 16px; height: 16px;"></span>
+                                <span>Early Stage</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="harvey-ball half" style="width: 16px; height: 16px;"></span>
+                                <span>Developing</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="harvey-ball three-quarter" style="width: 16px; height: 16px;"></span>
+                                <span>Advanced</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="harvey-ball full" style="width: 16px; height: 16px;"></span>
+                                <span>Mature</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Value Creation Framework -->
+                    <div class="value-framework">
+                        <h3>Value Creation Metrics</h3>
+                        <div class="value-drivers">
+                            <div class="value-card">
+                                <div class="value-metric">50%</div>
+                                <div class="value-label">Cost Reduction</div>
+                                <div class="value-detail">vs. traditional consulting</div>
+                            </div>
+                            <div class="value-card">
+                                <div class="value-metric">10x</div>
+                                <div class="value-label">Speed to Market</div>
+                                <div class="value-detail">faster deliverables</div>
+                            </div>
+                            <div class="value-card">
+                                <div class="value-metric">$11M</div>
+                                <div class="value-label">TAM</div>
+                                <div class="value-detail">addressable in 5 years</div>
+                            </div>
+                            <div class="value-card">
+                                <div class="value-metric">46.5%</div>
+                                <div class="value-label">Target IRR</div>
+                                <div class="value-detail">5-year projection</div>
+                            </div>
+                            <div class="value-card">
+                                <div class="value-metric">87.8%</div>
+                                <div class="value-label">Gross Margin</div>
+                                <div class="value-detail">at scale</div>
+                            </div>
+                            <div class="value-card">
+                                <div class="value-metric">2.7yr</div>
+                                <div class="value-label">Payback</div>
+                                <div class="value-detail">investment recovery</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 2vh;">
+                    <!-- Risk-Impact Matrix -->
+                    <div class="risk-matrix">
+                        <h3>Risk-Impact Assessment Matrix</h3>
+                        <div class="matrix-grid">
+                            <div class="matrix-cell matrix-label" style="grid-row: 1;">High</div>
+                            <div class="matrix-cell risk-medium" style="grid-row: 1;">
+                                <div class="risk-item" style="top: 20%; left: 15%;">Consultant Quality</div>
+                            </div>
+                            <div class="matrix-cell risk-high" style="grid-row: 1;">
+                                <div class="risk-item" style="top: 40%; right: 10%;">Market Timing</div>
+                            </div>
+                            <div class="matrix-cell risk-high" style="grid-row: 1;">
+                                <div class="risk-item" style="top: 60%; left: 20%;">AI Regulation</div>
+                            </div>
+                            
+                            <div class="matrix-cell matrix-label" style="grid-row: 2;">Med</div>
+                            <div class="matrix-cell risk-low" style="grid-row: 2;">
+                                <div class="risk-item" style="top: 30%; left: 10%;">Tech Debt</div>
+                            </div>
+                            <div class="matrix-cell risk-medium" style="grid-row: 2;">
+                                <div class="risk-item" style="top: 50%; right: 15%;">Competition</div>
+                            </div>
+                            <div class="matrix-cell risk-high" style="grid-row: 2;">
+                                <div class="risk-item" style="top: 25%; left: 15%;">Customer Adoption</div>
+                            </div>
+                            
+                            <div class="matrix-cell matrix-label" style="grid-row: 3;">Low</div>
+                            <div class="matrix-cell risk-low" style="grid-row: 3;">
+                                <div class="risk-item" style="top: 40%; right: 20%;">IP Risk</div>
+                            </div>
+                            <div class="matrix-cell risk-low" style="grid-row: 3;">
+                                <div class="risk-item" style="top: 60%; left: 25%;">Platform Stability</div>
+                            </div>
+                            <div class="matrix-cell risk-medium" style="grid-row: 3;">
+                                <div class="risk-item" style="top: 35%; right: 10%;">Pricing Model</div>
+                            </div>
+                            
+                            <div class="matrix-cell matrix-label" style="grid-row: 4; grid-column: 1;"></div>
+                            <div class="matrix-cell matrix-label" style="grid-row: 4;">Low</div>
+                            <div class="matrix-cell matrix-label" style="grid-row: 4;">Medium</div>
+                            <div class="matrix-cell matrix-label" style="grid-row: 4;">High</div>
+                        </div>
+                        <div style="text-align: center; margin-top: 1vh; font-size: 0.9vw; color: #666;">
+                            → Probability of Occurrence →
+                        </div>
+                    </div>
+
+                    <!-- Strategic Priorities -->
+                    <div class="priorities-section">
+                        <h3>Strategic Implementation Roadmap</h3>
+                        <div class="priority-item">
+                            <div class="priority-number">1</div>
+                            <div class="priority-text"><strong>Platform MVP Enhancement:</strong> Complete core AI capabilities and user interface</div>
+                            <div class="priority-timeline">Q1 2024</div>
+                        </div>
+                        <div class="priority-item">
+                            <div class="priority-number">2</div>
+                            <div class="priority-text"><strong>Consultant Recruitment:</strong> Onboard first 5 senior consultants across key verticals</div>
+                            <div class="priority-timeline">Q1-Q2 2024</div>
+                        </div>
+                        <div class="priority-item">
+                            <div class="priority-number">3</div>
+                            <div class="priority-text"><strong>Pilot Client Acquisition:</strong> Secure 3-5 beta clients for proof of concept</div>
+                            <div class="priority-timeline">Q2 2024</div>
+                        </div>
+                        <div class="priority-item">
+                            <div class="priority-number">4</div>
+                            <div class="priority-text"><strong>Market Launch:</strong> Public launch with validated use cases and testimonials</div>
+                            <div class="priority-timeline">Q3 2024</div>
+                        </div>
+                        <div class="priority-item">
+                            <div class="priority-number">5</div>
+                            <div class="priority-text"><strong>Scale Operations:</strong> Automate core processes and expand consultant network</div>
+                            <div class="priority-timeline">Q4 2024</div>
+                        </div>
+                        <div class="priority-item">
+                            <div class="priority-number">6</div>
+                            <div class="priority-text"><strong>Geographic Expansion:</strong> Enter 2-3 new markets with localized offerings</div>
+                            <div class="priority-timeline">2025</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="strategic-verdict">
+                <div class="verdict-title">Strategic Verdict: High Potential with Focused Execution Risk</div>
+                <div class="verdict-text">
+                    VMG demonstrates strong product-market fit potential with compelling unit economics (87.8% gross margin) and differentiated positioning. 
+                    Key success factors: (1) Rapid platform development, (2) Quality consultant acquisition, (3) Early client validation. 
+                    Risk mitigation through phased rollout and continuous market feedback recommended.
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

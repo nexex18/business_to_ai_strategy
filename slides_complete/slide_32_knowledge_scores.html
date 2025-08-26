@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knowledge Amplification System - Implementation & Impact Scores</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #f5f5f5;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .slide {
+            display: none;
+            width: 100vw;
+            height: 100vh;
+            padding: 2vh 3vw;
+            background: white;
+            position: relative;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        h1 {
+            font-size: 2.8vw;
+            margin-bottom: 1.5vh;
+            color: #1a1a1a;
+            text-align: center;
+            font-weight: 300;
+            letter-spacing: -0.5px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .tables-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3vw;
+            animation: fadeInUp 0.8s ease-out 0.3s both;
+        }
+
+        .table-section {
+            animation: slideInLeft 0.6s ease-out backwards;
+        }
+
+        .table-section:nth-child(1) { animation-delay: 0.4s; }
+        .table-section:nth-child(2) { animation-delay: 0.6s; }
+
+        .table-title {
+            font-size: 1.4vw;
+            font-weight: 600;
+            margin-bottom: 1vh;
+            color: white;
+            text-align: center;
+            padding: 0.8vh 2vw;
+            border-radius: 8px;
+        }
+
+        .table-title.implementation {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .table-title.business {
+            background: linear-gradient(135deg, #d32f2f 0%, #c62828 100%);
+        }
+
+        .score-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border: 2px solid #e0e0e0;
+        }
+
+        .score-table thead tr {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+
+        .score-table th {
+            padding: 1vh 1.5vw;
+            text-align: left;
+            color: #333;
+            font-weight: 600;
+            font-size: 1.1vw;
+            border-right: 2px solid #e8e8e8;
+        }
+
+        .score-table th:last-child {
+            border-right: none;
+        }
+
+        .score-table tbody tr {
+            border-bottom: 2px solid #e8e8e8;
+            transition: all 0.3s ease;
+        }
+
+        .score-table tbody tr:hover {
+            background: rgba(211, 47, 47, 0.03);
+            transform: scale(1.01);
+        }
+
+        .score-table tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        .score-table td {
+            padding: 1vh 1.5vw;
+            border-right: 1px solid #e0e0e0;
+            vertical-align: top;
+            font-size: 1vw;
+            line-height: 1.5;
+        }
+
+        .score-table td:last-child {
+            border-right: none;
+        }
+
+        /* Factor Column */
+        .score-table td:nth-child(1) {
+            font-weight: 600;
+            color: #333;
+            background: rgba(211, 47, 47, 0.02);
+        }
+
+        /* Score Column */
+        .score-table td:nth-child(2) {
+            font-weight: 700;
+            text-align: center;
+            min-width: 4vw;
+        }
+
+        /* Score color coding */
+        .score-5 { color: #2e7d32; background: rgba(46, 125, 50, 0.1) !important; }
+        .score-4 { color: #388e3c; background: rgba(56, 142, 60, 0.08) !important; }
+        .score-3 { color: #f57c00; background: rgba(245, 124, 0, 0.08) !important; }
+        .score-2 { color: #e64a19; background: rgba(230, 74, 25, 0.08) !important; }
+
+        /* Justification Column */
+        .score-table td:nth-child(3) {
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="slide active" id="slide12">
+            <h1>Knowledge Amplification System - Detailed Scores</h1>
+            
+            <div class="tables-container">
+                <div class="table-section">
+                    <div class="table-title implementation">Implementation Ease (Score: 4/10)</div>
+                    <table class="score-table">
+                        <thead>
+                            <tr>
+                                <th>Factor</th>
+                                <th>Score</th>
+                                <th>Justification</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Technology Reusability</td>
+                                <td class="score-2">2/5</td>
+                                <td>Requires custom ML infrastructure</td>
+                            </tr>
+                            <tr>
+                                <td>Data Availability</td>
+                                <td class="score-3">3/5</td>
+                                <td>Data exists but scattered across systems</td>
+                            </tr>
+                            <tr>
+                                <td>Data Quality</td>
+                                <td class="score-2">2/5</td>
+                                <td>Historical data inconsistent in format</td>
+                            </tr>
+                            <tr>
+                                <td>Data Variety</td>
+                                <td class="score-2">2/5</td>
+                                <td>Every type of consulting deliverable</td>
+                            </tr>
+                            <tr>
+                                <td>Data Complexity</td>
+                                <td class="score-2">2/5</td>
+                                <td>Highly complex pattern recognition needed</td>
+                            </tr>
+                            <tr>
+                                <td>Data Lifecycle</td>
+                                <td class="score-2">2/5</td>
+                                <td>Complex federated learning requirements</td>
+                            </tr>
+                            <tr>
+                                <td>Technology Maturity</td>
+                                <td class="score-2">2/5</td>
+                                <td>Federated learning still emerging</td>
+                            </tr>
+                            <tr>
+                                <td>Vendor Maturity</td>
+                                <td class="score-2">2/5</td>
+                                <td>Few vendors in this space</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="table-section">
+                    <div class="table-title business">Business Impact (Score: 7/10)</div>
+                    <table class="score-table">
+                        <thead>
+                            <tr>
+                                <th>Factor</th>
+                                <th>Score</th>
+                                <th>Justification</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Impact on Strategy</td>
+                                <td class="score-4">4/5</td>
+                                <td>Important for long-term competitive advantage</td>
+                            </tr>
+                            <tr>
+                                <td>Top Line Growth</td>
+                                <td class="score-3">3/5</td>
+                                <td>Indirect impact through improved success rates</td>
+                            </tr>
+                            <tr>
+                                <td>Competitive Advantage</td>
+                                <td class="score-5">5/5</td>
+                                <td>Creates unbeatable moat over time</td>
+                            </tr>
+                            <tr>
+                                <td>Business Scorecard</td>
+                                <td class="score-3">3/5</td>
+                                <td>Gradual improvement in success metrics</td>
+                            </tr>
+                            <tr>
+                                <td>Predictive Decision Making</td>
+                                <td class="score-5">5/5</td>
+                                <td>Improves prediction accuracy with each project</td>
+                            </tr>
+                            <tr>
+                                <td>Real-Time Decision Making</td>
+                                <td class="score-3">3/5</td>
+                                <td>Batch learning vs. real-time application</td>
+                            </tr>
+                            <tr>
+                                <td>Failure Acceptance</td>
+                                <td class="score-4">4/5</td>
+                                <td>Learning system improves from failures</td>
+                            </tr>
+                            <tr>
+                                <td>Legal Risk</td>
+                                <td class="score-4">4/5</td>
+                                <td>Must ensure client data anonymization</td>
+                            </tr>
+                            <tr>
+                                <td>Reputational Risk</td>
+                                <td class="score-4">4/5</td>
+                                <td>Low risk with proper data handling</td>
+                            </tr>
+                            <tr>
+                                <td>Change Management</td>
+                                <td class="score-3">3/5</td>
+                                <td>Cultural shift to knowledge sharing required</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

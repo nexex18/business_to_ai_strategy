@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join Us in Shaping the Future</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #f5f5f5;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .slide {
+            display: none;
+            width: 100vw;
+            height: 100vh;
+            padding: 3vh 4vw;
+            background: white;
+            position: relative;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        h1 {
+            font-size: 2.8vw;
+            font-weight: 300;
+            color: #1a1a1a;
+            text-align: center;
+            margin-bottom: 0.8vh;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.3vw;
+            margin-bottom: 1.2vh;
+            font-weight: 500;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3vw;
+            margin-top: 3vh;
+            flex: 1;
+        }
+
+        .left-column {
+            display: flex;
+            flex-direction: column;
+            gap: 2vh;
+        }
+
+        .right-column {
+            display: flex;
+            flex-direction: column;
+            gap: 2vh;
+        }
+
+        .demo-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2.5vh 2vw;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+            animation: slideInLeft 0.6s ease-out;
+        }
+
+        .demo-card h2 {
+            font-size: 1.8vw;
+            margin-bottom: 1.5vh;
+            font-weight: 600;
+        }
+
+        .demo-features {
+            display: flex;
+            flex-direction: column;
+            gap: 1vh;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 1vw;
+            font-size: 1.1vw;
+            opacity: 0.95;
+        }
+
+        .feature-icon {
+            width: 24px;
+            height: 24px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .engagement-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            padding: 2vh 2vw;
+            border-radius: 12px;
+            animation: slideInRight 0.6s ease-out;
+        }
+
+        .engagement-card h3 {
+            font-size: 1.4vw;
+            color: #0076a8;
+            margin-bottom: 1.5vh;
+            font-weight: 600;
+        }
+
+        .question-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2vh;
+        }
+
+        .question-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8vw;
+            font-size: 1vw;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        .question-bullet {
+            color: #00a74f;
+            font-weight: bold;
+            font-size: 1.2vw;
+        }
+
+        .advisory-section {
+            background: #f8f9fa;
+            padding: 2.5vh 2vw;
+            border-radius: 12px;
+            border-left: 4px solid #0076a8;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .advisory-section h3 {
+            font-size: 1.4vw;
+            color: #1a1a1a;
+            margin-bottom: 1.5vh;
+            font-weight: 600;
+        }
+
+        .advisory-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5vw;
+        }
+
+        .advisory-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8vw;
+            font-size: 1vw;
+            color: #555;
+        }
+
+        .advisory-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #0076a8, #00a74f);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #0076a8 0%, #00a74f 100%);
+            color: white;
+            padding: 1.5vh 3vw;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 0.5vh;
+            box-shadow: 0 4px 20px rgba(0, 118, 168, 0.3);
+            animation: fadeInUp 0.8s ease-out 0.6s both;
+        }
+
+        .cta-title {
+            font-size: 1.6vw;
+            margin-bottom: 0.5vh;
+            font-weight: 600;
+        }
+
+        .cta-subtitle {
+            font-size: 1.1vw;
+            opacity: 0.95;
+            line-height: 1.4;
+        }
+
+        .vision-statement {
+            background: white;
+            padding: 2vh 2vw;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+            text-align: center;
+            animation: fadeIn 0.8s ease-out 0.2s both;
+        }
+
+        .vision-text {
+            font-size: 1.2vw;
+            color: #333;
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="slide active" id="slide24">
+            <h1>Join Us in Shaping the Future of Consulting</h1>
+            <div class="subtitle">From Vision to Reality: Your Expertise Will Guide Our Journey</div>
+            <div style="width: 100%; height: 2px; background: linear-gradient(90deg, transparent, #e0e0e0 20%, #e0e0e0 80%, transparent); margin: 0.5vh 0 2vh 0;"></div>
+
+            <div class="vision-statement">
+                <div class="vision-text">
+                    "This presentation itself was created using our AI-powered content generation platform – 
+                    the very first demonstration of the VMG platform in action"
+                </div>
+            </div>
+
+            <div class="main-content">
+                <div class="left-column">
+                    <div class="demo-card">
+                        <h2>🚀 We've Already Started</h2>
+                        <div class="demo-features">
+                            <div class="feature-item">
+                                <div class="feature-icon">✓</div>
+                                <span>Working prototype generating real deliverables</span>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">✓</div>
+                                <span>AI-powered content synthesis and analysis</span>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">✓</div>
+                                <span>Human expertise amplification, not replacement</span>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">✓</div>
+                                <span>This presentation is our first live demonstration</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="advisory-section">
+                        <h3>Your Advisory Impact</h3>
+                        <div class="advisory-grid">
+                            <div class="advisory-item">
+                                <div class="advisory-icon">🎯</div>
+                                <span>Product Strategy</span>
+                            </div>
+                            <div class="advisory-item">
+                                <div class="advisory-icon">🏗️</div>
+                                <span>Business Model</span>
+                            </div>
+                            <div class="advisory-item">
+                                <div class="advisory-icon">🔧</div>
+                                <span>Use Case Prioritization</span>
+                            </div>
+                            <div class="advisory-item">
+                                <div class="advisory-icon">🌟</div>
+                                <span>Market Positioning</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="right-column">
+                    <div class="engagement-card">
+                        <h3>Where Do You See Opportunity?</h3>
+                        <div class="question-list">
+                            <div class="question-item">
+                                <span class="question-bullet">•</span>
+                                <span>In your 30+ years at BCG, where would this tool have made the biggest impact?</span>
+                            </div>
+                            <div class="question-item">
+                                <span class="question-bullet">•</span>
+                                <span>What client deliverables take too long to produce today?</span>
+                            </div>
+                            <div class="question-item">
+                                <span class="question-bullet">•</span>
+                                <span>Which use cases should we prioritize for maximum value?</span>
+                            </div>
+                            <div class="question-item">
+                                <span class="question-bullet">•</span>
+                                <span>How can we best balance automation with consultant expertise?</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="engagement-card">
+                        <h3>Beyond This Product</h3>
+                        <div class="question-list">
+                            <div class="question-item">
+                                <span class="question-bullet">•</span>
+                                <span>Where else could the person + platform model transform consulting?</span>
+                            </div>
+                            <div class="question-item">
+                                <span class="question-bullet">•</span>
+                                <span>What other pain points could Velocity Made Good address?</span>
+                            </div>
+                            <div class="question-item">
+                                <span class="question-bullet">•</span>
+                                <span>How should we sequence our product roadmap?</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cta-section">
+                <div class="cta-title">You Are Not Just Advisors – You Are Co-Creators</div>
+                <div class="cta-subtitle">
+                    Help us build the consulting firm of the future, where human insight and AI capability<br>
+                    combine to deliver unprecedented value at revolutionary speed
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
