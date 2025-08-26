@@ -26,7 +26,8 @@ AGENDA_COLORS = {
     "Financial Analysis": "#3dbd00",  # Bright green
     "Timeline": "#1dc200",  # Bright green
     "Risks & Mitigations": "#00c624",  # Final green
-    "Conclusion": "#00a31f"  # Darker green for conclusion
+    "Conclusion": "#00a31f",  # Darker green for conclusion
+    "Appendix": "#888888"  # Gray for appendix
 }
 
 def load_slides_from_db():
