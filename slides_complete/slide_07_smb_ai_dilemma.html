@@ -104,13 +104,14 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 2vw;
-            flex: 1;
+            height: 50vh;
+            margin-bottom: 2vh;
         }
 
         .target-profile {
             background: linear-gradient(135deg, rgba(0, 118, 168, 0.08) 0%, rgba(0, 167, 79, 0.08) 100%);
             border-radius: 15px;
-            padding: 2vh 2vw;
+            padding: 1.5vh 2vw;
             animation: fadeInUp 0.8s ease-out 0.4s both;
         }
 
@@ -132,7 +133,7 @@
         .profile-item {
             background: white;
             border-radius: 10px;
-            padding: 1.2vh 1.2vw;
+            padding: 1vh 1.2vw;
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
             transition: all 0.3s ease;
             animation: slideInRight 0.6s ease-out backwards;
@@ -149,8 +150,8 @@
         }
 
         .profile-icon {
-            font-size: 1.8vw;
-            margin-bottom: 0.5vh;
+            font-size: 1.6vw;
+            margin-bottom: 0.3vh;
             display: block;
             text-align: center;
         }
@@ -164,10 +165,10 @@
         }
 
         .profile-value {
-            font-size: 1vw;
+            font-size: 0.95vw;
             color: #333;
             text-align: center;
-            line-height: 1.4;
+            line-height: 1.3;
         }
 
         .challenges-section {
@@ -250,13 +251,152 @@
             color: #f39c12;
             font-weight: 600;
         }
+
+        .market-growth-section {
+            position: absolute;
+            bottom: 6vh;
+            left: 4vw;
+            right: 4vw;
+            animation: fadeInUp 0.8s ease-out 1.2s both;
+        }
+
+        .growth-container {
+            background: linear-gradient(135deg, rgba(0, 118, 168, 0.05) 0%, rgba(0, 167, 79, 0.05) 100%);
+            border: 2px solid rgba(0, 167, 79, 0.3);
+            border-radius: 12px;
+            padding: 1.2vh 2vw;
+        }
+
+        .growth-header {
+            font-size: 1vw;
+            font-weight: 700;
+            color: #0076a8;
+            margin-bottom: 0.8vh;
+            text-align: center;
+        }
+
+        .growth-bars {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8vh;
+        }
+
+        .bar-row {
+            display: flex;
+            align-items: center;
+            gap: 1.5vw;
+            position: relative;
+        }
+
+        .bar-year {
+            flex: 0 0 5vw;
+            font-size: 0.9vw;
+            font-weight: 700;
+            color: #333;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 0.3vw;
+        }
+
+        .estimate-label {
+            font-size: 0.6vw;
+            color: #999;
+            font-weight: 400;
+        }
+
+        .bar-container {
+            flex: 1;
+            background: #f0f0f0;
+            border-radius: 10px;
+            height: 1.8vh;
+            position: relative;
+            overflow: visible;
+        }
+
+        .bar-fill {
+            height: 100%;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .bar-2024 {
+            --bar-width: 3.4%;  /* 8.8/257 = 3.4% */
+            width: 3.4%;
+            background: linear-gradient(90deg, #0076a8, #0099dd);
+            animation: growBar 0.8s ease-out 1.4s both;
+        }
+
+        .bar-2033-low {
+            --bar-width: 28.4%;  /* 73/257 = 28.4% */
+            width: 28.4%;
+            background: linear-gradient(90deg, #00a74f, #00cc5f);
+            animation: growBar 1s ease-out 1.6s both;
+        }
+
+        .bar-2033-high {
+            --bar-width: 100%;  /* 257/257 = 100% */
+            width: 100%;
+            background: linear-gradient(90deg, #00a74f, #00ff6f);
+            animation: growBar 1.2s ease-out 1.8s both;
+            box-shadow: 0 2px 10px rgba(0, 167, 79, 0.3);
+        }
+
+        .value-label {
+            flex: 0 0 5vw;
+            font-size: 1vw;
+            font-weight: 700;
+            color: #333;
+            text-align: left;
+        }
+
+        .bar-2024 + .value-label {
+            color: #0076a8;
+        }
+
+        .bar-2033-low + .value-label {
+            color: #00a74f;
+        }
+
+        .growth-indicator {
+            position: absolute;
+            top: -2vh;
+            right: 10vw;
+            background: #ff6b6b;
+            color: white;
+            padding: 0.3vh 0.8vw;
+            border-radius: 10px;
+            font-size: 0.8vw;
+            font-weight: 700;
+            animation: fadeInDown 0.5s ease-out 2.5s both;
+            box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
+            white-space: nowrap;
+        }
+
+        @keyframes growBar {
+            from { width: 0; }
+            to { width: var(--bar-width, 100%); }
+        }
+
+        .market-source {
+            font-size: 0.65vw;
+            color: #999;
+            font-style: italic;
+            margin-top: 0.8vh;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
     <div class="presentation-container">
         <div class="slide active" id="slide21">
             <h1>There is an immediate opportunity to make a true impact on SMBs</h1>
-            <div class="subtitle">The Opportunity Is Clear – They're Ready, We're Ready</div>
+            <div class="subtitle">Part of a broader AI consulting shift from $8.8B today to over $250B by 2033</div>
             <div style="width: 100%; height: 2px; background: linear-gradient(90deg, transparent, #e0e0e0 20%, #e0e0e0 80%, transparent); margin: 0.5vh 0 3vh 0;"></div>
 
             <div class="content-container">
@@ -328,6 +468,40 @@
                             Can't afford Big 4 rates or build internal expertise
                         </div>
                     </div>
+                </div>
+            </div>
+            
+            <div class="market-growth-section">
+                <div class="growth-container">
+                    <div class="growth-header">AI Consulting Market Opportunity Across all segments</div>
+                    <div class="growth-bars">
+                        <div class="bar-row">
+                            <div class="bar-year">2024</div>
+                            <div class="bar-container">
+                                <div class="bar-fill bar-2024"></div>
+                            </div>
+                            <div class="value-label">$8.8B</div>
+                        </div>
+                        
+                        <div class="bar-row">
+                            <div class="bar-year">2033<span class="estimate-label">Low Est.</span></div>
+                            <div class="bar-container">
+                                <div class="bar-fill bar-2033-low"></div>
+                            </div>
+                            <div class="value-label">$73B</div>
+                        </div>
+                        
+                        <div class="bar-row">
+                            <div class="bar-year">2033<span class="estimate-label">High Est.</span></div>
+                            <div class="bar-container">
+                                <div class="bar-fill bar-2033-high">
+                                    <div class="growth-indicator">29x Growth!</div>
+                                </div>
+                            </div>
+                            <div class="value-label">$257B</div>
+                        </div>
+                    </div>
+                    <div class="market-source">Source: Business Research Insights & Market Data Forecast, "AI Consulting Services Market Size & Analysis 2033"</div>
                 </div>
             </div>
             
