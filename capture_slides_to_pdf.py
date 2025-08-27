@@ -22,7 +22,7 @@ def get_slides_from_db():
     """Get all slides from the database"""
     conn = sqlite3.connect('slides.db')
     cursor = conn.cursor()
-    cursor.execute('SELECT num, name, title FROM slides ORDER BY num')
+    cursor.execute('SELECT num, name, title FROM slides ORDER BY CAST(num AS INTEGER)')
     slides = cursor.fetchall()
     conn.close()
     return slides

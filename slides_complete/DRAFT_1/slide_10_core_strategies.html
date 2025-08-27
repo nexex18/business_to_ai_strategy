@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VMG's Core Business Strategies & AI Enablement</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #f5f5f5;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .slide {
+            display: none;
+            width: 100vw;
+            height: 100vh;
+            padding: 3vh 4vw;
+            background: white;
+            position: relative;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.3vw;
+            margin-bottom: 5vh;
+            font-weight: 500;
+            animation: fadeInDown 0.8s ease-out 0.2s both;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        h1 {
+            font-size: 2.8vw;
+            margin-bottom: 2vh;
+            color: #1a1a1a;
+            text-align: center;
+            font-weight: 300;
+            letter-spacing: -0.5px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .strategy-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            animation: fadeInUp 0.8s ease-out 0.3s both;
+        }
+
+        .strategy-table thead tr {
+            background: linear-gradient(135deg, #0076a8 0%, #00a74f 100%);
+        }
+
+        .strategy-table th {
+            padding: 1.5vh 1.5vw;
+            text-align: left;
+            color: white;
+            font-weight: 600;
+            font-size: 1.2vw;
+            letter-spacing: 0.5px;
+            border-right: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .strategy-table th:last-child {
+            border-right: none;
+        }
+
+        .strategy-table tbody tr {
+            border-bottom: 2px solid #e8e8e8;
+            transition: all 0.3s ease;
+            animation: slideInLeft 0.6s ease-out backwards;
+        }
+
+        .strategy-table tbody tr:nth-child(1) { animation-delay: 0.4s; }
+        .strategy-table tbody tr:nth-child(2) { animation-delay: 0.5s; }
+        .strategy-table tbody tr:nth-child(3) { animation-delay: 0.6s; }
+        .strategy-table tbody tr:nth-child(4) { animation-delay: 0.7s; }
+
+        .strategy-table tbody tr:hover {
+            background: rgba(0, 118, 168, 0.03);
+            transform: scale(1.01);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .strategy-table tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        .strategy-table td {
+            padding: 1.8vh 1.5vw;
+            border-right: 1px solid #e0e0e0;
+            vertical-align: top;
+        }
+
+        .strategy-table td:last-child {
+            border-right: none;
+        }
+
+        /* Strategy Name Column */
+        .strategy-table td:nth-child(1) {
+            font-weight: 700;
+            color: #0076a8;
+            font-size: 1.2vw;
+            background: rgba(0, 118, 168, 0.02);
+            width: 18%;
+        }
+
+        /* AI Strategy Column */
+        .strategy-table td:nth-child(2) {
+            font-weight: 600;
+            color: #333;
+            font-size: 1.05vw;
+            width: 22%;
+            line-height: 1.4;
+        }
+
+        /* Goal Column */
+        .strategy-table td:nth-child(3) {
+            color: #555;
+            font-size: 1vw;
+            width: 25%;
+            line-height: 1.4;
+        }
+
+        /* Use Cases Column */
+        .strategy-table td:nth-child(4) {
+            color: #555;
+            font-size: 0.95vw;
+            line-height: 1.4;
+            width: 35%;
+        }
+
+        .use-case-list {
+            margin: 0;
+            padding-left: 1.5vw;
+        }
+
+        .use-case-list li {
+            margin-bottom: 0.5vh;
+            position: relative;
+        }
+
+        .use-case-list li::marker {
+            color: #00a74f;
+            font-weight: bold;
+        }
+
+        /* Row color accents */
+        .strategy-table tbody tr:nth-child(1) {
+            border-left: 4px solid #0076a8;
+        }
+
+        .strategy-table tbody tr:nth-child(2) {
+            border-left: 4px solid #00a74f;
+        }
+
+        .strategy-table tbody tr:nth-child(3) {
+            border-left: 4px solid #ff9100;
+        }
+
+        .strategy-table tbody tr:nth-child(4) {
+            border-left: 4px solid #9c27b0;
+        }
+
+        /* Highlight key metrics */
+        .highlight-metric {
+            font-weight: 700;
+            color: #00a74f;
+            font-size: 1.1em;
+        }
+
+        /* Responsive adjustments for better readability */
+        @media (max-width: 1400px) {
+            .strategy-table th {
+                font-size: 1.4vw;
+            }
+            
+            .strategy-table td:nth-child(1) {
+                font-size: 1.4vw;
+            }
+            
+            .strategy-table td:nth-child(2) {
+                font-size: 1.25vw;
+            }
+            
+            .strategy-table td:nth-child(3) {
+                font-size: 1.2vw;
+            }
+            
+            .strategy-table td:nth-child(4) {
+                font-size: 1.1vw;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="slide active" id="slide01">
+            <h1>## - Appendix -- ## VMG's Core Business Strategies & AI Enablement</h1>
+            <div class="subtitle">Place Holder</div>
+            <div style="width: 100%; height: 2px; background: linear-gradient(90deg, transparent, #e0e0e0 20%, #e0e0e0 80%, transparent); margin: 0.5vh 0 3vh 0;"></div>
+
+            <table class="strategy-table">
+                <thead>
+                    <tr>
+                        <th>VMG Business Strategy</th>
+                        <th>AI Strategy</th>
+                        <th>Goal</th>
+                        <th>VMG-Specific Use Cases</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Cost Leadership</td>
+                        <td>AI-Powered Delivery Automation</td>
+                        <td>Deliver enterprise-quality consulting at <span class="highlight-metric">70% lower cost</span> than Big 4</td>
+                        <td>
+                            <ul class="use-case-list">
+                                <li>AI-automated client assessments and maturity evaluations</li>
+                                <li>Generative AI for report and proposal creation</li>
+                                <li>Predictive resource allocation to minimize bench time</li>
+                                <li>Automated competitive analysis and market research</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Differentiation</td>
+                        <td>Velocity Made Good Intelligence Platform</td>
+                        <td>Provide unique strategic navigation that ensures AI initiatives reach business goals</td>
+                        <td>
+                            <ul class="use-case-list">
+                                <li>Proprietary VMG algorithm that predicts initiative success</li>
+                                <li>Real-time course correction recommendations</li>
+                                <li>Personalized roadmaps based on 1000+ SMB patterns</li>
+                                <li>Continuous learning from all client engagements</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Focus/Niche Market</td>
+                        <td>SMB-Specialized AI Insights</td>
+                        <td>Serve SMBs better than any competitor through deep specialization</td>
+                        <td>
+                            <ul class="use-case-list">
+                                <li>AI models trained specifically on 10-500 employee companies</li>
+                                <li>Industry-specific playbooks for SMB verticals</li>
+                                <li>Right-sized recommendations that match SMB resources</li>
+                                <li>SMB-specific ROI calculators and business cases</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Innovation Leadership</td>
+                        <td>Consulting-as-a-Service Platform</td>
+                        <td>Pioneer new consulting delivery model powered by AI</td>
+                        <td>
+                            <ul class="use-case-list">
+                                <li>24/7 AI strategy advisor (VMG Navigator)</li>
+                                <li>Self-service strategy assessment tools</li>
+                                <li>Subscription-based continuous optimization</li>
+                                <li>White-label partner platform</li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

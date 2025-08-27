@@ -37,10 +37,10 @@ def load_slides_from_db():
     
     # Try to get agenda_section, fall back if it doesn't exist
     try:
-        cursor.execute('SELECT num, name, title, source, agenda_section FROM slides ORDER BY num')
+        cursor.execute('SELECT num, name, title, source, agenda_section FROM slides ORDER BY CAST(num AS INTEGER)')
         has_agenda = True
     except:
-        cursor.execute('SELECT num, name, title, source FROM slides ORDER BY num')
+        cursor.execute('SELECT num, name, title, source FROM slides ORDER BY CAST(num AS INTEGER)')
         has_agenda = False
     
     slides = []
@@ -91,7 +91,7 @@ def create_navigation(slide_index, total_slides):
                 agenda_sections.append({
                     'name': display_name,
                     'color': AGENDA_COLORS.get(section, '#666'),
-                    'link': f'{first_slide["num"]}_{first_slide["name"]}.html',
+                    'link': f'{int(first_slide["num"]):02d}_{first_slide["name"]}.html',
                     'is_current': section == current_section
                 })
     
@@ -112,20 +112,20 @@ def create_navigation(slide_index, total_slides):
     # Previous link
     if slide_index > 0:
         prev_slide = SLIDES[slide_index - 1]
-        prev_link = f'<a href="{prev_slide["num"]}_{prev_slide["name"]}.html" class="nav-prev">← Previous</a>'
+        prev_link = f'<a href="{int(prev_slide["num"]):02d}_{prev_slide["name"]}.html" class="nav-prev">← Previous</a>'
     else:
         prev_link = '<span class="nav-prev nav-disabled">← Previous</span>'
     
     # Next link
     if slide_index < total_slides - 1:
         next_slide = SLIDES[slide_index + 1]
-        next_link = f'<a href="{next_slide["num"]}_{next_slide["name"]}.html" class="nav-next">Next →</a>'
+        next_link = f'<a href="{int(next_slide["num"]):02d}_{next_slide["name"]}.html" class="nav-next">Next →</a>'
     else:
         next_link = '<span class="nav-next nav-disabled">Next →</span>'
     
     # Find the agenda slide for linking
     agenda_slide = next((s for s in SLIDES if s.get('name') == 'agenda'), None)
-    agenda_link = f'{agenda_slide["num"]}_{agenda_slide["name"]}.html' if agenda_slide else '02_agenda.html'
+    agenda_link = f'{int(agenda_slide["num"]):02d}_{agenda_slide["name"]}.html' if agenda_slide else '02_agenda.html'
     
     # Navigation HTML with breadcrumbs
     nav_html = f'''
@@ -368,7 +368,7 @@ def process_slide(slide_info, slide_index, total_slides, output_dir):
         body.append(BeautifulSoup(add_keyboard_navigation(), 'html.parser'))
     
     # Write to new location
-    output_filename = f"{slide_info['num']}_{slide_info['name']}.html"
+    output_filename = f"{int(slide_info['num']):02d}_{slide_info['name']}.html"
     output_path = output_dir / "slides" / output_filename
     
     with open(output_path, 'w', encoding='utf-8') as f:
@@ -571,7 +571,7 @@ def create_index_page(output_dir):
         
         index_html += f'''
                         <div class="toc-item">
-                            <a href="slides/{slide["num"]}_{slide["name"]}.html" class="toc-link">
+                            <a href="slides/{int(slide["num"]):02d}_{slide["name"]}.html" class="toc-link">
                                 <span class="toc-number">{int(slide["num"])}.</span>
                                 <span class="toc-text">{slide["title"]}</span>
                             </a>
@@ -580,7 +580,7 @@ def create_index_page(output_dir):
     
     # Add start button pointing to first slide
     first_slide = SLIDES[0] if SLIDES else None
-    start_link = f'slides/{first_slide["num"]}_{first_slide["name"]}.html' if first_slide else '#'
+    start_link = f'slides/{int(first_slide["num"]):02d}_{first_slide["name"]}.html' if first_slide else '#'
     
     index_html += f'''
                     </div>

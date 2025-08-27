@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>From Labor Arbitrage to AI-Powered Transformation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #f5f5f5;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .slide {
+            display: none;
+            width: 100vw;
+            height: 100vh;
+            padding: 3vh 4vw;
+            background: white;
+            position: relative;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInFromBottom {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulseArrow {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        h1 {
+            font-size: 2.5vw;
+            margin-bottom: 0.5vh;
+            color: #1a1a1a;
+            text-align: center;
+            font-weight: 300;
+            letter-spacing: -0.5px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1vw;
+            margin-bottom: 0.8vh;
+            font-weight: 400;
+            animation: fadeInDown 0.8s ease-out 0.2s both;
+        }
+
+        .transformation-journey {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 1.5vw;
+            align-items: stretch;
+            margin-bottom: 0.3vh;
+            padding: 0 2vw;
+            animation: slideInFromBottom 0.8s ease-out;
+        }
+
+        .journey-stage {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 0.8vh 1.2vw;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .journey-stage:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .current-state {
+            border-color: #0076a8;
+            background: linear-gradient(135deg, #e3f2fd 0%, #ffffff 100%);
+        }
+
+        .future-state {
+            border-color: #00a74f;
+            background: linear-gradient(135deg, #f0fff4 0%, #ffffff 100%);
+        }
+
+        .stage-header {
+            display: flex;
+            align-items: center;
+            gap: 0.6vw;
+            margin-bottom: 0.6vh;
+            padding-bottom: 0.5vh;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .stage-icon {
+            width: 2vw;
+            height: 2vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 1.1vw;
+        }
+
+        .current-state .stage-icon {
+            background: #e3f2fd;
+            color: #0076a8;
+        }
+
+        .future-state .stage-icon {
+            background: #e0f7e9;
+            color: #00a74f;
+        }
+
+        .stage-title {
+            flex: 1;
+        }
+
+        .stage-title h3 {
+            font-size: 1.1vw;
+            font-weight: 600;
+            margin: 0;
+            color: #1a1a1a;
+        }
+
+        .stage-label {
+            font-size: 0.7vw;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            opacity: 0.7;
+            margin-bottom: 0.2vh;
+        }
+
+        .current-state .stage-label {
+            color: #0076a8;
+        }
+
+        .future-state .stage-label {
+            color: #00a74f;
+        }
+
+        .stage-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.3vh;
+        }
+
+        .stage-point {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.6vw;
+            font-size: 0.8vw;
+            line-height: 1.2;
+            color: #333;
+            padding: 0.2vh 0;
+        }
+
+        .stage-point::before {
+            content: "•";
+            font-size: 1.2vw;
+            margin-top: -0.2vh;
+        }
+
+        .current-state .stage-point::before {
+            color: #0076a8;
+        }
+
+        .future-state .stage-point::before {
+            color: #00a74f;
+        }
+
+        .metric-highlight {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 0.5vh 0.8vw;
+            margin-top: auto;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 1.5vw;
+            font-weight: 700;
+            color: #1a1a1a;
+            display: block;
+        }
+
+        .current-state .metric-value {
+            color: #0076a8;
+        }
+
+        .future-state .metric-value {
+            color: #00a74f;
+        }
+
+        .metric-label {
+            font-size: 0.85vw;
+            color: #666;
+            margin-top: 0.2vh;
+        }
+
+        .transformation-arrow {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            animation: pulseArrow 2s ease-in-out infinite;
+            position: relative;
+        }
+
+        .arrow-container {
+            position: relative;
+            padding: 1vh;
+        }
+
+        .arrow-icon {
+            width: 4vw;
+            height: 4vw;
+            background: linear-gradient(135deg, #0076a8 0%, #00a74f 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2vw;
+            box-shadow: 0 4px 20px rgba(0, 118, 168, 0.3);
+        }
+
+        .arrow-label {
+            margin-top: 0.5vh;
+            font-size: 0.9vw;
+            font-weight: 600;
+            color: #0076a8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-align: center;
+        }
+
+        /* Evolution Timeline Under Arrow */
+        .evolution-timeline {
+            background: linear-gradient(135deg, rgba(0, 118, 168, 0.05) 0%, rgba(0, 167, 79, 0.05) 100%);
+            border-radius: 12px;
+            padding: 0.8vh 2vw;
+            margin: 0.5vh 2vw;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .timeline-header {
+            text-align: center;
+            margin-bottom: 0.8vh;
+        }
+
+        .timeline-title {
+            font-size: 1vw;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 0.2vh;
+        }
+
+        .timeline-subtitle {
+            font-size: 0.75vw;
+            color: #666;
+        }
+
+        .timeline-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8vh;
+            align-items: center;
+            position: relative;
+            max-width: 60vw;
+            margin: 0 auto;
+        }
+
+        .timeline-item {
+            background: white;
+            border-radius: 10px;
+            padding: 0.8vh 1.5vw;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            position: relative;
+            z-index: 1;
+            animation: slideInLeft 0.6s ease-out backwards;
+            transition: all 0.3s ease;
+            width: 100%;
+            display: flex;
+            align-items: flex-start;
+            gap: 1.2vw;
+        }
+
+        .timeline-item:nth-child(1) { animation-delay: 0.6s; }
+        .timeline-item:nth-child(2) { animation-delay: 0.8s; }
+        .timeline-item:nth-child(3) { animation-delay: 1.0s; }
+        .timeline-item:nth-child(4) { animation-delay: 1.2s; }
+
+        .timeline-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        }
+
+        .timeline-marker {
+            width: 2.5vw;
+            height: 2.5vw;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3vw;
+            background: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            flex-shrink: 0;
+        }
+
+
+        .timeline-content {
+            flex: 1;
+        }
+
+        .timeline-item-title {
+            font-size: 1.1vw;
+            font-weight: 700;
+            color: #0076a8;
+            margin-bottom: 0.5vh;
+        }
+
+        .timeline-item-description {
+            font-size: 0.9vw;
+            color: #555;
+            line-height: 1.4;
+            margin-bottom: 0.5vh;
+        }
+
+        .timeline-stats {
+            display: flex;
+            gap: 1.5vw;
+            margin-top: 0.5vh;
+        }
+
+        .stat-badge {
+            background: linear-gradient(135deg, rgba(0, 118, 168, 0.08) 0%, rgba(0, 167, 79, 0.08) 100%);
+            padding: 0.3vh 0.8vw;
+            border-radius: 20px;
+            font-size: 0.85vw;
+        }
+
+        .stat-number {
+            font-weight: 700;
+            color: #00a74f;
+        }
+
+        .citation {
+            font-size: 0.6vw;
+            color: #999;
+            vertical-align: super;
+            font-weight: 400;
+        }
+
+
+        .bottom-insight {
+            background: linear-gradient(135deg, #0076a8 0%, #00a74f 100%);
+            color: white;
+            padding: 0.8vh 2vw;
+            text-align: center;
+            font-size: 1.05vw;
+            font-weight: 500;
+            margin: 0.5vh 4vw;
+            border-radius: 10px;
+            animation: slideInFromBottom 1s ease-out 1.4s both;
+        }
+
+        .insight-icon {
+            display: inline-block;
+            margin-right: 0.8vw;
+            font-size: 1.2vw;
+            vertical-align: middle;
+        }
+
+        .references-note {
+            position: absolute;
+            bottom: 2vh;
+            right: 4vw;
+            font-size: 0.8vw;
+            color: #999;
+            font-style: italic;
+        }
+        
+        .citations-box {
+            background: rgba(248, 249, 250, 0.9);
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 0.5vh 1.5vw;
+            margin: 0.5vh 2vw 0.4vh 2vw;
+            font-size: 0.55vw;
+            color: #555;
+            line-height: 1.3;
+            column-count: 5;
+            column-gap: 1.3vw;
+        }
+        
+        .citations-box .citation-item {
+            margin-bottom: 0.3vh;
+            break-inside: avoid;
+            page-break-inside: avoid;
+        }
+        
+        .citations-box sup {
+            color: #0076a8;
+            font-weight: 600;
+            margin-right: 0.2vw;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="slide active" id="slide18">
+            <h1>Our clients only pay only for high value human expert activities, not 'grunt work'</h1>
+            <div class="subtitle">Our AI first platform automates everything from research to value realization monitoring to always on SWAT analysis</div>
+            <div style="width: 100%; height: 2px; background: linear-gradient(90deg, transparent, #e0e0e0 20%, #e0e0e0 80%, transparent); margin: 0.5vh 0 3vh 0;"></div>
+            
+            <div class="transformation-journey">
+                <!-- Current State -->
+                <div class="journey-stage current-state">
+                    <div class="stage-header">
+                        <div class="stage-icon">⏰</div>
+                        <div class="stage-title">
+                            <div class="stage-label">Traditional Model</div>
+                            <h3>Labor Arbitrage</h3>
+                        </div>
+                    </div>
+                    <div class="stage-content">
+                        <div class="stage-point">Offshoring and cost reduction focus</div>
+                        <div class="stage-point">Linear relationship: hours = revenue</div>
+                        <div class="stage-point">Over 50% of time on non-value activities</div>
+                        <div class="stage-point">Premium rates for all activities</div>
+                        <div class="stage-point">Growth requires proportional headcount</div>
+                    </div>
+                    <div class="metric-highlight">
+                        <span class="metric-value">1:1</span>
+                        <div class="metric-label">Revenue to Headcount Ratio</div>
+                    </div>
+                </div>
+                
+                <!-- Transformation Arrow -->
+                <div class="transformation-arrow">
+                    <div class="arrow-container">
+                        <div class="arrow-icon">→</div>
+                    </div>
+                    <div class="arrow-label">AI-Powered<br/>Transformation</div>
+                </div>
+                
+                <!-- Future State -->
+                <div class="journey-stage future-state">
+                    <div class="stage-header">
+                        <div class="stage-icon">🚀</div>
+                        <div class="stage-title">
+                            <div class="stage-label">AI-First Model</div>
+                            <h3>Services as a Software</h3>
+                        </div>
+                    </div>
+                    <div class="stage-content">
+                        <div class="stage-point">AI-enhanced service delivery</div>
+                        <div class="stage-point">Platform economics at scale</div>
+                        <div class="stage-point">Automated research and deliverables</div>
+                        <div class="stage-point">Premium only for strategic work</div>
+                        <div class="stage-point">Exponential growth without linear costs</div>
+                    </div>
+                    <div class="metric-highlight">
+                        <span class="metric-value">5:1</span>
+                        <div class="metric-label">Revenue to Headcount Potential</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Evolution Timeline -->
+            <div class="evolution-timeline">
+                <div class="timeline-header">
+                    <div class="timeline-title">Industry Evolution Timeline</div>
+                    <div class="timeline-subtitle">The path from traditional consulting to AI-powered services</div>
+                </div>
+                
+                <div class="timeline-items">
+                    <div class="timeline-item">
+                        <div class="timeline-marker">🟤</div>
+                        <div class="timeline-content">
+                            <div class="timeline-item-title">Shift to AI-Enhanced Consulting</div>
+                            <div class="timeline-item-description">
+                                Major firms leveraging AI to transform their operations
+                            </div>
+                            <div class="timeline-stats">
+                                <div class="stat-badge">
+                                    <span class="stat-number">94%</span> of consultants see AI as biggest growth opportunity<span class="citation">¹⁴</span>
+                                </div>
+                                <div class="stat-badge">
+                                    <span class="stat-number">25-40%</span> productivity boost (McKinsey's Lilli<span class="citation">¹⁰</span>, BCG's GPTs<span class="citation">¹¹</span>)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-marker">🟠</div>
+                        <div class="timeline-content">
+                            <div class="timeline-item-title">Gartner Prediction</div>
+                            <div class="timeline-item-description">
+                                20% of organizations will use AI to flatten structures by 2026<span class="citation">¹⁵</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="citations-box">
+                    <div class="citation-item"><sup>7</sup>McKinsey & Company. "The economic potential of generative AI: The next productivity frontier"</div>
+                    <div class="citation-item"><sup>10</sup>McKinsey & Company. "Rewiring the way McKinsey works with Lilli"</div>
+                    <div class="citation-item"><sup>11</sup>Medium - Takafumi Endo. "How AI is Redefining Strategy Consulting: McKinsey, BCG, and Bain"</div>
+                    <div class="citation-item"><sup>14</sup>MCA. "AI and Digital Technology Expected to Drive Growth in Consulting in 2024"</div>
+                    <div class="citation-item"><sup>15</sup>Gartner. "Top Technology Trends 2025"</div>
+                </div>
+            </div>
+            
+            <div class="bottom-insight">
+                <span class="insight-icon">💡</span>
+                Key Insight: The shift from labor arbitrage to AI-powered services represents the largest transformation in consulting since the industry's inception
+            </div>
+            
+        </div>
+    </div>
+</body>
+</html>

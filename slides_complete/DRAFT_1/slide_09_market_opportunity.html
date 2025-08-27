@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The $257 Billion Opportunity in Strategic AI Alignment</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #f5f5f5;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .slide {
+            display: none;
+            width: 100vw;
+            height: 100vh;
+            padding: 3vh 4vw;
+            background: white;
+            position: relative;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes growBar {
+            from {
+                width: 0;
+            }
+            to {
+                width: var(--bar-width);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { 
+                transform: scale(1);
+                box-shadow: 0 0 0 rgba(0, 167, 79, 0);
+            }
+            50% { 
+                transform: scale(1.02);
+                box-shadow: 0 0 20px rgba(0, 167, 79, 0.3);
+            }
+        }
+
+        
+        h1 {
+            font-size: 2.8vw;
+            margin-bottom: 2vh;
+            color: #1a1a1a;
+            text-align: center;
+            font-weight: 300;
+            letter-spacing: -0.5px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.3vw;
+            margin-bottom: 5vh;
+            font-weight: 500;
+            animation: fadeInDown 0.8s ease-out 0.2s both;
+        }
+
+        .chart-container {
+            width: 75vw;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 4vh 4vw;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .growth-bars {
+            display: flex;
+            flex-direction: column;
+            gap: 3vh;
+        }
+
+        .bar-row {
+            display: flex;
+            align-items: center;
+            gap: 2vw;
+            position: relative;
+        }
+
+        .bar-year {
+            flex: 0 0 6vw;
+            font-size: 1.3vw;
+            font-weight: 700;
+            color: #333;
+            text-align: right;
+        }
+
+        .bar-container {
+            flex: 1;
+            background: #f0f0f0;
+            border-radius: 30px;
+            height: 6vh;
+            position: relative;
+            overflow: visible;
+        }
+
+        .bar-fill {
+            height: 100%;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 2vw;
+            color: white;
+            font-weight: 700;
+            font-size: 1.8vw;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .bar-fill:hover {
+            transform: translateX(5px);
+        }
+
+        .bar-2024 {
+            --bar-width: 10%;
+            background: linear-gradient(90deg, #0076a8, #0099dd);
+            animation: growBar 1s ease-out 0.8s both;
+        }
+
+        .bar-2033-low {
+            --bar-width: 40%;
+            background: linear-gradient(90deg, #00a74f, #00cc5f);
+            animation: growBar 1.2s ease-out 1.2s both;
+        }
+
+        .bar-2033-high {
+            --bar-width: 95%;
+            background: linear-gradient(90deg, #00a74f, #00ff6f);
+            animation: growBar 1.5s ease-out 1.6s both;
+            box-shadow: 0 4px 20px rgba(0, 167, 79, 0.3);
+        }
+
+        .value-label {
+            position: absolute;
+            right: -8vw;
+            font-size: 2vw;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .bar-2024 .value-label {
+            color: #0076a8;
+        }
+
+        .bar-2033-low .value-label {
+            color: #00a74f;
+        }
+
+        .bar-2033-high .value-label {
+            background: linear-gradient(135deg, #00a74f, #00ff6f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .estimate-label {
+            font-size: 0.8vw;
+            color: #999;
+            font-weight: 400;
+            display: block;
+            margin-top: -0.5vh;
+        }
+
+        .growth-indicator {
+            position: absolute;
+            top: -3.5vh;
+            right: 15vw;
+            background: #ff6b6b;
+            color: white;
+            padding: 0.5vh 1.2vw;
+            border-radius: 20px;
+            font-size: 1.1vw;
+            font-weight: 700;
+            animation: fadeInDown 0.5s ease-out 3s both;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        .multiplier {
+            position: absolute;
+            left: -5vw;
+            font-size: 1vw;
+            color: #999;
+            font-weight: 600;
+        }
+
+        .bar-2033-low .multiplier {
+            color: #00a74f;
+        }
+
+        .bar-2033-high .multiplier {
+            color: #00cc5f;
+            font-weight: 700;
+        }
+
+        .key-insights {
+            display: flex;
+            justify-content: center;
+            margin-top: 4vh;
+            animation: fadeInUp 0.8s ease-out 2s both;
+        }
+
+        .insight-card {
+            background: linear-gradient(135deg, rgba(0, 118, 168, 0.08) 0%, rgba(0, 167, 79, 0.08) 100%);
+            border: 2px solid #00a74f;
+            border-radius: 15px;
+            padding: 2vh 3vw;
+            text-align: center;
+            max-width: 60vw;
+        }
+
+        .insight-text {
+            font-size: 1.2vw;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .insight-text strong {
+            color: #0076a8;
+            font-weight: 700;
+        }
+
+        .citation {
+            font-size: 0.7vw;
+            vertical-align: super;
+            opacity: 0.7;
+        }
+
+        .references-note {
+            position: absolute;
+            bottom: 2vh;
+            right: 4vw;
+            font-size: 0.8vw;
+            color: #999;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="slide active" id="slide17">
+            <h1>## - Appendix - The $257 Billion Opportunity in Strategic AI Alignment</h1>
+            <div class="subtitle">Global AI consulting services market size projections</div>
+            <div style="width: 100%; height: 2px; background: linear-gradient(90deg, transparent, #e0e0e0 20%, #e0e0e0 80%, transparent); margin: 0.5vh 0 3vh 0;"></div>
+
+            <div class="chart-container">
+                <div class="growth-bars">
+                    <div class="bar-row">
+                        <div class="bar-year">2024</div>
+                        <div class="bar-container">
+                            <div class="bar-fill bar-2024">
+                            </div>
+                        </div>
+                        <div class="value-label">$8.8B</div>
+                    </div>
+                    
+                    <div class="bar-row">
+                        <div class="bar-year">
+                            2033
+                            <span class="estimate-label">Low Est.</span>
+                        </div>
+                        <div class="bar-container">
+                            <div class="bar-fill bar-2033-low">
+                            </div>
+                        </div>
+                        <div class="value-label">$73B</div>
+                    </div>
+                    
+                    <div class="bar-row">
+                        <div class="bar-year">
+                            2033
+                            <span class="estimate-label">High Est.</span>
+                        </div>
+                        <div class="bar-container">
+                            <div class="bar-fill bar-2033-high">
+                                <div class="growth-indicator">29x Growth!</div>
+                            </div>
+                        </div>
+                        <div class="value-label">$257B</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="key-insights">
+                <div class="insight-card">
+                    <div class="insight-text">
+                        <strong>Unprecedented opportunity:</strong> The AI consulting market represents one of the fastest-growing segments in professional services
+                    </div>
+                </div>
+            </div>
+            
+            <div class="references-note">Source: Business Research Insights & Market Data Forecast, "AI Consulting Services Market Size & Analysis 2033"</div>
+        </div>
+    </div>
+</body>
+</html>

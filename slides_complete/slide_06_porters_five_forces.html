@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blue Ocean in Strategic AI Navigation</title>
+    <title>Porter's Five Forces - Strategic Position</title>
     <style>
         * {
             margin: 0;
@@ -54,31 +54,37 @@
             }
         }
 
-        @keyframes fadeInUp {
+        @keyframes fadeInLeft {
             from {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateX(-20px);
             }
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
             }
         }
 
         @keyframes scaleIn {
             from {
-                transform: scale(0.8);
+                transform: scale(0.9);
                 opacity: 0;
             }
             to {
                 transform: scale(1);
                 opacity: 1;
             }
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.02); }
         }
         
         h1 {
@@ -100,233 +106,312 @@
             animation: fadeInDown 0.8s ease-out 0.2s both;
         }
 
-        .forces-wrapper {
+        .content-wrapper {
             flex: 1;
             display: flex;
-            align-items: center;
-            justify-content: center;
+            gap: 4vw;
             padding: 2vh 2vw;
-            animation: scaleIn 0.8s ease-out 0.4s both;
+            margin-bottom: 2vh;
         }
 
-        .forces-grid {
+        /* Left Column - Porter's Five Forces */
+        .forces-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            animation: fadeInLeft 0.8s ease-out 0.4s both;
+        }
+
+        .column-header {
+            font-size: 1.4vw;
+            color: #0076a8;
+            font-weight: 600;
+            margin-bottom: 2vh;
+            text-align: center;
+        }
+
+        .forces-diagram {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            position: relative;
+            margin-top: 0;
+        }
+
+        .forces-mini-grid {
             display: grid;
             grid-template-rows: auto auto auto;
             grid-template-columns: auto auto auto;
-            gap: 3vh 3vw;
+            gap: 2vh 2vw;
             width: fit-content;
-            position: relative;
         }
 
-        /* Position each force in the grid */
-        .force-new-entrants {
+        .force-item {
+            background: white;
+            border-radius: 10px;
+            padding: 1.2vh 1.2vw;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            border: 1px solid #e9ecef;
+        }
+
+        .force-item.center {
+            grid-row: 2;
+            grid-column: 2;
+            background: linear-gradient(135deg, #0076a8, #00a74f);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-width: 12vw;
+            min-height: 10vh;
+        }
+
+        .force-item.top {
             grid-row: 1;
             grid-column: 2;
             justify-self: center;
         }
 
-        .force-supplier {
+        .force-item.left {
             grid-row: 2;
             grid-column: 1;
             align-self: center;
         }
 
-        .central-rivalry {
-            grid-row: 2;
-            grid-column: 2;
-            width: 18vw;
-            height: 15vh;
-            background: linear-gradient(135deg, #0076a8, #00a74f);
-            border-radius: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            box-shadow: 0 10px 30px rgba(0,118,168,0.3);
-            animation: pulse 3s ease-in-out infinite;
-            position: relative;
-        }
-
-        .force-substitutes {
+        .force-item.right {
             grid-row: 2;
             grid-column: 3;
             align-self: center;
         }
 
-        .force-buyer {
+        .force-item.bottom {
             grid-row: 3;
             grid-column: 2;
             justify-self: center;
         }
 
-        .force-box {
-            width: 18vw;
-            background: white;
-            border-radius: 12px;
-            padding: 1.5vh 1.5vw;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .force-box:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-        }
-
-        .force-title {
-            font-size: 1.1vw;
-            font-weight: 700;
-            color: #0076a8;
-            margin-bottom: 0.5vh;
-        }
-
-        .force-level {
-            display: inline-block;
-            padding: 0.3vh 0.8vw;
-            border-radius: 15px;
-            font-size: 0.8vw;
+        .force-name {
+            font-size: 0.9vw;
             font-weight: 600;
-            margin-bottom: 0.5vh;
+            color: #0076a8;
+            margin-bottom: 0.3vh;
         }
 
-        .level-low {
+        .force-item.center .force-name {
+            color: white;
+            font-size: 1.1vw;
+        }
+
+        .force-status {
+            font-size: 0.8vw;
+            padding: 0.2vh 0.6vw;
+            border-radius: 10px;
+            display: inline-block;
+            font-weight: 500;
+        }
+
+        .status-low {
             background: rgba(40, 167, 69, 0.15);
             color: #28a745;
         }
 
-        .level-medium {
+        .status-medium {
             background: rgba(255, 193, 7, 0.15);
             color: #f39c12;
         }
 
-        .level-favorable {
-            background: rgba(0, 167, 79, 0.15);
-            color: #00a74f;
-        }
-
-        .level-limited {
+        .status-limited {
             background: rgba(149, 165, 166, 0.15);
             color: #7f8c8d;
         }
 
-        .force-desc {
-            font-size: 0.9vw;
-            color: #555;
-            line-height: 1.5;
+        .status-favorable {
+            background: rgba(0, 167, 79, 0.15);
+            color: #00a74f;
         }
 
-        .central-title {
-            font-size: 1.4vw;
-            font-weight: 700;
-            margin-bottom: 0.5vh;
+        .force-note {
+            font-size: 0.75vw;
+            color: #666;
+            margin-top: 0.3vh;
         }
 
-        .central-desc {
-            font-size: 1.1vw;
-            opacity: 0.95;
+        /* Right Column - Execution Excellence Story */
+        .story-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            animation: fadeInRight 0.8s ease-out 0.6s both;
         }
 
-        /* Visual connection indicators - subtle lines to show relationship */
-        .force-box::after {
-            content: '';
-            position: absolute;
-            background: linear-gradient(to bottom, transparent, rgba(0, 118, 168, 0.1), transparent);
-            z-index: -1;
+        .story-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2vh;
         }
 
-        .force-new-entrants::after {
-            width: 2px;
-            height: 3vh;
-            bottom: -3vh;
-            left: 50%;
-            transform: translateX(-50%);
+        .story-block {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 1.8vh 1.8vw;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
 
-        .force-supplier::after {
+        .story-title {
+            font-size: 1vw;
+            color: #0076a8;
+            font-weight: 600;
+            margin-bottom: 0.8vh;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .story-points {
+            list-style: none;
+            padding: 0;
+        }
+
+        .story-point {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 0.6vh;
+            gap: 0.6vw;
+        }
+
+        .story-point::before {
+            content: "•";
+            color: #00a74f;
+            font-size: 1.2vw;
+            margin-top: -0.2vh;
+        }
+
+        .story-text {
+            flex: 1;
+            font-size: 0.85vw;
+            color: #333;
+            line-height: 1.4;
+        }
+
+        .bottom-insight {
+            background: linear-gradient(135deg, #0076a8 0%, #00a74f 100%);
+            color: white;
+            padding: 0.8vh 2vw;
+            text-align: center;
+            font-size: 1.05vw;
+            font-weight: 500;
+            margin: 0.5vh 4vw;
+            border-radius: 10px;
+            animation: fadeInUp 0.8s ease-out 0.8s both;
+        }
+        
+        .insight-icon {
+            display: inline-block;
+            margin-right: 0.8vw;
+            font-size: 1.2vw;
+        }
+
+        .divider-line {
+            width: 100%;
             height: 2px;
-            width: 3vw;
-            right: -3vw;
-            top: 50%;
-            transform: translateY(-50%);
-            background: linear-gradient(to right, transparent, rgba(0, 118, 168, 0.1), transparent);
-        }
-
-        .force-substitutes::after {
-            height: 2px;
-            width: 3vw;
-            left: -3vw;
-            top: 50%;
-            transform: translateY(-50%);
-            background: linear-gradient(to left, transparent, rgba(0, 118, 168, 0.1), transparent);
-        }
-
-        .force-buyer::after {
-            width: 2px;
-            height: 3vh;
-            top: -3vh;
-            left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(to top, transparent, rgba(0, 118, 168, 0.1), transparent);
-        }
-
-        .references-note {
-            position: absolute;
-            bottom: 2vh;
-            right: 4vw;
-            font-size: 0.8vw;
-            color: #999;
-            font-style: italic;
+            background: linear-gradient(90deg, transparent, #e0e0e0 20%, #e0e0e0 80%, transparent);
+            margin: 0.5vh 0 3vh 0;
         }
     </style>
 </head>
 <body>
     <div class="presentation-container">
         <div class="slide active" id="slide19">
-            <h1>Blue Ocean in Strategic AI Navigation</h1>
-            <div class="subtitle">Porter's Five Forces Analysis</div>
-            <div style="width: 100%; height: 2px; background: linear-gradient(90deg, transparent, #e0e0e0 20%, #e0e0e0 80%, transparent); margin: 0.5vh 0 3vh 0;"></div>
+            <h1>We recognize the threat of copy cats</h1>
+            <div class="subtitle">Our Strategic focus and strategy first platform will set us apart</div>
+            <div class="divider-line"></div>
             
-            <div class="forces-wrapper">
-                <div class="forces-grid">
-                    <!-- Top: New Entrants -->
-                    <div class="force-box force-new-entrants">
-                        <div class="force-title">Threat of New Entrants</div>
-                        <div class="force-level level-medium">Medium</div>
-                        <div class="force-desc">Concept easy to copy</div>
+            <div class="content-wrapper">
+                <!-- Left Column - Porter's Five Forces -->
+                <div class="forces-column">
+                    <div class="column-header">Market Forces Assessment</div>
+                    <div class="forces-diagram">
+                        <div class="forces-mini-grid">
+                            <!-- Top: New Entrants -->
+                            <div class="force-item top">
+                                <div class="force-name">New Entrants</div>
+                                <div class="force-status status-medium">Medium</div>
+                                <div class="force-note">Concept easy to copy</div>
+                            </div>
+                            
+                            <!-- Left: Supplier Power -->
+                            <div class="force-item left">
+                                <div class="force-name">Supplier Power</div>
+                                <div class="force-status status-low">Low</div>
+                                <div class="force-note">Abundant AI tools</div>
+                            </div>
+                            
+                            <!-- Center: Competitive Rivalry -->
+                            <div class="force-item center">
+                                <div class="force-name">Competitive Rivalry</div>
+                                <div style="font-size: 0.9vw; opacity: 0.95;">Low in SMB segment</div>
+                            </div>
+                            
+                            <!-- Right: Substitutes -->
+                            <div class="force-item right">
+                                <div class="force-name">Substitutes</div>
+                                <div class="force-status status-limited">Limited</div>
+                                <div class="force-note">DIY lacks guidance</div>
+                            </div>
+                            
+                            <!-- Bottom: Buyer Power -->
+                            <div class="force-item bottom">
+                                <div class="force-name">Buyer Power</div>
+                                <div class="force-status status-favorable">Favorable</div>
+                                <div class="force-note">High pain, clear ROI</div>
+                            </div>
+                        </div>
                     </div>
-                    
-                    <!-- Left: Supplier Power -->
-                    <div class="force-box force-supplier">
-                        <div class="force-title">Supplier Power</div>
-                        <div class="force-level level-low">Low</div>
-                        <div class="force-desc">Abundant AI tools available</div>
-                    </div>
-                    
-                    <!-- Center: Competitive Rivalry -->
-                    <div class="central-rivalry">
-                        <div class="central-title">Competitive Rivalry</div>
-                        <div class="central-desc">Low in our SMB segment</div>
-                    </div>
-                    
-                    <!-- Right: Substitutes -->
-                    <div class="force-box force-substitutes">
-                        <div class="force-title">Threat of Substitutes</div>
-                        <div class="force-level level-limited">Limited</div>
-                        <div class="force-desc">DIY tools lack navigation and KPIs</div>
-                    </div>
-                    
-                    <!-- Bottom: Buyer Power -->
-                    <div class="force-box force-buyer">
-                        <div class="force-title">Buyer Power</div>
-                        <div class="force-level level-favorable">Favorable</div>
-                        <div class="force-desc">High pain point, clear ROI</div>
+                </div>
+
+                <!-- Right Column - Execution Excellence Story -->
+                <div class="story-column">
+                    <div class="column-header" style="text-align: left;">The Competitive Advantage</div>
+                    <div class="story-content">
+                        <div class="story-block">
+                            <div class="story-title">Execution Requirements</div>
+                            <div class="story-points">
+                                <div class="story-point">
+                                    <span class="story-text">Platform development with continuous iteration</span>
+                                </div>
+                                <div class="story-point">
+                                    <span class="story-text">VMG methodology adapted for AI integration</span>
+                                </div>
+                                <div class="story-point">
+                                    <span class="story-text">Engineering talent focused on consulting needs</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="story-block">
+                            <div class="story-title">Real Barriers to Entry</div>
+                            <div class="story-points">
+                                <div class="story-point">
+                                    <span class="story-text">AI-consulting integration expertise</span>
+                                </div>
+                                <div class="story-point">
+                                    <span class="story-text">SMB trust and relationship building</span>
+                                </div>
+                                <div class="story-point">
+                                    <span class="story-text">Operational scale with personal touch</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
             
-            <div class="references-note">*See References slide for full citations</div>
+            <div class="bottom-insight">
+                <span class="insight-icon">💡</span>
+                Key Insight: Advantage comes from building the platform while learning from each client engagement
+            </div>
         </div>
     </div>
 </body>

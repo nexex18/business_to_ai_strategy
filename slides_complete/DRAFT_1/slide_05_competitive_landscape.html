@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Who VMG Actually Competes Against</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #f5f5f5;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .slide {
+            display: none;
+            width: 100vw;
+            height: 100vh;
+            padding: 3vh 4vw;
+            background: white;
+            position: relative;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        h1 {
+            font-size: 2.8vw;
+            margin-bottom: 1.5vh;
+            color: #1a1a1a;
+            text-align: center;
+            font-weight: 300;
+            letter-spacing: -0.5px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.2vw;
+            margin-bottom: 2.5vh;
+            font-weight: 400;
+            animation: fadeInDown 0.8s ease-out 0.2s both;
+        }
+
+        .competitor-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5vw;
+            margin-bottom: 2vh;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .competitor-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 1.5vh 1.2vw;
+            position: relative;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .competitor-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+
+        .threat-level {
+            position: absolute;
+            top: 1vh;
+            right: 1vw;
+            padding: 0.3vh 0.6vw;
+            border-radius: 4px;
+            font-size: 0.7vw;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .threat-high {
+            background: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+            border: 1px solid rgba(220, 53, 69, 0.3);
+        }
+
+        .threat-medium {
+            background: rgba(255, 193, 7, 0.1);
+            color: #f39c12;
+            border: 1px solid rgba(255, 193, 7, 0.3);
+        }
+
+        .threat-low {
+            background: rgba(40, 167, 69, 0.1);
+            color: #28a745;
+            border: 1px solid rgba(40, 167, 69, 0.3);
+        }
+
+        .threat-emerging {
+            background: rgba(243, 156, 18, 0.1);
+            color: #e67e22;
+            border: 1px solid rgba(243, 156, 18, 0.3);
+        }
+
+        .threat-indirect {
+            background: rgba(149, 165, 166, 0.1);
+            color: #95a5a6;
+            border: 1px solid rgba(149, 165, 166, 0.3);
+        }
+
+        .competitor-name {
+            font-size: 1.2vw;
+            font-weight: 600;
+            color: #0076a8;
+            margin-bottom: 0.8vh;
+            margin-top: 0.5vh;
+        }
+
+        .competitor-info {
+            font-size: 0.9vw;
+            line-height: 1.6;
+            color: #555;
+            margin-bottom: 0.8vh;
+        }
+
+        .competitor-info strong {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .strength {
+            color: #28a745;
+            font-weight: 500;
+            font-size: 0.85vw;
+            margin: 0.3vh 0;
+            padding-left: 0.5vw;
+        }
+
+        .weakness {
+            color: #dc3545;
+            font-weight: 500;
+            font-size: 0.85vw;
+            margin: 0.3vh 0;
+            padding-left: 0.5vw;
+        }
+
+        .competitive-moat {
+            background: linear-gradient(135deg, rgba(0, 167, 79, 0.05) 0%, rgba(0, 118, 168, 0.05) 100%);
+            border: 2px solid #00a74f;
+            border-radius: 12px;
+            padding: 2vh 2vw;
+            margin-top: 2vh;
+            animation: fadeInUp 0.8s ease-out 0.6s both;
+        }
+
+        .moat-title {
+            color: #00a74f;
+            font-weight: 600;
+            font-size: 1.3vw;
+            margin-bottom: 1vh;
+        }
+
+        .moat-content {
+            font-size: 1vw;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .moat-content strong {
+            color: #0076a8;
+            font-weight: 600;
+        }
+
+        .footer-note {
+            position: absolute;
+            bottom: 2vh;
+            right: 4vw;
+            font-size: 0.8vw;
+            color: #999;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="slide active" id="slide14">
+            <h1>Velocity MG competes based on strategic focus and our AI first platform</h1>
+            <div class="subtitle">While there are pleanty of competitors, our obsessive focus on strategic outcomes at a value will succeed</div>
+            <div style="width: 100%; height: 2px; background: linear-gradient(90deg, transparent, #e0e0e0 20%, #e0e0e0 80%, transparent); margin: 0.5vh 0 3vh 0;"></div>
+
+            
+            <div class="competitor-grid">
+                <div class="competitor-card">
+                    <span class="threat-level threat-high">High Threat</span>
+                    <div class="competitor-name">Acuity AI & Similar</div>
+                    <div class="competitor-info">
+                        <strong>Model:</strong> Fixed-fee, fast implementation<br>
+                        <strong>Price:</strong> $5K-25K projects<br>
+                        <strong>Focus:</strong> Quick wins, tool implementation
+                    </div>
+                    <div class="strength">✓ Already in market</div>
+                    <div class="strength">✓ Proven results (50-70% efficiency)</div>
+                    <div class="weakness">✗ No strategic framework</div>
+                    <div class="weakness">✗ Tool-first, not alignment-first</div>
+                </div>
+                
+                <div class="competitor-card">
+                    <span class="threat-level threat-high">High Threat</span>
+                    <div class="competitor-name">Boutique Consultancies</div>
+                    <div class="competitor-info">
+                        <strong>Examples:</strong> Xcelacore, RTS Labs<br>
+                        <strong>Model:</strong> Industry-specific solutions<br>
+                        <strong>Price:</strong> $2K-10K/month retainers
+                    </div>
+                    <div class="strength">✓ Deep vertical expertise</div>
+                    <div class="strength">✓ Established SMB relationships</div>
+                    <div class="weakness">✗ Limited to single industries</div>
+                    <div class="weakness">✗ No VMG measurement</div>
+                </div>
+                
+                <div class="competitor-card">
+                    <span class="threat-level threat-medium">Medium Threat</span>
+                    <div class="competitor-name">Platform Players</div>
+                    <div class="competitor-info">
+                        <strong>Examples:</strong> DataRobot, C3.ai, H2O.ai<br>
+                        <strong>Model:</strong> Self-serve + support<br>
+                        <strong>Price:</strong> $99-1,500/month
+                    </div>
+                    <div class="strength">✓ "AI without consultants" promise</div>
+                    <div class="strength">✓ Scalable tech platform</div>
+                    <div class="weakness">✗ No strategic consulting</div>
+                    <div class="weakness">✗ Generic, not customized</div>
+                </div>
+                
+                <div class="competitor-card">
+                    <span class="threat-level threat-emerging">Emerging Threat</span>
+                    <div class="competitor-name">Fractional AI Executives</div>
+                    <div class="competitor-info">
+                        <strong>Model:</strong> Part-time CAIO services<br>
+                        <strong>Price:</strong> $5K-15K/month<br>
+                        <strong>Focus:</strong> Strategic guidance only
+                    </div>
+                    <div class="strength">✓ C-suite credibility</div>
+                    <div class="strength">✓ Strategic alignment focus</div>
+                    <div class="weakness">✗ No implementation support</div>
+                    <div class="weakness">✗ Limited availability</div>
+                </div>
+                
+                <div class="competitor-card">
+                    <span class="threat-level threat-low">Low Threat</span>
+                    <div class="competitor-name">Big 4 "Lite" Offerings</div>
+                    <div class="competitor-info">
+                        <strong>Status:</strong> Not yet in market<br>
+                        <strong>Risk:</strong> Could launch SMB divisions<br>
+                        <strong>Timeline:</strong> 18-24 months
+                    </div>
+                    <div class="strength">✓ Brand recognition</div>
+                    <div class="strength">✓ Deep resources</div>
+                    <div class="weakness">✗ Cultural mismatch</div>
+                    <div class="weakness">✗ Cost structure prohibitive</div>
+                </div>
+                
+                <div class="competitor-card">
+                    <span class="threat-level threat-indirect">Indirect Threat</span>
+                    <div class="competitor-name">DIY Tools/Copilots</div>
+                    <div class="competitor-info">
+                        <strong>Examples:</strong> ChatGPT, Claude, Copilot<br>
+                        <strong>Price:</strong> $20-30/user/month<br>
+                        <strong>Risk:</strong> SMBs try to self-implement
+                    </div>
+                    <div class="strength">✓ Extremely low cost</div>
+                    <div class="strength">✓ Immediate availability</div>
+                    <div class="weakness">✗ No strategy or alignment</div>
+                    <div class="weakness">✗ 67% fail without guidance</div>
+                </div>
+            </div>
+            
+            <div class="competitive-moat">
+                <div class="moat-title">VMG's Defensible Position</div>
+                <div class="moat-content">
+                    <strong>Only competitor combining:</strong> Strategic Alignment Framework + VMG Measurement System + AI-Powered Delivery (70% cost efficiency) + SMB-Accessible Pricing
+                </div>
+            </div>
+            
+            <div class="footer-note">Competitive Intelligence, Q1 2025</div>
+        </div>
+    </div>
+</body>
+</html>

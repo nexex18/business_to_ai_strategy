@@ -137,6 +137,72 @@
             font-size: 1vw;
             color: #999;
         }
+        
+        .audience-info {
+            background: linear-gradient(135deg, rgba(0, 118, 168, 0.05), rgba(0, 167, 79, 0.05));
+            border-radius: 12px;
+            padding: 1.5vh 2vw;
+            margin: 1vh auto 2vh;
+            max-width: 50vw;
+            text-align: left;
+        }
+        
+        .audience-title {
+            font-size: 1.1vw;
+            color: #0076a8;
+            font-weight: 600;
+            margin-bottom: 1vh;
+            text-align: center;
+        }
+        
+        .audience-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 2vw;
+            font-size: 0.85vw;
+        }
+        
+        .audience-section {
+            padding: 0.8vh 1vw;
+        }
+        
+        .audience-section h4 {
+            color: #00a74f;
+            font-size: 0.95vw;
+            margin-bottom: 0.5vh;
+            font-weight: 600;
+        }
+        
+        .audience-section p {
+            margin: 0.3vh 0;
+            color: #495057;
+            line-height: 1.4;
+        }
+        
+        .audience-section ul {
+            margin: 0.3vh 0 0 0;
+            padding: 0;
+            list-style: none;
+        }
+        
+        .audience-section li {
+            color: #495057;
+            margin: 0.2vh 0;
+            position: relative;
+            padding-left: 1vw;
+        }
+        
+        .audience-section li:before {
+            content: "•";
+            color: #00a74f;
+            position: absolute;
+            left: 0;
+        }
+        
+        .presenter-highlight {
+            color: #0076a8;
+            font-weight: 600;
+        }
 
         /* Optional: Logo or branding element */
         .logo {
@@ -166,6 +232,8 @@
                 <div class="tagline">Velocity Made Good – Ensuring Your AI Journey Reaches Its True Destination</div>
             </div>
             
+            <div class="date" style="text-align: center; font-size: 1.1vw; color: #666; margin-bottom: 1.5vh;">August 28, 2025</div>
+            
             <div class="image-container">
                 <img src="image.png" alt="Velocity MG Concept">
             </div>
@@ -173,9 +241,28 @@
             <div class="divider"></div>
             
             <div class="bottom-section">
-                <div class="presenter-info">
-                    <div class="presenter-name">Strategic AI Consulting for SMBs</div>
-                    <div class="date">2025</div>
+                <div class="audience-info">
+                    <div class="audience-title">Chicago Booth - CAIO Certificate: Course 2 - Business to AI Strategy: Final </div>
+                    <div class="audience-grid">
+                        <div class="audience-section">
+                            <h4>Course Instruction</h4>
+                            <p><strong>Roger L. Moore, Jr., MBA</strong></p>
+                            <p style="font-size: 0.8vw; margin-bottom: 1vh;">Associate Clinical Professor, UChicago MS Applied Data Science</p>
+                            <p><strong>Teaching Assistants:</strong></p>
+                            <p>• Noelle Walsh - Federal Reserve Portfolio Manager</p>
+                            <p>• Sandra Tilmon - Healthcare Data Scientist, UChicago</p>
+                        </div>
+                        <div class="audience-section">
+                            <h4>Leadership Circle - Group 10</h4>
+                            <ul>
+                                <li class="presenter-highlight">Darren Silver (Presenter)</li>
+                                <li>Francisco Guzman Lopez</li>
+                                <li>Jeronimo Herrera</li>
+                                <li>Pavan Somayajula</li>
+                                <li>Sowmya Karthikeyan</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
             

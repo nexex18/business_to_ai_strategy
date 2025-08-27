@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Velocity MG: Built for the AI-First Era</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #f5f5f5;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .slide {
+            display: none;
+            width: 100vw;
+            height: 100vh;
+            padding: 3vh 4vw;
+            background: white;
+            position: relative;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        h1 {
+            font-size: 2.8vw;
+            margin-bottom: 2vh;
+            color: #1a1a1a;
+            text-align: center;
+            font-weight: 300;
+            letter-spacing: -0.5px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto auto auto;
+            gap: 1.5vh 2vw;
+            flex: 1;
+            animation: fadeInUp 0.8s ease-out 0.3s both;
+        }
+
+        .section-box {
+            background: white;
+            border-radius: 12px;
+            padding: 1.8vh 1.8vw;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .section-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+
+        /* Vision box - top left */
+        .vision-box {
+            background: linear-gradient(135deg, rgba(0, 118, 168, 0.05) 0%, rgba(0, 167, 79, 0.05) 100%);
+            border-left: 4px solid #0076a8;
+        }
+
+        /* Mission box - top right */
+        .mission-box {
+            background: linear-gradient(135deg, rgba(0, 167, 79, 0.05) 0%, rgba(0, 118, 168, 0.05) 100%);
+            border-left: 4px solid #00a74f;
+        }
+
+        /* Strategy box - middle left */
+        .strategy-box {
+            border: 2px solid #0076a8;
+        }
+
+        /* Values box - middle right */
+        .values-box {
+            border: 2px solid #00a74f;
+        }
+
+        .box-title {
+            font-size: 1.3vw;
+            font-weight: 700;
+            color: #0076a8;
+            margin-bottom: 0.8vh;
+        }
+
+        .box-content {
+            font-size: 1vw;
+            color: #333;
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        .strategy-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .strategy-item {
+            font-size: 0.95vw;
+            color: #555;
+            padding: 0.5vh 0;
+            padding-left: 1.5vw;
+            position: relative;
+            animation: slideInLeft 0.6s ease-out backwards;
+        }
+
+        .strategy-item:nth-child(1) { animation-delay: 0.5s; }
+        .strategy-item:nth-child(2) { animation-delay: 0.6s; }
+        .strategy-item:nth-child(3) { animation-delay: 0.7s; }
+        .strategy-item:nth-child(4) { animation-delay: 0.8s; }
+
+        .strategy-item::before {
+            content: counter(item);
+            counter-increment: item;
+            position: absolute;
+            left: 0;
+            top: 0.5vh;
+            background: linear-gradient(135deg, #0076a8, #00a74f);
+            color: white;
+            width: 1.2vw;
+            height: 1.2vw;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7vw;
+            font-weight: 700;
+        }
+
+        .strategy-list {
+            counter-reset: item;
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.8vh;
+        }
+
+        .value-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8vw;
+        }
+
+        .value-icon {
+            width: 1.5vw;
+            height: 1.5vw;
+            background: linear-gradient(135deg, #00a74f, #00cc5f);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8vw;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .value-text {
+            flex: 1;
+        }
+
+        .value-name {
+            font-size: 0.95vw;
+            font-weight: 700;
+            color: #00a74f;
+            margin-bottom: 0.2vh;
+        }
+
+        .value-desc {
+            font-size: 0.85vw;
+            color: #666;
+            line-height: 1.4;
+            font-style: normal;
+        }
+
+        /* Why Now section spans both columns at bottom */
+        .why-now-section {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #00a74f, #00cc5f);
+            color: white;
+            border-radius: 12px;
+            padding: 2vh 2vw;
+            animation: fadeInUp 0.8s ease-out 1s both;
+        }
+
+        .why-now-title {
+            font-size: 1.4vw;
+            font-weight: 700;
+            margin-bottom: 1vh;
+        }
+
+        .why-now-item {
+            font-size: 0.95vw;
+            margin: 0.5vh 0;
+            padding-left: 1vw;
+            position: relative;
+        }
+
+        .why-now-item::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            font-weight: 700;
+        }
+
+        .citation {
+            font-size: 0.7vw;
+            vertical-align: super;
+            opacity: 0.9;
+        }
+
+        .references-note {
+            position: absolute;
+            bottom: 2vh;
+            right: 4vw;
+            font-size: 0.8vw;
+            color: #999;
+            font-style: italic;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.1vw;
+            margin-bottom: 1.2vh;
+            font-weight: 400;
+            animation: fadeInDown 0.8s ease-out 0.2s both;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="slide active" id="slide20">
+            <h1>Our VMG philosophy ties directly to our core strategy </h1>
+            <div class="subtitle">This is the Foundation of our AI-First Consulting Excellence</div>
+            <div style="width: 100%; height: 2px; background: linear-gradient(90deg, transparent, #e0e0e0 20%, #e0e0e0 80%, transparent); margin: 0.5vh 0 3vh 0;"></div>
+            
+            <div class="content-grid">
+                <!-- Top row -->
+                <div class="section-box vision-box">
+                    <div class="box-title">Vision</div>
+                    <div class="box-content">
+                        "A world where every business achieves Velocity Made Good through strategic AI adoption"
+                    </div>
+                </div>
+                
+                <div class="section-box mission-box">
+                    <div class="box-title">Mission</div>
+                    <div class="box-content">
+                        "We guide customers to harness AI's transformative power while ensuring it propels them toward their true business goals, delivering enterprise-grade consulting through our People + Platform AI-first consultancy at accessible prices""
+                    </div>
+                </div>
+                
+                <!-- Middle row -->
+                <div class="section-box strategy-box">
+                    <div class="box-title">Strategy</div>
+                    <ol class="strategy-list">
+                        <li class="strategy-item">Strategic alignment first, technology second</li>
+                        <li class="strategy-item">AI-powered operations enabling 70% cost efficiency</li>
+                        <li class="strategy-item">Measurable progress toward business goals</li>
+                        <li class="strategy-item">Continuous optimization with VMG tracking</li>
+                    </ol>
+                </div>
+                
+                <div class="section-box values-box">
+                    <div class="box-title">Core Values</div>
+                    <div class="values-grid">
+                        <div class="value-item">
+                            <div class="value-icon">N</div>
+                            <div class="value-text">
+                                <div class="value-name">Navigation</div>
+                                <div class="value-desc">Guide clients to their true destination</div>
+                            </div>
+                        </div>
+                        <div class="value-item">
+                            <div class="value-icon">A</div>
+                            <div class="value-text">
+                                <div class="value-name">Alignment</div>
+                                <div class="value-desc">Technology serves strategy</div>
+                            </div>
+                        </div>
+                        <div class="value-item">
+                            <div class="value-icon">A</div>
+                            <div class="value-text">
+                                <div class="value-name">Accessibility</div>
+                                <div class="value-desc">Enterprise wisdom for every business</div>
+                            </div>
+                        </div>
+                        <div class="value-item">
+                            <div class="value-icon">T</div>
+                            <div class="value-text">
+                                <div class="value-name">Transparency</div>
+                                <div class="value-desc">Clear metrics, no black boxes</div>
+                            </div>
+                        </div>
+                        <div class="value-item">
+                            <div class="value-icon">I</div>
+                            <div class="value-text">
+                                <div class="value-name">Impact</div>
+                                <div class="value-desc">Success by reaching goals</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Bottom row spans both columns -->
+                <div class="why-now-section">
+                    <div class="why-now-title">Why Now?</div>
+                    <div class="why-now-item">McKinsey predicts consultants evolving into "superagents"—human experts augmented by AI<span class="citation">²⁰</span></div>
+                    <div class="why-now-item">The future belongs to firms that master the "orchestration layer" combining human insight with AI capability<span class="citation">²¹</span></div>
+                    <div class="why-now-item">Traditional pyramid model collapsing as AI automates routine analysis<span class="citation">²²</span></div>
+                </div>
+            </div>
+            
+            <div class="references-note">*See References slide for full citations</div>
+        </div>
+    </div>
+</body>
+</html>

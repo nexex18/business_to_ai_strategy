@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VMG AI Maturity Assessment - Visual Analysis</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #f5f5f5;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .slide {
+            display: none;
+            width: 100vw;
+            height: 100vh;
+            padding: 3vh 4vw;
+            background: white;
+            position: relative;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+        
+        h1 {
+            font-size: 2.6vw;
+            margin-bottom: 0.8vh;
+            color: #1a1a1a;
+            text-align: center;
+            font-weight: 300;
+            letter-spacing: -0.5px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.1vw;
+            margin-bottom: 1.2vh;
+            font-weight: 400;
+            animation: fadeInDown 0.8s ease-out 0.2s both;
+        }
+
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5vh;
+        }
+
+        .chart-container {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5vh 2vw;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            height: 42vh;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        #maturityChart {
+            width: 100%;
+            height: 100%;
+        }
+
+        .insights-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5vw;
+            animation: fadeInUp 0.8s ease-out 0.6s both;
+        }
+
+        .insight-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5vh 1.2vw;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .insight-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+        }
+
+        .strength-card::before {
+            background: linear-gradient(90deg, #00a74f, #00cc5f);
+        }
+
+        .gap-card::before {
+            background: linear-gradient(90deg, #f39c12, #f1c40f);
+        }
+
+        .focus-card::before {
+            background: linear-gradient(90deg, #0076a8, #0099dd);
+        }
+
+        .insight-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+
+        .insight-icon {
+            width: 2.5vw;
+            height: 2.5vw;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3vw;
+            margin-bottom: 0.8vh;
+        }
+
+        .strength-card .insight-icon {
+            background: rgba(0, 167, 79, 0.1);
+            color: #00a74f;
+        }
+
+        .gap-card .insight-icon {
+            background: rgba(243, 156, 18, 0.1);
+            color: #f39c12;
+        }
+
+        .focus-card .insight-icon {
+            background: rgba(0, 118, 168, 0.1);
+            color: #0076a8;
+        }
+
+        .insight-title {
+            font-size: 1.2vw;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 0.6vh;
+        }
+
+        .insight-content {
+            font-size: 0.95vw;
+            color: #555;
+            line-height: 1.4;
+            margin-bottom: 0.8vh;
+        }
+
+        .insight-metrics {
+            display: flex;
+            gap: 1vw;
+            margin-top: 0.8vh;
+            padding-top: 0.8vh;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .metric-item {
+            flex: 1;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 1.3vw;
+            font-weight: 700;
+            display: block;
+        }
+
+        .strength-card .metric-value {
+            color: #00a74f;
+        }
+
+        .gap-card .metric-value {
+            color: #f39c12;
+        }
+
+        .focus-card .metric-value {
+            color: #0076a8;
+        }
+
+        .metric-label {
+            font-size: 0.75vw;
+            color: #999;
+            margin-top: 0.2vh;
+        }
+
+        .overall-status {
+            text-align: center;
+            font-size: 1.2vw;
+            font-weight: 600;
+            margin-bottom: 1.5vh;
+            animation: fadeInDown 0.8s ease-out 0.3s both;
+        }
+        
+        .overall-status .status-value {
+            color: #f39c12;
+            font-weight: 700;
+        }
+        
+        .overall-status .status-label {
+            color: #ff6b6b;
+            font-weight: 700;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="slide active" id="slide12b">
+            <h1>VMG AI Maturity Assessment - Visual Analysis</h1>
+            <div class="subtitle">Current state vs. 12-month targets across all building blocks</div>
+            <div style="width: 100%; height: 2px; background: linear-gradient(90deg, transparent, #e0e0e0 20%, #e0e0e0 80%, transparent); margin: 0.5vh 0 3vh 0;"></div>
+
+            <div class="overall-status">
+                Overall Maturity: <span class="status-value">2.4</span> | Status: <span class="status-label">At Risk</span>
+            </div>
+            
+            
+            <div class="content-wrapper">
+                <div class="chart-container">
+                    <div id="maturityChart"></div>
+                </div>
+                
+                <div class="insights-container">
+                    <div class="insight-card strength-card">
+                        <div class="insight-icon">✓</div>
+                        <div class="insight-title">Key Strengths</div>
+                        <div class="insight-content">
+                            <strong>Vision & Strategy</strong> are exceptionally strong, providing clear direction for AI transformation. This visionary leadership positions VMG ahead of many established competitors.
+                        </div>
+                        <div class="insight-metrics">
+                            <div class="metric-item">
+                                <span class="metric-value">4.0</span>
+                                <div class="metric-label">Vision Score</div>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-value">3.5</span>
+                                <div class="metric-label">Strategy Score</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="insight-card gap-card">
+                        <div class="insight-icon">⚠</div>
+                        <div class="insight-title">Critical Gaps</div>
+                        <div class="insight-content">
+                            <strong>Governance & Processes</strong> are the weakest areas, typical for a startup. These operational foundations need immediate attention to support scaling.
+                        </div>
+                        <div class="insight-metrics">
+                            <div class="metric-item">
+                                <span class="metric-value">1.5</span>
+                                <div class="metric-label">Governance</div>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-value">1.5</span>
+                                <div class="metric-label">Processes</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="insight-card focus-card">
+                        <div class="insight-icon">🎯</div>
+                        <div class="insight-title">12-Month Focus</div>
+                        <div class="insight-content">
+                            Building <strong>operational capabilities</strong> to match strategic ambition. Priority on metrics, governance, and process standardization.
+                        </div>
+                        <div class="insight-metrics">
+                            <div class="metric-item">
+                                <span class="metric-value">+1.5</span>
+                                <div class="metric-label">Avg. Growth</div>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-value">3.4</span>
+                                <div class="metric-label">Target Score</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data for the chart
+        const categories = ['Vision', 'Strategy', 'Metrics', 'Governance', 'People', 'Processes', 'Technology'];
+        const currentScores = [4.0, 3.5, 2.0, 1.5, 2.0, 1.5, 2.5];
+        const targetScores = [4.0, 4.0, 3.5, 3.0, 3.0, 3.0, 4.0];
+        
+        // Create the chart
+        const trace1 = {
+            x: categories,
+            y: currentScores,
+            name: 'Current Level',
+            type: 'scatter',
+            mode: 'lines+markers',
+            line: {
+                color: '#0076a8',
+                width: 3
+            },
+            marker: {
+                color: '#0076a8',
+                size: 12,
+                line: {
+                    color: 'white',
+                    width: 2
+                }
+            }
+        };
+        
+        const trace2 = {
+            x: categories,
+            y: targetScores,
+            name: '12-Month Target',
+            type: 'scatter',
+            mode: 'lines+markers',
+            line: {
+                color: '#00a74f',
+                width: 3,
+                dash: 'dash'
+            },
+            marker: {
+                color: '#00a74f',
+                size: 12,
+                symbol: 'diamond',
+                line: {
+                    color: 'white',
+                    width: 2
+                }
+            }
+        };
+        
+        const data = [trace1, trace2];
+        
+        const layout = {
+            font: {
+                family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif',
+                size: 14
+            },
+            xaxis: {
+                title: {
+                    text: 'Building Blocks',
+                    font: {
+                        size: 16,
+                        color: '#666'
+                    }
+                },
+                tickfont: {
+                    size: 14,
+                    color: '#333'
+                },
+                gridcolor: '#e0e0e0',
+                zerolinecolor: '#e0e0e0'
+            },
+            yaxis: {
+                title: {
+                    text: 'Maturity Level',
+                    font: {
+                        size: 16,
+                        color: '#666'
+                    }
+                },
+                range: [0, 5],
+                tickvals: [1, 2, 3, 4, 5],
+                ticktext: ['1.0<br>Aware', '2.0<br>Reactive', '3.0<br>Proactive', '4.0<br>Managed', '5.0<br>Optimizing'],
+                tickfont: {
+                    size: 12,
+                    color: '#333'
+                },
+                gridcolor: '#e0e0e0',
+                zerolinecolor: '#e0e0e0'
+            },
+            legend: {
+                x: 0.02,
+                y: 0.98,
+                bgcolor: 'rgba(255,255,255,0.9)',
+                bordercolor: '#e0e0e0',
+                borderwidth: 1,
+                font: {
+                    size: 12
+                }
+            },
+            margin: {
+                l: 80,
+                r: 80,
+                t: 40,
+                b: 80
+            },
+            plot_bgcolor: '#fafafa',
+            paper_bgcolor: 'white',
+            hovermode: 'x unified',
+            hoverlabel: {
+                bgcolor: 'white',
+                bordercolor: '#333',
+                font: {
+                    size: 14,
+                    color: '#333'
+                }
+            },
+            shapes: [
+                // Horizontal line at 2.4 (current average)
+                {
+                    type: 'line',
+                    x0: -0.5,
+                    x1: 6.5,
+                    y0: 2.4,
+                    y1: 2.4,
+                    line: {
+                        color: '#ff6b6b',
+                        width: 2,
+                        dash: 'dot'
+                    }
+                }
+            ],
+            annotations: [
+                // Current average annotation
+                {
+                    x: 6.2,
+                    y: 2.4,
+                    text: 'Current Avg: 2.4',
+                    showarrow: false,
+                    font: {
+                        size: 12,
+                        color: '#ff6b6b'
+                    },
+                    bgcolor: 'white',
+                    bordercolor: '#ff6b6b',
+                    borderwidth: 1
+                },
+                // Target average annotation
+                {
+                    x: 6.2,
+                    y: 3.4,
+                    text: 'Target Avg: 3.4',
+                    showarrow: false,
+                    font: {
+                        size: 12,
+                        color: '#00a74f'
+                    },
+                    bgcolor: 'white',
+                    bordercolor: '#00a74f',
+                    borderwidth: 1
+                }
+            ]
+        };
+        
+        const config = {
+            responsive: true,
+            displayModeBar: false
+        };
+        
+        Plotly.newPlot('maturityChart', data, layout, config);
+    </script>
+</body>
+</html>
